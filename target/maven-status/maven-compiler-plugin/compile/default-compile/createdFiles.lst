@@ -1,0 +1,4 @@
+com\shaparak\batch\config\SpringBatchConfig.class
+com\shaparak\batch\processor\RecordProcessor.class
+com\shaparak\batch\BatchApplication.class
+com\shaparak\batch\model\Record.class

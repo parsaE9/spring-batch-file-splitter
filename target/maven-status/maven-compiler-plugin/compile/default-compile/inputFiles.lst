@@ -1,0 +1,10 @@
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\aggregator\PspLineAggregator.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\config\SpringBatchConfig.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\classifier\RecordClassifier.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\writer\psp\PspItemWriter.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\header\HeaderWriter.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\aggregator\BankLineAggregator.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\BatchApplication.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\model\Record.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\processor\RecordProcessor.java
+E:\repository\shaparak-batch\src\main\java\com\shaparak\batch\writer\bank\BankItemWriter.java
