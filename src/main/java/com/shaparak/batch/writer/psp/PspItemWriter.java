@@ -14,7 +14,7 @@ import java.io.File;
 public class PspItemWriter {
 
     @Bean
-    public FlatFileItemWriter<Record> pspItemWriter() throws Exception {
+    public FlatFileItemWriter<Record> psp1ItemWriter() throws Exception {
         return createWriter("psp1_result.shap");
     }
 

@@ -32,63 +32,116 @@ public class BankRecordClassifier implements Classifier<Record, ItemWriter<? sup
     private final ItemWriter<Record> bank22ItemWriter;
     private final ItemWriter<Record> bank23ItemWriter;
     private final ItemWriter<Record> bank24ItemWriter;
+    private final ItemWriter<Record> bank25ItemWriter;
+    private final ItemWriter<Record> bank26ItemWriter;
+    private final ItemWriter<Record> bank27ItemWriter;
+    private final ItemWriter<Record> bank28ItemWriter;
+    private final ItemWriter<Record> bank29ItemWriter;
+    private final ItemWriter<Record> bank30ItemWriter;
+    private final ItemWriter<Record> bank31ItemWriter;
+    private final ItemWriter<Record> bank32ItemWriter;
+    private final ItemWriter<Record> bank33ItemWriter;
+    private final ItemWriter<Record> bank34ItemWriter;
+    private final ItemWriter<Record> bank35ItemWriter;
+    private final ItemWriter<Record> bank36ItemWriter;
+    private final ItemWriter<Record> bank37ItemWriter;
+    private final ItemWriter<Record> bank38ItemWriter;
+    private final ItemWriter<Record> bank39ItemWriter;
+    private final ItemWriter<Record> bank40ItemWriter;
+    private final ItemWriter<Record> bank41ItemWriter;
+    private final ItemWriter<Record> bank42ItemWriter;
 
 
     @Override
     public ItemWriter<? super Record> classify(Record record) {
-        int pspCodeLength = record.getPspCode().length();
-        String switchCode = record.getPspCode().substring(pspCodeLength - 3, pspCodeLength);
-        switch (switchCode) {
-            case "042":
-                return bank1ItemWriter;
-            case "041":
-                return bank2ItemWriter;
-            case "043":
-                return bank3ItemWriter;
-            case "051":
-                return bank4ItemWriter;
-            case "052":
-                return bank5ItemWriter;
-            case "061":
-                return bank6ItemWriter;
-            case "082":
-                return bank7ItemWriter;
-            case "081":
-                return bank8ItemWriter;
-            case "091":
-                return bank9ItemWriter;
-            case "111":
-                return bank10ItemWriter;
-            case "112":
-                return bank11ItemWriter;
-            case "121":
-                return bank12ItemWriter;
-            case "131":
-                return bank13ItemWriter;
-            case "132":
-                return bank14ItemWriter;
-            case "141":
-                return bank15ItemWriter;
-            case "142":
-                return bank16ItemWriter;
+        String bankCode = record.getIban().substring(4, 7);
+        switch (bankCode) {
             case "011":
+                return bank1ItemWriter;
+            case "012":
+                return bank2ItemWriter;
+            case "013":
+                return bank3ItemWriter;
+            case "014":
+                return bank4ItemWriter;
+            case "015":
+                return bank5ItemWriter;
+            case "016":
+                return bank6ItemWriter;
+            case "017":
+                return bank7ItemWriter;
+            case "018":
+                return bank8ItemWriter;
+            case "019":
+                return bank9ItemWriter;
+            case "020":
+                return bank10ItemWriter;
+            case "051":
+                return bank11ItemWriter;
+            case "052":
+                return bank12ItemWriter;
+            case "053":
+                return bank13ItemWriter;
+            case "054":
+                return bank14ItemWriter;
+            case "055":
+                return bank15ItemWriter;
+            case "056":
+                return bank16ItemWriter;
+            case "057":
                 return bank17ItemWriter;
-            case "021":
+            case "058":
                 return bank18ItemWriter;
-            case "022":
+            case "059":
                 return bank19ItemWriter;
-            case "031":
+            case "060":
                 return bank20ItemWriter;
-            case "032":
+            case "061":
                 return bank21ItemWriter;
             case "062":
                 return bank22ItemWriter;
-            case "271":
+            case "063":
                 return bank23ItemWriter;
-            case "001":
+            case "064":
                 return bank24ItemWriter;
+            case "065":
+                return bank25ItemWriter;
+            case "066":
+                return bank26ItemWriter;
+            case "069":
+                return bank27ItemWriter;
+            case "070":
+                return bank28ItemWriter;
+            case "073":
+                return bank29ItemWriter;
+            case "075":
+                return bank30ItemWriter;
+            case "078":
+                return bank31ItemWriter;
+            case "095":
+                return bank32ItemWriter;
+            case "080":
+                return bank33ItemWriter;
+            case "093":
+                return bank34ItemWriter;
+            case "079":
+                return bank35ItemWriter;
+//            case "001":
+//                return bank36ItemWriter;
+//            case "001":
+//                return bank37ItemWriter;
+//            case "001":
+//                return bank38ItemWriter;
+//            case "001":
+//                return bank39ItemWriter;
+//            case "001":
+//                return bank40ItemWriter;
+//            case "001":
+//                return bank41ItemWriter;
+//            case "001":
+//                return bank42ItemWriter;
             default:
-                System.out.println("record classifier error");
+                System.out.println("bank record classifier error");
                 return null;
         }
     }

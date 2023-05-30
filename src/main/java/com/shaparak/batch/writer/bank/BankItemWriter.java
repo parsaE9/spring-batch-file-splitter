@@ -16,7 +16,7 @@ public class BankItemWriter {
 
 
     @Bean
-    public FlatFileItemWriter<Record> bankItemWriter() throws Exception {
+    public FlatFileItemWriter<Record> bank1ItemWriter() throws Exception {
         return createWriter("bank1_result.shap");
     }
 
@@ -135,6 +135,96 @@ public class BankItemWriter {
         return createWriter("bank24_result.shap");
     }
 
+    @Bean
+    public FlatFileItemWriter<Record> bank25ItemWriter() throws Exception {
+        return createWriter("bank25_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank26ItemWriter() throws Exception {
+        return createWriter("bank26_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank27ItemWriter() throws Exception {
+        return createWriter("bank27_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank28ItemWriter() throws Exception {
+        return createWriter("bank28_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank29ItemWriter() throws Exception {
+        return createWriter("bank29_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank30ItemWriter() throws Exception {
+        return createWriter("bank30_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank31ItemWriter() throws Exception {
+        return createWriter("bank31_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank32ItemWriter() throws Exception {
+        return createWriter("bank32_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank33ItemWriter() throws Exception {
+        return createWriter("bank33_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank34ItemWriter() throws Exception {
+        return createWriter("bank34_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank35ItemWriter() throws Exception {
+        return createWriter("bank35_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank36ItemWriter() throws Exception {
+        return createWriter("bank36_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank37ItemWriter() throws Exception {
+        return createWriter("bank37_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank38ItemWriter() throws Exception {
+        return createWriter("bank38_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank39ItemWriter() throws Exception {
+        return createWriter("bank39_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank40ItemWriter() throws Exception {
+        return createWriter("bank40_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank41ItemWriter() throws Exception {
+        return createWriter("bank41_result.shap");
+    }
+
+    @Bean
+    public FlatFileItemWriter<Record> bank42ItemWriter() throws Exception {
+        return createWriter("bank42_result.shap");
+    }
+
 
     private FlatFileItemWriter<Record> createWriter(String fileName) throws Exception {
         String bankOutputPath = new File("C:\\Users\\p.aliesfahani\\Desktop\\batch\\result\\bank\\" + fileName).getAbsolutePath();
@@ -151,5 +241,6 @@ public class BankItemWriter {
 //        return "row_number, psp_code, acceptor_code, trace_code, local_date, local_time, recive_date, IBAN, deposite_date, deposite_type, deposite_circle_number, terminal_type, proccess_type, card_type, amount_shaparak, reference_code, deposite_flag, terminal_code, orig_txn_info";
         return "row_number, psp_code, acceptor_code, trace_code, local_date, local_time, recive_date, IBAN, deposite_date, deposite_type, deposite_circle_number, terminal_type, proccess_type, card_type, amount_shaparak, reference_code, deposite_flag, terminal_code";
     }
+
 
 }

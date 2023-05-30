@@ -88,7 +88,7 @@ public class PspRecordClassifier implements Classifier<Record, ItemWriter<? supe
             case "001":
                 return psp24ItemWriter;
             default:
-                System.out.println("record classifier error");
+                System.out.println("psp record classifier error");
                 return null;
         }
     }
