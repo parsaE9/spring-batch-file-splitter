@@ -1,6 +1,6 @@
 package com.shaparak.batch.classifier;
 
-import com.shaparak.batch.model.Record;
+import com.shaparak.batch.dto.Record;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.classify.Classifier;
@@ -8,30 +8,30 @@ import org.springframework.classify.Classifier;
 @AllArgsConstructor
 public class PspRecordClassifier implements Classifier<Record, ItemWriter<? super Record>> {
 
-    private final ItemWriter<Record> psp1ItemWriter;
-    private final ItemWriter<Record> psp2ItemWriter;
-    private final ItemWriter<Record> psp3ItemWriter;
-    private final ItemWriter<Record> psp4ItemWriter;
-    private final ItemWriter<Record> psp5ItemWriter;
-    private final ItemWriter<Record> psp6ItemWriter;
-    private final ItemWriter<Record> psp7ItemWriter;
-    private final ItemWriter<Record> psp8ItemWriter;
-    private final ItemWriter<Record> psp9ItemWriter;
-    private final ItemWriter<Record> psp10ItemWriter;
-    private final ItemWriter<Record> psp11ItemWriter;
-    private final ItemWriter<Record> psp12ItemWriter;
-    private final ItemWriter<Record> psp13ItemWriter;
-    private final ItemWriter<Record> psp14ItemWriter;
-    private final ItemWriter<Record> psp15ItemWriter;
-    private final ItemWriter<Record> psp16ItemWriter;
-    private final ItemWriter<Record> psp17ItemWriter;
-    private final ItemWriter<Record> psp18ItemWriter;
-    private final ItemWriter<Record> psp19ItemWriter;
-    private final ItemWriter<Record> psp20ItemWriter;
-    private final ItemWriter<Record> psp21ItemWriter;
-    private final ItemWriter<Record> psp22ItemWriter;
-    private final ItemWriter<Record> psp23ItemWriter;
-    private final ItemWriter<Record> psp24ItemWriter;
+    private final ItemWriter<Record> sep2SwitchItemWriter;
+    private final ItemWriter<Record> sep1SwitchItemWriter;
+    private final ItemWriter<Record> sep3SwitchItemWriter;
+    private final ItemWriter<Record> pna1SwitchItemWriter;
+    private final ItemWriter<Record> pna2SwitchItemWriter;
+    private final ItemWriter<Record> pec1SwitchItemWriter;
+    private final ItemWriter<Record> sayn1SwitchItemWriter;
+    private final ItemWriter<Record> sayn2SwitchItemWriter;
+    private final ItemWriter<Record> fanvSwitchItemWriter;
+    private final ItemWriter<Record> kicc1SwitchItemWriter;
+    private final ItemWriter<Record> kicc2SwitchItemWriter;
+    private final ItemWriter<Record> mabnSwitchItemWriter;
+    private final ItemWriter<Record> sada1SwitchItemWriter;
+    private final ItemWriter<Record> sada2SwitchItemWriter;
+    private final ItemWriter<Record> pep1SwitchItemWriter;
+    private final ItemWriter<Record> pep2SwitchItemWriter;
+    private final ItemWriter<Record> persSwitchItemWriter;
+    private final ItemWriter<Record> ecd1SwitchItemWriter;
+    private final ItemWriter<Record> ecd2SwitchItemWriter;
+    private final ItemWriter<Record> bpm1SwitchItemWriter;
+    private final ItemWriter<Record> bpm2SwitchItemWriter;
+    private final ItemWriter<Record> pec2SwitchItemWriter;
+    private final ItemWriter<Record> sshpSwitchItemWriter;
+    private final ItemWriter<Record> hubSwitchItemWriter;
 
 
     @Override
@@ -40,53 +40,53 @@ public class PspRecordClassifier implements Classifier<Record, ItemWriter<? supe
         String switchCode = record.getPspCode().substring(pspCodeLength - 3, pspCodeLength);
         switch (switchCode) {
             case "042":
-                return psp1ItemWriter;
+                return sep2SwitchItemWriter;
             case "041":
-                return psp2ItemWriter;
+                return sep1SwitchItemWriter;
             case "043":
-                return psp3ItemWriter;
+                return sep3SwitchItemWriter;
             case "051":
-                return psp4ItemWriter;
+                return pna1SwitchItemWriter;
             case "052":
-                return psp5ItemWriter;
+                return pna2SwitchItemWriter;
             case "061":
-                return psp6ItemWriter;
+                return pec1SwitchItemWriter;
             case "082":
-                return psp7ItemWriter;
+                return sayn1SwitchItemWriter;
             case "081":
-                return psp8ItemWriter;
+                return sayn2SwitchItemWriter;
             case "091":
-                return psp9ItemWriter;
+                return fanvSwitchItemWriter;
             case "111":
-                return psp10ItemWriter;
+                return kicc1SwitchItemWriter;
             case "112":
-                return psp11ItemWriter;
+                return kicc2SwitchItemWriter;
             case "121":
-                return psp12ItemWriter;
+                return mabnSwitchItemWriter;
             case "131":
-                return psp13ItemWriter;
+                return sada1SwitchItemWriter;
             case "132":
-                return psp14ItemWriter;
+                return sada2SwitchItemWriter;
             case "141":
-                return psp15ItemWriter;
+                return pep1SwitchItemWriter;
             case "142":
-                return psp16ItemWriter;
+                return pep2SwitchItemWriter;
             case "011":
-                return psp17ItemWriter;
+                return persSwitchItemWriter;
             case "021":
-                return psp18ItemWriter;
+                return ecd1SwitchItemWriter;
             case "022":
-                return psp19ItemWriter;
+                return ecd2SwitchItemWriter;
             case "031":
-                return psp20ItemWriter;
+                return bpm1SwitchItemWriter;
             case "032":
-                return psp21ItemWriter;
+                return bpm2SwitchItemWriter;
             case "062":
-                return psp22ItemWriter;
+                return pec2SwitchItemWriter;
             case "271":
-                return psp23ItemWriter;
+                return sshpSwitchItemWriter;
             case "001":
-                return psp24ItemWriter;
+                return hubSwitchItemWriter;
             default:
                 System.out.println("psp record classifier error");
                 return null;

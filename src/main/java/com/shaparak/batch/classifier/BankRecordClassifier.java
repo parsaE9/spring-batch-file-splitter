@@ -1,6 +1,6 @@
 package com.shaparak.batch.classifier;
 
-import com.shaparak.batch.model.Record;
+import com.shaparak.batch.dto.Record;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.classify.Classifier;
@@ -8,138 +8,126 @@ import org.springframework.classify.Classifier;
 @AllArgsConstructor
 public class BankRecordClassifier implements Classifier<Record, ItemWriter<? super Record>> {
 
-    private final ItemWriter<Record> bank1ItemWriter;
-    private final ItemWriter<Record> bank2ItemWriter;
-    private final ItemWriter<Record> bank3ItemWriter;
-    private final ItemWriter<Record> bank4ItemWriter;
-    private final ItemWriter<Record> bank5ItemWriter;
-    private final ItemWriter<Record> bank6ItemWriter;
-    private final ItemWriter<Record> bank7ItemWriter;
-    private final ItemWriter<Record> bank8ItemWriter;
-    private final ItemWriter<Record> bank9ItemWriter;
-    private final ItemWriter<Record> bank10ItemWriter;
-    private final ItemWriter<Record> bank11ItemWriter;
-    private final ItemWriter<Record> bank12ItemWriter;
-    private final ItemWriter<Record> bank13ItemWriter;
-    private final ItemWriter<Record> bank14ItemWriter;
-    private final ItemWriter<Record> bank15ItemWriter;
-    private final ItemWriter<Record> bank16ItemWriter;
-    private final ItemWriter<Record> bank17ItemWriter;
-    private final ItemWriter<Record> bank18ItemWriter;
-    private final ItemWriter<Record> bank19ItemWriter;
-    private final ItemWriter<Record> bank20ItemWriter;
-    private final ItemWriter<Record> bank21ItemWriter;
-    private final ItemWriter<Record> bank22ItemWriter;
-    private final ItemWriter<Record> bank23ItemWriter;
-    private final ItemWriter<Record> bank24ItemWriter;
-    private final ItemWriter<Record> bank25ItemWriter;
-    private final ItemWriter<Record> bank26ItemWriter;
-    private final ItemWriter<Record> bank27ItemWriter;
-    private final ItemWriter<Record> bank28ItemWriter;
-    private final ItemWriter<Record> bank29ItemWriter;
-    private final ItemWriter<Record> bank30ItemWriter;
-    private final ItemWriter<Record> bank31ItemWriter;
-    private final ItemWriter<Record> bank32ItemWriter;
-    private final ItemWriter<Record> bank33ItemWriter;
-    private final ItemWriter<Record> bank34ItemWriter;
-    private final ItemWriter<Record> bank35ItemWriter;
-    private final ItemWriter<Record> bank36ItemWriter;
-    private final ItemWriter<Record> bank37ItemWriter;
-    private final ItemWriter<Record> bank38ItemWriter;
-    private final ItemWriter<Record> bank39ItemWriter;
-    private final ItemWriter<Record> bank40ItemWriter;
-    private final ItemWriter<Record> bank41ItemWriter;
-    private final ItemWriter<Record> bank42ItemWriter;
+    private final ItemWriter<Record> markaziBankItemWriter;
+    private final ItemWriter<Record> sanatBankItemWriter;
+    private final ItemWriter<Record> mellatBankItemWriter;
+    private final ItemWriter<Record> refahBankItemWriter;
+    private final ItemWriter<Record> maskanBankItemWriter;
+    private final ItemWriter<Record> sepahBankItemWriter;
+    private final ItemWriter<Record> keshavarziBankItemWriter;
+    private final ItemWriter<Record> melliBankItemWriter;
+    private final ItemWriter<Record> tejaratBankItemWriter;
+    private final ItemWriter<Record> saderatBankItemWriter;
+    private final ItemWriter<Record> toseeSaderatBankItemWriter;
+    private final ItemWriter<Record> postBankItemWriter;
+    private final ItemWriter<Record> toseeTaavonItemWriter;
+    private final ItemWriter<Record> etebariToseeeBankItemWriter;
+    private final ItemWriter<Record> ghavaminBankItemWriter;
+    private final ItemWriter<Record> karafarinBankItemWriter;
+    private final ItemWriter<Record> parsianBankItemWriter;
+    private final ItemWriter<Record> eghtesadNovinBankItemWriter;
+    private final ItemWriter<Record> samanBankItemWriter;
+    private final ItemWriter<Record> pasargadBankItemWriter;
+    private final ItemWriter<Record> sarmayeBankItemWriter;
+    private final ItemWriter<Record> sinaBankItemWriter;
+    private final ItemWriter<Record> mehrBankItemWriter;
+    private final ItemWriter<Record> shahrBankItemWriter;
+    private final ItemWriter<Record> ayandeBankItemWriter;
+    private final ItemWriter<Record> ansarBankItemWriter;
+    private final ItemWriter<Record> gardeshgariBankItemWriter;
+    private final ItemWriter<Record> hekmatIranianBankItemWriter;
+    private final ItemWriter<Record> dayBankItemWriter;
+    private final ItemWriter<Record> iranZaminBankItemWriter;
+    private final ItemWriter<Record> resalatBankItemWriter;
+    private final ItemWriter<Record> kosarBankItemWriter;
+    private final ItemWriter<Record> asgariyeBankItemWriter;
+    private final ItemWriter<Record> khavarmianeBankItemWriter;
+    private final ItemWriter<Record> iranVenezuelaBankItemWriter;
+    private final ItemWriter<Record> noorBankItemWriter;
+    private final ItemWriter<Record> shaparakItemWriter;
+    private final ItemWriter<Record> mehreEghtesadBankItemWriter;
 
 
     @Override
     public ItemWriter<? super Record> classify(Record record) {
         String bankCode = record.getIban().substring(4, 7);
         switch (bankCode) {
+            case "010":
+                return markaziBankItemWriter;
             case "011":
-                return bank1ItemWriter;
+                return sanatBankItemWriter;
             case "012":
-                return bank2ItemWriter;
+                return mellatBankItemWriter;
             case "013":
-                return bank3ItemWriter;
+                return refahBankItemWriter;
             case "014":
-                return bank4ItemWriter;
+                return maskanBankItemWriter;
             case "015":
-                return bank5ItemWriter;
+                return sepahBankItemWriter;
             case "016":
-                return bank6ItemWriter;
+                return keshavarziBankItemWriter;
             case "017":
-                return bank7ItemWriter;
+                return melliBankItemWriter;
             case "018":
-                return bank8ItemWriter;
+                return tejaratBankItemWriter;
             case "019":
-                return bank9ItemWriter;
+                return saderatBankItemWriter;
             case "020":
-                return bank10ItemWriter;
+                return toseeSaderatBankItemWriter;
+            case "021":
+                return postBankItemWriter;
+            case "022":
+                return toseeTaavonItemWriter;
             case "051":
-                return bank11ItemWriter;
+                return etebariToseeeBankItemWriter;
             case "052":
-                return bank12ItemWriter;
+                return ghavaminBankItemWriter;
             case "053":
-                return bank13ItemWriter;
+                return karafarinBankItemWriter;
             case "054":
-                return bank14ItemWriter;
+                return parsianBankItemWriter;
             case "055":
-                return bank15ItemWriter;
+                return eghtesadNovinBankItemWriter;
             case "056":
-                return bank16ItemWriter;
+                return samanBankItemWriter;
             case "057":
-                return bank17ItemWriter;
+                return pasargadBankItemWriter;
             case "058":
-                return bank18ItemWriter;
+                return sarmayeBankItemWriter;
             case "059":
-                return bank19ItemWriter;
+                return sinaBankItemWriter;
             case "060":
-                return bank20ItemWriter;
+                return mehrBankItemWriter;
             case "061":
-                return bank21ItemWriter;
+                return shahrBankItemWriter;
             case "062":
-                return bank22ItemWriter;
+                return ayandeBankItemWriter;
             case "063":
-                return bank23ItemWriter;
+                return ansarBankItemWriter;
             case "064":
-                return bank24ItemWriter;
+                return gardeshgariBankItemWriter;
             case "065":
-                return bank25ItemWriter;
+                return hekmatIranianBankItemWriter;
             case "066":
-                return bank26ItemWriter;
+                return dayBankItemWriter;
             case "069":
-                return bank27ItemWriter;
+                return iranZaminBankItemWriter;
             case "070":
-                return bank28ItemWriter;
+                return resalatBankItemWriter;
             case "073":
-                return bank29ItemWriter;
+                return kosarBankItemWriter;
             case "075":
-                return bank30ItemWriter;
+                return asgariyeBankItemWriter;
             case "078":
-                return bank31ItemWriter;
+                return khavarmianeBankItemWriter;
             case "095":
-                return bank32ItemWriter;
+                return iranVenezuelaBankItemWriter;
             case "080":
-                return bank33ItemWriter;
+                return noorBankItemWriter;
             case "093":
-                return bank34ItemWriter;
+                return shaparakItemWriter;
             case "079":
-                return bank35ItemWriter;
-//            case "001":
-//                return bank36ItemWriter;
-//            case "001":
-//                return bank37ItemWriter;
-//            case "001":
-//                return bank38ItemWriter;
-//            case "001":
-//                return bank39ItemWriter;
-//            case "001":
-//                return bank40ItemWriter;
-//            case "001":
-//                return bank41ItemWriter;
-//            case "001":
-//                return bank42ItemWriter;
+                return mehreEghtesadBankItemWriter;
             default:
                 System.out.println("bank record classifier error");
                 return null;

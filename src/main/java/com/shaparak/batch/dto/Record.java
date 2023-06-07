@@ -1,4 +1,4 @@
-package com.shaparak.batch.model;
+package com.shaparak.batch.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,5 +38,6 @@ public class Record {
     private String extraData2;
     private String extraData3;
     private String extraData4;
+    private String origTxnInfo;
 
 }
