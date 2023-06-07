@@ -6,6 +6,7 @@ import com.shaparak.batch.dto.Record;
 import com.shaparak.batch.processor.RecordProcessor;
 import com.shaparak.batch.writer.BankItemWriter;
 import com.shaparak.batch.writer.PspItemWriter;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -26,7 +27,10 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableBatchProcessing
@@ -47,6 +51,9 @@ public class SpringBatchConfig {
     @Value("${input.batch.file.txt.path}")
     private String inputFilePath;
 
+    @Value("${unzipped.input.file.destination.path}")
+    private String unzippedInputFileDestination;
+
     @Value("${create.bank-file}")
     private boolean bankFlag;
 
@@ -55,9 +62,16 @@ public class SpringBatchConfig {
 
 
     @Bean
-    public FlatFileItemReader<Record> reader() {
+    public FlatFileItemReader<Record> reader() throws Exception {
         FlatFileItemReader<Record> itemReader = new FlatFileItemReader<>();
-        itemReader.setResource(new FileSystemResource(inputFilePath));
+        File dir = new File(unzippedInputFileDestination + "/Batch_Details/");
+        FileFilter fileFilter = new WildcardFileFilter("*.txt");
+        File[] files = dir.listFiles(fileFilter);
+        if (files == null || files.length == 0)
+            throw new Exception("no input txt file found!");
+        else if (files.length > 1)
+            throw new Exception("more than 1 txt file found!");
+        itemReader.setResource(new FileSystemResource(files[0].getAbsolutePath()));
         itemReader.setName("ShaparakBatchReader");
         itemReader.setLineMapper(lineMapper());
         return itemReader;
@@ -90,100 +104,20 @@ public class SpringBatchConfig {
         if (bankFlag && pspFlag)
             itemWriter.setDelegates(Arrays.asList(pspClassifierCompositeItemWriter(), bankClassifierCompositeItemWriter()));
         else if (bankFlag)
-            itemWriter.setDelegates(Arrays.asList(bankClassifierCompositeItemWriter()));
+            itemWriter.setDelegates(List.of(bankClassifierCompositeItemWriter()));
         else if (pspFlag)
-            itemWriter.setDelegates(Arrays.asList(pspClassifierCompositeItemWriter()));
+            itemWriter.setDelegates(List.of(pspClassifierCompositeItemWriter()));
         else
             throw new Exception("bankFlag and pspFlag can not be false at same time");
 
         return itemWriter;
     }
 
-
-    @Bean
-    public ClassifierCompositeItemWriter<Record> pspClassifierCompositeItemWriter() throws Exception {
-        ClassifierCompositeItemWriter<Record> compositeItemWriter = new ClassifierCompositeItemWriter<>();
-        compositeItemWriter.setClassifier(new PspRecordClassifier(
-                pspItemWriter.sep2SwitchItemWriter(),
-                pspItemWriter.sep1SwitchItemWriter(),
-                pspItemWriter.sep3SwitchItemWriter(),
-                pspItemWriter.pna1SwitchItemWriter(),
-                pspItemWriter.pna2SwitchItemWriter(),
-                pspItemWriter.pec1SwitchItemWriter(),
-                pspItemWriter.sayn1SwitchItemWriter(),
-                pspItemWriter.sayn2SwitchItemWriter(),
-                pspItemWriter.fanvSwitchItemWriter(),
-                pspItemWriter.kicc1SwitchItemWriter(),
-                pspItemWriter.kicc2SwitchItemWriter(),
-                pspItemWriter.mabnSwitchItemWriter(),
-                pspItemWriter.sada1SwitchItemWriter(),
-                pspItemWriter.sada2SwitchItemWriter(),
-                pspItemWriter.pep1SwitchItemWriter(),
-                pspItemWriter.pep2SwitchItemWriter(),
-                pspItemWriter.persSwitchItemWriter(),
-                pspItemWriter.ecd1SwitchItemWriter(),
-                pspItemWriter.ecd2SwitchItemWriter(),
-                pspItemWriter.bpm1SwitchItemWriter(),
-                pspItemWriter.bpm2SwitchItemWriter(),
-                pspItemWriter.pec2SwitchItemWriter(),
-                pspItemWriter.sshpSwitchItemWriter(),
-                pspItemWriter.hubSwitchItemWriter()
-        ));
-        return compositeItemWriter;
-    }
-
-    @Bean
-    public ClassifierCompositeItemWriter<Record> bankClassifierCompositeItemWriter() throws Exception {
-        ClassifierCompositeItemWriter<Record> compositeItemWriter = new ClassifierCompositeItemWriter<>();
-        compositeItemWriter.setClassifier(new BankRecordClassifier(
-                bankItemWriter.markaziBankItemWriter(),
-                bankItemWriter.sanatBankItemWriter(),
-                bankItemWriter.mellatBankItemWriter(),
-                bankItemWriter.refahBankItemWriter(),
-                bankItemWriter.maskanBankItemWriter(),
-                bankItemWriter.sepahBankItemWriter(),
-                bankItemWriter.keshavarziBankItemWriter(),
-                bankItemWriter.melliBankItemWriter(),
-                bankItemWriter.tejaratBankItemWriter(),
-                bankItemWriter.saderatBankItemWriter(),
-                bankItemWriter.toseeSaderatBankItemWriter(),
-                bankItemWriter.postBankItemWriter(),
-                bankItemWriter.toseeTaavonItemWriter(),
-                bankItemWriter.etebariToseeeBankItemWriter(),
-                bankItemWriter.ghavaminBankItemWriter(),
-                bankItemWriter.karafarinBankItemWriter(),
-                bankItemWriter.parsianBankItemWriter(),
-                bankItemWriter.eghtesadNovinBankItemWriter(),
-                bankItemWriter.samanBankItemWriter(),
-                bankItemWriter.pasargadBankItemWriter(),
-                bankItemWriter.sarmayeBankItemWriter(),
-                bankItemWriter.sinaBankItemWriter(),
-                bankItemWriter.mehrBankItemWriter(),
-                bankItemWriter.shahrBankItemWriter(),
-                bankItemWriter.ayandeBankItemWriter(),
-                bankItemWriter.ansarBankItemWriter(),
-                bankItemWriter.gardeshgariBankItemWriter(),
-                bankItemWriter.hekmatIranianBankItemWriter(),
-                bankItemWriter.dayBankItemWriter(),
-                bankItemWriter.iranZaminBankItemWriter(),
-                bankItemWriter.resalatBankItemWriter(),
-                bankItemWriter.kosarBankItemWriter(),
-                bankItemWriter.asgariyeBankItemWriter(),
-                bankItemWriter.khavarmianeBankItemWriter(),
-                bankItemWriter.iranVenezuelaBankItemWriter(),
-                bankItemWriter.noorBankItemWriter(),
-                bankItemWriter.shaparakItemWriter(),
-                bankItemWriter.mehreEghtesadBankItemWriter()
-        ));
-        return compositeItemWriter;
-    }
-
-
     @Bean
     public Step step1() throws Exception {
         return stepBuilderFactory.get("step1").<Record, Record>chunk(1000)
                 .reader(reader())
-//                .processor(processor())
+                .processor(processor())
                 .writer(compositeItemWriter())
 
 
@@ -273,6 +207,85 @@ public class SpringBatchConfig {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
         asyncTaskExecutor.setConcurrencyLimit(400);
         return asyncTaskExecutor;
+    }
+
+
+    @Bean
+    public ClassifierCompositeItemWriter<Record> pspClassifierCompositeItemWriter() throws Exception {
+        ClassifierCompositeItemWriter<Record> compositeItemWriter = new ClassifierCompositeItemWriter<>();
+        compositeItemWriter.setClassifier(new PspRecordClassifier(
+                pspItemWriter.sep2SwitchItemWriter(),
+                pspItemWriter.sep1SwitchItemWriter(),
+                pspItemWriter.sep3SwitchItemWriter(),
+                pspItemWriter.pna1SwitchItemWriter(),
+                pspItemWriter.pna2SwitchItemWriter(),
+                pspItemWriter.pec1SwitchItemWriter(),
+                pspItemWriter.sayn1SwitchItemWriter(),
+                pspItemWriter.sayn2SwitchItemWriter(),
+                pspItemWriter.fanvSwitchItemWriter(),
+                pspItemWriter.kicc1SwitchItemWriter(),
+                pspItemWriter.kicc2SwitchItemWriter(),
+                pspItemWriter.mabnSwitchItemWriter(),
+                pspItemWriter.sada1SwitchItemWriter(),
+                pspItemWriter.sada2SwitchItemWriter(),
+                pspItemWriter.pep1SwitchItemWriter(),
+                pspItemWriter.pep2SwitchItemWriter(),
+                pspItemWriter.persSwitchItemWriter(),
+                pspItemWriter.ecd1SwitchItemWriter(),
+                pspItemWriter.ecd2SwitchItemWriter(),
+                pspItemWriter.bpm1SwitchItemWriter(),
+                pspItemWriter.bpm2SwitchItemWriter(),
+                pspItemWriter.pec2SwitchItemWriter(),
+                pspItemWriter.sshpSwitchItemWriter(),
+                pspItemWriter.hubSwitchItemWriter()
+        ));
+        return compositeItemWriter;
+    }
+
+    @Bean
+    public ClassifierCompositeItemWriter<Record> bankClassifierCompositeItemWriter() throws Exception {
+        ClassifierCompositeItemWriter<Record> compositeItemWriter = new ClassifierCompositeItemWriter<>();
+        compositeItemWriter.setClassifier(new BankRecordClassifier(
+                bankItemWriter.markaziBankItemWriter(),
+                bankItemWriter.sanatBankItemWriter(),
+                bankItemWriter.mellatBankItemWriter(),
+                bankItemWriter.refahBankItemWriter(),
+                bankItemWriter.maskanBankItemWriter(),
+                bankItemWriter.sepahBankItemWriter(),
+                bankItemWriter.keshavarziBankItemWriter(),
+                bankItemWriter.melliBankItemWriter(),
+                bankItemWriter.tejaratBankItemWriter(),
+                bankItemWriter.saderatBankItemWriter(),
+                bankItemWriter.toseeSaderatBankItemWriter(),
+                bankItemWriter.postBankItemWriter(),
+                bankItemWriter.toseeTaavonItemWriter(),
+                bankItemWriter.etebariToseeeBankItemWriter(),
+                bankItemWriter.ghavaminBankItemWriter(),
+                bankItemWriter.karafarinBankItemWriter(),
+                bankItemWriter.parsianBankItemWriter(),
+                bankItemWriter.eghtesadNovinBankItemWriter(),
+                bankItemWriter.samanBankItemWriter(),
+                bankItemWriter.pasargadBankItemWriter(),
+                bankItemWriter.sarmayeBankItemWriter(),
+                bankItemWriter.sinaBankItemWriter(),
+                bankItemWriter.mehrBankItemWriter(),
+                bankItemWriter.shahrBankItemWriter(),
+                bankItemWriter.ayandeBankItemWriter(),
+                bankItemWriter.ansarBankItemWriter(),
+                bankItemWriter.gardeshgariBankItemWriter(),
+                bankItemWriter.hekmatIranianBankItemWriter(),
+                bankItemWriter.dayBankItemWriter(),
+                bankItemWriter.iranZaminBankItemWriter(),
+                bankItemWriter.resalatBankItemWriter(),
+                bankItemWriter.kosarBankItemWriter(),
+                bankItemWriter.asgariyeBankItemWriter(),
+                bankItemWriter.khavarmianeBankItemWriter(),
+                bankItemWriter.iranVenezuelaBankItemWriter(),
+                bankItemWriter.noorBankItemWriter(),
+                bankItemWriter.shaparakItemWriter(),
+                bankItemWriter.mehreEghtesadBankItemWriter()
+        ));
+        return compositeItemWriter;
     }
 
 

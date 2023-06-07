@@ -38,6 +38,8 @@ public class Record {
     private String extraData2;
     private String extraData3;
     private String extraData4;
-    private String origTxnInfo;
+
+    // TODO: we assign origTxnInfo = "" because in the input file, there is no origTxnInfo param.
+    private String origTxnInfo = "";
 
 }

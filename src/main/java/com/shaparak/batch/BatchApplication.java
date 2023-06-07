@@ -2,6 +2,7 @@ package com.shaparak.batch;
 
 import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.ZipService;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -16,13 +17,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,8 +49,8 @@ public class BatchApplication implements CommandLineRunner {
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
 
-    @Value("${input.batch.file.zip.path}")
-    private String inputZipFilePath;
+    @Value("${input.zip.file.directory.path}")
+    private String inputZipFileDirectoryPath;
 
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFileDestination;
@@ -68,15 +64,17 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        clearFolders();
 
-//        unzip();
+        unzip();
 
-        deleteOutputFolder();
-
+//
         startBatchJob();
+//
+//        if (zipFlag)
+//            createZipFiles();
 
-        if (zipFlag)
-            createZipFiles();
+
 
         System.exit(0);
     }
@@ -121,16 +119,28 @@ public class BatchApplication implements CommandLineRunner {
     }
 
 
-    private void deleteOutputFolder() throws IOException {
+    private void clearFolders() throws IOException {
         FileUtils.deleteDirectory(new File(outputDirectoryPath));
+        FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
     }
 
 
-    private void unzip() throws IOException {
-        String fileZip = inputZipFilePath;
+    private void unzip() throws Exception {
+        long begin = System.currentTimeMillis();
+        File dir = new File(inputZipFileDirectoryPath);
+        FileFilter fileFilter = new WildcardFileFilter("Batch_Ach_Cycle_*_*.zip");
+        File[] files = dir.listFiles(fileFilter);
+        if (files == null || files.length == 0)
+            throw new Exception("no input zip file found!");
+        else if (files.length > 1)
+            throw new Exception("more than 1 zip file found!");
+
+
+
+        String fileZip = files[0].getAbsolutePath();
         File destDir = new File(unzippedInputFileDestination);
 
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[10240];
         ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
         ZipEntry zipEntry = zis.getNextEntry();
         while (zipEntry != null) {
@@ -158,6 +168,12 @@ public class BatchApplication implements CommandLineRunner {
         }
         zis.closeEntry();
         zis.close();
+
+
+        long end = System.currentTimeMillis();
+        long time = TimeUnit.MILLISECONDS.toSeconds(end - begin);
+        System.out.printf("unzipping task completed in %d seconds %n", time);
+        System.out.printf("unzipping task completed in %d milliSeconds %n", end - begin);
     }
 
 

@@ -174,6 +174,11 @@ public class PspItemWriter {
         return createWriter(switchDto.getName(), switchDto.getIin());
     }
 
+    @Bean
+    public FlatFileItemWriter<Record> fuelSwitchItemWriter() throws Exception {
+        return null;
+    }
+
 
     private FlatFileItemWriter<Record> createWriter(String folderName, String iin) throws Exception {
         String pspOutputPath = new File(outputDirectoryPath + "/PSPs/" + folderName + "/" + "batch_" + todayDate + "_cycle_01_details.shap_psp_" + iin + ".txt").getAbsolutePath();
