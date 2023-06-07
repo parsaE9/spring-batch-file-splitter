@@ -1,5 +1,6 @@
 package com.shaparak.batch.writer;
 
+import com.github.mfathi91.time.PersianDate;
 import com.shaparak.batch.aggregator.PspLineAggregator;
 import com.shaparak.batch.dto.SwitchDto;
 import com.shaparak.batch.header.HeaderWriter;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 
 @Configuration
@@ -19,6 +21,14 @@ public class PspItemWriter {
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
 
+    private String todayDate;
+
+
+    @PostConstruct
+    private void init() {
+        String[] todayDate = (PersianDate.now() + "").split("-");
+        this.todayDate = todayDate[0] + todayDate[1] + todayDate[2];
+    }
 
     @Bean
     public FlatFileItemWriter<Record> sep2SwitchItemWriter() throws Exception {
@@ -166,8 +176,7 @@ public class PspItemWriter {
 
 
     private FlatFileItemWriter<Record> createWriter(String folderName, String iin) throws Exception {
-//        batch_14011202_cycle_01_details.shap_psp_581672081.txt
-        String pspOutputPath = new File(outputDirectoryPath + "\\psp\\" + folderName + "\\" + "batch_14011202_cycle_01_details.shap_psp_" + iin + ".txt").getAbsolutePath();
+        String pspOutputPath = new File(outputDirectoryPath + "/PSPs/" + folderName + "/" + "batch_" + todayDate + "_cycle_01_details.shap_psp_" + iin + ".txt").getAbsolutePath();
         FlatFileItemWriter<Record> writer = new FlatFileItemWriter<>();
         writer.setHeaderCallback(new HeaderWriter(getPspHeader()));
         writer.setLineAggregator(new PspLineAggregator());

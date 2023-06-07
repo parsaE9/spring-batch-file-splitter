@@ -1,17 +1,18 @@
 package com.shaparak.batch.writer;
 
+import com.github.mfathi91.time.PersianDate;
 import com.shaparak.batch.aggregator.BankLineAggregator;
 import com.shaparak.batch.dto.BankDto;
 import com.shaparak.batch.header.HeaderWriter;
 import com.shaparak.batch.dto.Record;
 import com.shaparak.batch.service.CsvService;
-import com.shaparak.batch.util.JalaliCalendar;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 
 @Configuration
@@ -19,6 +20,15 @@ public class BankItemWriter {
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
+
+    private String todayDate;
+
+
+    @PostConstruct
+    private void init() {
+        String[] todayDate = (PersianDate.now() + "").split("-");
+        this.todayDate = todayDate[0] + todayDate[1] + todayDate[2];
+    }
 
 
     @Bean
@@ -251,9 +261,7 @@ public class BankItemWriter {
 
 
     private FlatFileItemWriter<Record> createWriter(String folderName, String bicCode, String bankCode) throws Exception {
-        // batch_14011202_cycle_01_details.shap_TOU_75.txt
-//        JalaliCalendar.gregorianToJalali();
-        String bankOutputPath = new File(outputDirectoryPath + "\\bank\\" + folderName + "\\batch_14011202_cycle_01_details.shap_B" + bicCode + "_" + bankCode + ".txt").getAbsolutePath();
+        String bankOutputPath = new File(outputDirectoryPath + "/Banks/" + folderName + "/batch_" + todayDate + "_cycle_01_details.shap_B" + bicCode + "_" + bankCode + ".txt").getAbsolutePath();
         FlatFileItemWriter<Record> writer = new FlatFileItemWriter<>();
         writer.setHeaderCallback(new HeaderWriter(getBankHeader()));
         writer.setLineAggregator(new BankLineAggregator());
@@ -266,6 +274,5 @@ public class BankItemWriter {
     private String getBankHeader() {
         return "row_number| psp_code| acceptor_code| trace_code| local_date| local_time| recive_date| IBAN| deposite_date| deposite_type| deposite_circle_number| terminal_type| proccess_type| card_type| amount_shaparak| reference_code| deposite_flag| terminal_code| orig_txn_info";
     }
-
 
 }

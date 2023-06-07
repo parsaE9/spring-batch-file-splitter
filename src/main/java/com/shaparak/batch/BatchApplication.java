@@ -2,7 +2,7 @@ package com.shaparak.batch;
 
 import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.ZipService;
-import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +28,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @SpringBootApplication
 @Configuration
@@ -43,11 +47,18 @@ public class BatchApplication implements CommandLineRunner {
 
     private final static List<Thread> threadList = new ArrayList<>();
 
-    @Value("${create.zip-file}")
+    @Value("${create.zip}")
     private Boolean zipFlag;
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
+
+    @Value("${input.batch.file.zip.path}")
+    private String inputZipFilePath;
+
+    @Value("${unzipped.input.file.destination.path}")
+    private String unzippedInputFileDestination;
+
 
 
     public static void main(String[] args) {
@@ -57,6 +68,11 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+//        unzip();
+
+        deleteOutputFolder();
+
         startBatchJob();
 
         if (zipFlag)
@@ -64,7 +80,6 @@ public class BatchApplication implements CommandLineRunner {
 
         System.exit(0);
     }
-
 
 
     private void startBatchJob() throws Exception {
@@ -83,7 +98,7 @@ public class BatchApplication implements CommandLineRunner {
     }
 
 
-    private  void createZipFiles() throws Exception {
+    private void createZipFiles() throws Exception {
         long zipBegin = System.currentTimeMillis();
         iterateDirectoryFiles(outputDirectoryPath);
         for (Thread thread : threadList)
@@ -103,6 +118,60 @@ public class BatchApplication implements CommandLineRunner {
                         thread.start();
                     });
         }
+    }
+
+
+    private void deleteOutputFolder() throws IOException {
+        FileUtils.deleteDirectory(new File(outputDirectoryPath));
+    }
+
+
+    private void unzip() throws IOException {
+        String fileZip = inputZipFilePath;
+        File destDir = new File(unzippedInputFileDestination);
+
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            File newFile = newFile(destDir, zipEntry);
+            if (zipEntry.isDirectory()) {
+                if (!newFile.isDirectory() && !newFile.mkdirs()) {
+                    throw new IOException("Failed to create directory " + newFile);
+                }
+            } else {
+                // fix for Windows-created archives
+                File parent = newFile.getParentFile();
+                if (!parent.isDirectory() && !parent.mkdirs()) {
+                    throw new IOException("Failed to create directory " + parent);
+                }
+
+                // write file content
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+            }
+            zipEntry = zis.getNextEntry();
+        }
+        zis.closeEntry();
+        zis.close();
+    }
+
+
+    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+        File destFile = new File(destinationDir, zipEntry.getName());
+
+        String destDirPath = destinationDir.getCanonicalPath();
+        String destFilePath = destFile.getCanonicalPath();
+
+        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+        }
+
+        return destFile;
     }
 
 

@@ -44,17 +44,20 @@ public class SpringBatchConfig {
     @Autowired
     private BankItemWriter bankItemWriter;
 
-
-    @Value("${input.batch.file.path}")
+    @Value("${input.batch.file.txt.path}")
     private String inputFilePath;
+
+    @Value("${create.bank-file}")
+    private boolean bankFlag;
+
+    @Value("${create.psp-file}")
+    private boolean pspFlag;
 
 
     @Bean
     public FlatFileItemReader<Record> reader() {
         FlatFileItemReader<Record> itemReader = new FlatFileItemReader<>();
         itemReader.setResource(new FileSystemResource(inputFilePath));
-//        itemReader.setResource(new FileSystemResource("C:\\Users\\p.aliesfahani\\Desktop\\batch\\in\\Batch_Details\\input.shap"));
-//        itemReader.setResource(new FileSystemResource("C:\\Users\\p.aliesfahani\\Desktop\\batch\\in\\Batch_Details\\input2.shap"));
         itemReader.setName("ShaparakBatchReader");
         itemReader.setLineMapper(lineMapper());
         return itemReader;
@@ -84,7 +87,15 @@ public class SpringBatchConfig {
     @Bean
     public CompositeItemWriter<Record> compositeItemWriter() throws Exception {
         CompositeItemWriter<Record> itemWriter = new CompositeItemWriter<Record>();
-        itemWriter.setDelegates(Arrays.asList(pspClassifierCompositeItemWriter(), bankClassifierCompositeItemWriter()));
+        if (bankFlag && pspFlag)
+            itemWriter.setDelegates(Arrays.asList(pspClassifierCompositeItemWriter(), bankClassifierCompositeItemWriter()));
+        else if (bankFlag)
+            itemWriter.setDelegates(Arrays.asList(bankClassifierCompositeItemWriter()));
+        else if (pspFlag)
+            itemWriter.setDelegates(Arrays.asList(pspClassifierCompositeItemWriter()));
+        else
+            throw new Exception("bankFlag and pspFlag can not be false at same time");
+
         return itemWriter;
     }
 
@@ -117,7 +128,7 @@ public class SpringBatchConfig {
                 pspItemWriter.pec2SwitchItemWriter(),
                 pspItemWriter.sshpSwitchItemWriter(),
                 pspItemWriter.hubSwitchItemWriter()
-                ));
+        ));
         return compositeItemWriter;
     }
 
