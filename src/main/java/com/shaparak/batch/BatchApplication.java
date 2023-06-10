@@ -61,8 +61,8 @@ public class BatchApplication implements CommandLineRunner {
 
         startBatchJob();
 
-        if (zipFlag)
-            createZipFiles();
+//        if (zipFlag)
+//            createZipFiles();
 
 
 

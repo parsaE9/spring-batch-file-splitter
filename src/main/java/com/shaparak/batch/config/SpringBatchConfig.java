@@ -3,10 +3,10 @@ package com.shaparak.batch.config;
 import com.shaparak.batch.classifier.BankRecordClassifier;
 import com.shaparak.batch.classifier.PspRecordClassifier;
 import com.shaparak.batch.dto.Record;
+import com.shaparak.batch.listener.ItemReadListenerImpl;
+import com.shaparak.batch.listener.ItemWriteListenerImpl;
 import com.shaparak.batch.processor.RecordProcessor;
-import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.UnzipService;
-import com.shaparak.batch.service.ZipService;
 import com.shaparak.batch.writer.BankItemWriter;
 import com.shaparak.batch.writer.PspItemWriter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -15,7 +15,6 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -129,6 +128,7 @@ public class SpringBatchConfig {
                 .reader(reader())
 //                .processor(processor())
                 .writer(compositeItemWriter())
+//                .listener(new ItemWriteListenerImpl())
 
 
                 .stream(pspItemWriter.sep2SwitchItemWriter())
