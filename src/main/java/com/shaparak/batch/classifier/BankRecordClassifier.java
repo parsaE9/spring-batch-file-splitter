@@ -54,8 +54,10 @@ public class BankRecordClassifier implements Classifier<Record, ItemWriter<? sup
 
     @Override
     public ItemWriter<? super Record> classify(Record record) {
-        if (record.getCardNumber().substring(0, 3).equals("989"))
+        if (record.getCardNumber().startsWith("989"))
             return fuelBankItemWriter;
+        else if (record.getCardNumber().startsWith("9"))
+            return refahiBankItemWriter;
 
 
         String bankCode = record.getIban().substring(4, 7);

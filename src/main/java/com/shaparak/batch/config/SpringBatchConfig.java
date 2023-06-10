@@ -155,7 +155,6 @@ public class SpringBatchConfig {
                 .stream(pspItemWriter.pec2SwitchItemWriter())
                 .stream(pspItemWriter.sshpSwitchItemWriter())
                 .stream(pspItemWriter.hubSwitchItemWriter())
-//                .stream(pspItemWriter.fuelSwitchItemWriter())
 
 
                 .stream(bankItemWriter.markaziBankItemWriter())
@@ -251,8 +250,7 @@ public class SpringBatchConfig {
                 pspItemWriter.bpm2SwitchItemWriter(),
                 pspItemWriter.pec2SwitchItemWriter(),
                 pspItemWriter.sshpSwitchItemWriter(),
-                pspItemWriter.hubSwitchItemWriter(),
-                pspItemWriter.fuelSwitchItemWriter()
+                pspItemWriter.hubSwitchItemWriter()
         ));
         return compositeItemWriter;
     }

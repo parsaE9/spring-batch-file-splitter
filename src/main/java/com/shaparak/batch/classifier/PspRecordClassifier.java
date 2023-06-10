@@ -33,15 +33,9 @@ public class PspRecordClassifier implements Classifier<Record, ItemWriter<? supe
     private final ItemWriter<Record> sshpSwitchItemWriter;
     private final ItemWriter<Record> hubSwitchItemWriter;
 
-    private final ItemWriter<Record> fuelSwitchItemWriter;
-
 
     @Override
     public ItemWriter<? super Record> classify(Record record) {
-        if (record.getCardNumber().substring(0, 3).equals("989"))
-            return fuelSwitchItemWriter;
-
-
         int pspCodeLength = record.getPspCode().length();
         String switchCode = record.getPspCode().substring(pspCodeLength - 3, pspCodeLength);
         switch (switchCode) {
