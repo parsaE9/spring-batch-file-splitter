@@ -66,8 +66,9 @@ public class CsvService {
 
             for (CSVRecord csvRecord : csvRecords) {
                 SwitchDto switchDto = new SwitchDto();
-                switchDto.setName(csvRecord.get(0));
-                switchDto.setIin(csvRecord.get(1));
+                switchDto.setFileName(csvRecord.get(0));
+                switchDto.setFolderName(csvRecord.get(1));
+                switchDto.setIin(csvRecord.get(2));
                 switchMap.put(switchDto.getIin(), switchDto);
             }
 

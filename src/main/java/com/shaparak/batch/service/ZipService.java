@@ -1,12 +1,15 @@
 package com.shaparak.batch.service;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @AllArgsConstructor
@@ -39,7 +42,6 @@ public class ZipService implements Runnable {
             System.out.println("zip exception: " + e.getMessage());
         }
     }
-
 
 
 }

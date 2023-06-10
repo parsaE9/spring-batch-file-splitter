@@ -11,7 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SwitchDto {
 
-    private String name;
+    private String fileName;
+
+    private String folderName;
 
     private String iin;
 

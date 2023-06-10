@@ -47,9 +47,17 @@ public class BankRecordClassifier implements Classifier<Record, ItemWriter<? sup
     private final ItemWriter<Record> shaparakItemWriter;
     private final ItemWriter<Record> mehreEghtesadBankItemWriter;
 
+    private final ItemWriter<Record> shaparakPaymentFacilitatorBankItemWriter;
+    private final ItemWriter<Record> refahiBankItemWriter;
+    private final ItemWriter<Record> fuelBankItemWriter;
+
 
     @Override
     public ItemWriter<? super Record> classify(Record record) {
+        if (record.getCardNumber().substring(0, 3).equals("989"))
+            return fuelBankItemWriter;
+
+
         String bankCode = record.getIban().substring(4, 7);
         switch (bankCode) {
             case "010":
@@ -128,6 +136,8 @@ public class BankRecordClassifier implements Classifier<Record, ItemWriter<? sup
                 return shaparakItemWriter;
             case "079":
                 return mehreEghtesadBankItemWriter;
+            case "092":
+                return shaparakPaymentFacilitatorBankItemWriter;
             default:
                 System.out.println("bank record classifier error");
                 return null;

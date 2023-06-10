@@ -4,6 +4,9 @@ import com.shaparak.batch.classifier.BankRecordClassifier;
 import com.shaparak.batch.classifier.PspRecordClassifier;
 import com.shaparak.batch.dto.Record;
 import com.shaparak.batch.processor.RecordProcessor;
+import com.shaparak.batch.service.CsvService;
+import com.shaparak.batch.service.UnzipService;
+import com.shaparak.batch.service.ZipService;
 import com.shaparak.batch.writer.BankItemWriter;
 import com.shaparak.batch.writer.PspItemWriter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -12,6 +15,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -48,11 +52,14 @@ public class SpringBatchConfig {
     @Autowired
     private BankItemWriter bankItemWriter;
 
+    @Autowired
+    private UnzipService unzipService;
+
     @Value("${input.batch.file.txt.path}")
     private String inputFilePath;
 
     @Value("${unzipped.input.file.destination.path}")
-    private String unzippedInputFileDestination;
+    private String unzippedInputFilePath;
 
     @Value("${create.bank-file}")
     private boolean bankFlag;
@@ -63,8 +70,11 @@ public class SpringBatchConfig {
 
     @Bean
     public FlatFileItemReader<Record> reader() throws Exception {
+        unzipService.clearFolders();
+        unzipService.unzip();
+
         FlatFileItemReader<Record> itemReader = new FlatFileItemReader<>();
-        File dir = new File(unzippedInputFileDestination + "/Batch_Details/");
+        File dir = new File(unzippedInputFilePath + "/Batch_Details/");
         FileFilter fileFilter = new WildcardFileFilter("*.txt");
         File[] files = dir.listFiles(fileFilter);
         if (files == null || files.length == 0)
@@ -117,7 +127,7 @@ public class SpringBatchConfig {
     public Step step1() throws Exception {
         return stepBuilderFactory.get("step1").<Record, Record>chunk(1000)
                 .reader(reader())
-                .processor(processor())
+//                .processor(processor())
                 .writer(compositeItemWriter())
 
 
@@ -145,6 +155,7 @@ public class SpringBatchConfig {
                 .stream(pspItemWriter.pec2SwitchItemWriter())
                 .stream(pspItemWriter.sshpSwitchItemWriter())
                 .stream(pspItemWriter.hubSwitchItemWriter())
+//                .stream(pspItemWriter.fuelSwitchItemWriter())
 
 
                 .stream(bankItemWriter.markaziBankItemWriter())
@@ -185,6 +196,9 @@ public class SpringBatchConfig {
                 .stream(bankItemWriter.noorBankItemWriter())
                 .stream(bankItemWriter.shaparakItemWriter())
                 .stream(bankItemWriter.mehreEghtesadBankItemWriter())
+                .stream(bankItemWriter.shaparakPaymentFacilitatorBankItemWriter())
+                .stream(bankItemWriter.refahiBankItemWriter())
+                .stream(bankItemWriter.fuelBankItemWriter())
 
 
                 .taskExecutor(taskExecutor())
@@ -237,7 +251,8 @@ public class SpringBatchConfig {
                 pspItemWriter.bpm2SwitchItemWriter(),
                 pspItemWriter.pec2SwitchItemWriter(),
                 pspItemWriter.sshpSwitchItemWriter(),
-                pspItemWriter.hubSwitchItemWriter()
+                pspItemWriter.hubSwitchItemWriter(),
+                pspItemWriter.fuelSwitchItemWriter()
         ));
         return compositeItemWriter;
     }
@@ -283,7 +298,10 @@ public class SpringBatchConfig {
                 bankItemWriter.iranVenezuelaBankItemWriter(),
                 bankItemWriter.noorBankItemWriter(),
                 bankItemWriter.shaparakItemWriter(),
-                bankItemWriter.mehreEghtesadBankItemWriter()
+                bankItemWriter.mehreEghtesadBankItemWriter(),
+                bankItemWriter.shaparakPaymentFacilitatorBankItemWriter(),
+                bankItemWriter.refahiBankItemWriter(),
+                bankItemWriter.fuelBankItemWriter()
         ));
         return compositeItemWriter;
     }
