@@ -61,8 +61,8 @@ public class BatchApplication implements CommandLineRunner {
 
         startBatchJob();
 
-//        if (zipFlag)
-//            createZipFiles();
+        if (zipFlag)
+            createZipFiles();
 
 
 
@@ -71,6 +71,7 @@ public class BatchApplication implements CommandLineRunner {
 
 
     private void startBatchJob() throws Exception {
+        System.out.println("\n\nstarted batch job\n\n");
         long begin = System.currentTimeMillis();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("JobId", String.valueOf(System.currentTimeMillis()))
@@ -82,11 +83,13 @@ public class BatchApplication implements CommandLineRunner {
         long end = System.currentTimeMillis();
         long time = TimeUnit.MILLISECONDS.toSeconds(end - begin);
         System.out.println("STATUS :: " + execution.getStatus());
-        System.out.printf("writing task completed in %d seconds %n", time);
+        System.out.printf("batch job completed in %d seconds %n", time);
+        System.out.println("finished batch job\n\n\n\n");
     }
 
 
     private void createZipFiles() throws Exception {
+        System.out.println("started zipping task");
         long zipBegin = System.currentTimeMillis();
         iterateDirectoryFiles(outputDirectoryPath);
         for (Thread thread : threadList)
@@ -94,6 +97,7 @@ public class BatchApplication implements CommandLineRunner {
         long zipEnd = System.currentTimeMillis();
         long zipTime = TimeUnit.MILLISECONDS.toSeconds(zipEnd - zipBegin);
         System.out.printf("zipping task completed in %d seconds %n", zipTime);
+        System.out.println("finished zipping task\n\n\n\n");
     }
 
 

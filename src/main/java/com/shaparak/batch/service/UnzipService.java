@@ -28,6 +28,8 @@ public class UnzipService {
 
 
     public void unzip() throws Exception {
+        System.out.println("started unzipping input zip file");
+
         long begin = System.currentTimeMillis();
         File dir = new File(inputZipFileDirectoryPath);
 //        FileFilter fileFilter = new WildcardFileFilter("Batch_Ach_Cycle_*_*.zip");
@@ -76,7 +78,7 @@ public class UnzipService {
         long end = System.currentTimeMillis();
         long time = TimeUnit.MILLISECONDS.toSeconds(end - begin);
         System.out.printf("unzipping task completed in %d seconds %n", time);
-        System.out.printf("unzipping task completed in %d milliSeconds %n", end - begin);
+        System.out.println("finished unzipping input zip file\n\n\n");
     }
 
 
@@ -94,8 +96,10 @@ public class UnzipService {
     }
 
     public void clearFolders() throws IOException {
+        System.out.println("\n\n\nstarted clearing folders task");
         FileUtils.deleteDirectory(new File(outputDirectoryPath));
         FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
+        System.out.println("finished clearing folders task\n\n\n\n");
     }
 
 
