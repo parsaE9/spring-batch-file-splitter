@@ -26,6 +26,8 @@ public class UnzipService {
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFileDestination;
 
+    public static String fileDate;
+
 
     public void unzip() throws Exception {
         System.out.println("started unzipping input zip file");
@@ -41,8 +43,8 @@ public class UnzipService {
             throw new Exception("more than 1 zip file found!");
 
 
-
         String fileZip = files[0].getAbsolutePath();
+        fileDate = files[0].getName().substring(19, 27);
         File destDir = new File(unzippedInputFileDestination);
 
         byte[] buffer = new byte[10240];

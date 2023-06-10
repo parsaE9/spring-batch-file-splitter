@@ -6,6 +6,7 @@ import com.shaparak.batch.dto.BankDto;
 import com.shaparak.batch.header.HeaderWriter;
 import com.shaparak.batch.dto.Record;
 import com.shaparak.batch.service.CsvService;
+import com.shaparak.batch.service.UnzipService;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,15 +21,6 @@ public class BankItemWriter {
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
-
-    private String todayDate;
-
-
-    @PostConstruct
-    private void init() {
-        String[] todayDate = (PersianDate.now() + "").split("-");
-        this.todayDate = todayDate[0] + todayDate[1] + todayDate[2];
-    }
 
 
     @Bean
@@ -279,7 +271,7 @@ public class BankItemWriter {
 
 
     private FlatFileItemWriter<Record> createWriter(String folderName, String bicCode, String bankCode) throws Exception {
-        String bankOutputPath = new File(outputDirectoryPath + "/Banks/" + folderName + "/batch_" + todayDate + "_cycle_01_details.shap_" + bicCode + "_" + bankCode + ".txt").getAbsolutePath();
+        String bankOutputPath = new File(outputDirectoryPath + "/Banks/" + folderName + "/batch_" + UnzipService.fileDate + "_cycle_01_details.shap_" + bicCode + "_" + bankCode + ".txt").getAbsolutePath();
         FlatFileItemWriter<Record> writer = new FlatFileItemWriter<>();
         writer.setHeaderCallback(new HeaderWriter(getBankHeader()));
         writer.setLineAggregator(new BankLineAggregator());
