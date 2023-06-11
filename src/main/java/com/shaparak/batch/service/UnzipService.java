@@ -1,5 +1,6 @@
 package com.shaparak.batch.service;
 
+import com.shaparak.batch.BatchApplication;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -19,6 +20,9 @@ public class UnzipService {
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
+
+    @Value("${log.directory.path}")
+    private String logDirectoryPath;
 
     @Value("${input.zip.file.directory.path}")
     private String inputZipFileDirectoryPath;
@@ -45,6 +49,8 @@ public class UnzipService {
 
         String fileZip = files[0].getAbsolutePath();
         fileDate = files[0].getName().substring(19, 27);
+        BatchApplication.jobDetailsMap.put("batchFileDate", fileDate);
+        BatchApplication.jobDetailsMap.put("batchFileCycle", files[0].getName().substring(16, 18));
         File destDir = new File(unzippedInputFileDestination);
 
         byte[] buffer = new byte[10240];
@@ -79,7 +85,7 @@ public class UnzipService {
 
         long end = System.currentTimeMillis();
         long time = TimeUnit.MILLISECONDS.toSeconds(end - begin);
-        System.out.printf("unzipping task completed in %d seconds %n", time);
+        System.out.println("unzipping task completion time: " + TimeService.calculateDuration(end - begin));
         System.out.println("finished unzipping input zip file\n\n\n");
     }
 
@@ -98,10 +104,10 @@ public class UnzipService {
     }
 
     public void clearFolders() throws IOException {
-        System.out.println("\n\n\nstarted clearing folders task");
+        System.out.println("\n\n\nstarted clearing folders");
         FileUtils.deleteDirectory(new File(outputDirectoryPath));
         FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
-        System.out.println("finished clearing folders task\n\n\n\n");
+        System.out.println("finished clearing folders\n\n\n\n");
     }
 
 

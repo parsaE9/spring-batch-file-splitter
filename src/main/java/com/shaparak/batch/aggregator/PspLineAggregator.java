@@ -6,8 +6,6 @@ import org.springframework.batch.item.file.transform.LineAggregator;
 public class PspLineAggregator implements LineAggregator<Record> {
 
 
-	// TODO: commented depositCircleNumber
-
 	@Override
 	public String aggregate(Record record) {
 		try {

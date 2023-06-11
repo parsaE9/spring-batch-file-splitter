@@ -1,9 +1,9 @@
 package com.shaparak.batch;
 
 import com.shaparak.batch.service.CsvService;
+import com.shaparak.batch.service.LogService;
+import com.shaparak.batch.service.TimeService;
 import com.shaparak.batch.service.ZipService;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -19,13 +19,8 @@ import org.springframework.context.annotation.Import;
 
 import java.io.*;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 @SpringBootApplication
 @Configuration
@@ -33,7 +28,10 @@ import java.util.zip.ZipInputStream;
 public class BatchApplication implements CommandLineRunner {
 
     @Autowired
-    CsvService csvService;
+    private CsvService csvService;
+
+    @Autowired
+    private LogService logService;
 
     @Autowired
     private Job job;
@@ -49,11 +47,10 @@ public class BatchApplication implements CommandLineRunner {
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
 
+    public static Map<String, String> jobDetailsMap = new HashMap<>();
 
 
-    public static void main(String[] args) {
-        SpringApplication.run(BatchApplication.class, args);
-    }
+    public static void main(String[] args) {SpringApplication.run(BatchApplication.class, args);}
 
 
     @Override
@@ -61,9 +58,10 @@ public class BatchApplication implements CommandLineRunner {
 
         startBatchJob();
 
-//        if (zipFlag)
-//            createZipFiles();
+        logService.writeLogs();
 
+        if (zipFlag)
+            createZipFiles();
 
 
         System.exit(0);
@@ -73,17 +71,18 @@ public class BatchApplication implements CommandLineRunner {
     private void startBatchJob() throws Exception {
         System.out.println("\n\nstarted batch job\n\n");
         long begin = System.currentTimeMillis();
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addString("JobId", String.valueOf(System.currentTimeMillis()))
-                .addDate("jobDate", new Date())
-                .addLong("jobTime", System.currentTimeMillis()).toJobParameters();
+        jobDetailsMap.put("jobStartDateTime", TimeService.formatDateTime(new Date()));
+
+        JobParameters jobParameters = new JobParametersBuilder().addString("JobId", String.valueOf(System.currentTimeMillis())).toJobParameters();
 
         JobExecution execution = jobLauncher.run(job, jobParameters);
 
         long end = System.currentTimeMillis();
-        long time = TimeUnit.MILLISECONDS.toSeconds(end - begin);
+        String jobProcessDuration = TimeService.calculateDuration(end - begin);
+        jobDetailsMap.put("jobProcessTime", jobProcessDuration);
+        jobDetailsMap.put("jobFinishDateTime", TimeService.formatDateTime(new Date()));
         System.out.println("STATUS :: " + execution.getStatus());
-        System.out.printf("batch job completed in %d seconds %n", time);
+        System.out.println("batch job process time: " + jobProcessDuration);
         System.out.println("finished batch job\n\n\n\n");
     }
 
@@ -95,8 +94,7 @@ public class BatchApplication implements CommandLineRunner {
         for (Thread thread : threadList)
             thread.join();
         long zipEnd = System.currentTimeMillis();
-        long zipTime = TimeUnit.MILLISECONDS.toSeconds(zipEnd - zipBegin);
-        System.out.printf("zipping task completed in %d seconds %n", zipTime);
+        System.out.println("zipping task completion time: " + TimeService.calculateDuration(zipEnd - zipBegin));
         System.out.println("finished zipping task\n\n\n\n");
     }
 
@@ -111,6 +109,8 @@ public class BatchApplication implements CommandLineRunner {
                     });
         }
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.shaparak.batch.config;
 
+import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.BankRecordClassifier;
 import com.shaparak.batch.classifier.PspRecordClassifier;
 import com.shaparak.batch.dto.Record;
@@ -32,8 +33,11 @@ import org.springframework.core.task.TaskExecutor;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Configuration
 @EnableBatchProcessing
@@ -80,6 +84,7 @@ public class SpringBatchConfig {
             throw new Exception("no input txt file found!");
         else if (files.length > 1)
             throw new Exception("more than 1 txt file found!");
+        BatchApplication.jobDetailsMap.put("inputTxtBatchFilePath", files[0].getAbsolutePath());
         itemReader.setResource(new FileSystemResource(files[0].getAbsolutePath()));
         itemReader.setName("ShaparakBatchReader");
         itemReader.setLineMapper(lineMapper());
@@ -128,7 +133,7 @@ public class SpringBatchConfig {
                 .reader(reader())
 //                .processor(processor())
                 .writer(compositeItemWriter())
-//                .listener(new ItemWriteListenerImpl())
+                .listener(new ItemWriteListenerImpl())
 
 
                 .stream(pspItemWriter.sep2SwitchItemWriter())
