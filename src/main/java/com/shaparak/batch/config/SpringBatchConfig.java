@@ -58,9 +58,6 @@ public class SpringBatchConfig {
     @Autowired
     private UnzipService unzipService;
 
-    @Value("${input.batch.file.txt.path}")
-    private String inputFilePath;
-
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFilePath;
 
@@ -70,6 +67,9 @@ public class SpringBatchConfig {
     @Value("${create.psp-file}")
     private boolean pspFlag;
 
+    @Value("${thread.count}")
+    private int threadCount;
+
 
     @Bean
     public FlatFileItemReader<Record> reader() throws Exception {
@@ -78,7 +78,7 @@ public class SpringBatchConfig {
 
         FlatFileItemReader<Record> itemReader = new FlatFileItemReader<>();
         File dir = new File(unzippedInputFilePath + "/Batch_Details/");
-        FileFilter fileFilter = new WildcardFileFilter("*.txt");
+        FileFilter fileFilter = new WildcardFileFilter("*");
         File[] files = dir.listFiles(fileFilter);
         if (files == null || files.length == 0)
             throw new Exception("no input txt file found!");
@@ -223,7 +223,7 @@ public class SpringBatchConfig {
     @Bean
     public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
-        asyncTaskExecutor.setConcurrencyLimit(400);
+        asyncTaskExecutor.setConcurrencyLimit(threadCount);
         return asyncTaskExecutor;
     }
 

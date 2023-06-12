@@ -55,14 +55,12 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         startBatchJob();
 
         logService.writeLogs();
 
         if (zipFlag)
             createZipFiles();
-
 
         System.exit(0);
     }
@@ -109,8 +107,6 @@ public class BatchApplication implements CommandLineRunner {
                     });
         }
     }
-
-
 
 
 }
