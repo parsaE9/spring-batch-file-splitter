@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.01">
+    <pacs.008.001.01>
+
+        <GrpHdr>
+            <MsgId>BMJSSHAP1402031011101.CT</MsgId>
+            <CreDtTm>1402-03-10T00:31:41</CreDtTm>
+            <NbOfTxs>000000000000349</NbOfTxs>
+            <TtlIntrBkSttlmAmt Ccy="IRR">00000002573029021</TtlIntrBkSttlmAmt>
+            <IntrBkSttlmDt>1402-03-10</IntrBkSttlmDt>
+            <SttlmInf>
+                <SttlmMtd>CLRG</SttlmMtd>
+            </SttlmInf>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>SEPA</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+        </GrpHdr>
+
+        <CdtTrfTxInf>
+            <PmtId>
+                <InstrId>EMPTY</InstrId>
+                <EndToEndId>020306121268915100013564605400</EndToEndId>
+                <TxId>BMJSSHAP1402031011101.CT00001</TxId>
+            </PmtId>
+            <IntrBkSttlmAmt Ccy="IRR">00000000000010000</IntrBkSttlmAmt>
+            <ChrgBr>SLEV</ChrgBr>
+            <Dbtr>
+                <Nm>رفع مغايرت - مرکزشاپرک</Nm>
+                <PstlAdr>
+                    <AdrLine>1547914811</AdrLine>
+                    <Ctry>IR</Ctry>
+                </PstlAdr>
+                <Id>
+                    <PrvtId>
+                        <OthrId>
+                            <Id>EMPTY-EMPTY</Id>
+                            <IdTp>B0000000-P12-T1</IdTp>
+                        </OthrId>
+                    </PrvtId>
+                </Id>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <IBAN>IR150930000000000001006182</IBAN>
+                </Id>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>BMJSIRTHXXX</BIC>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtrAgt>
+                <FinInstnId>
+                    <BIC>SEPBIRTHXXX</BIC>
+                </FinInstnId>
+            </CdtrAgt>
+            <Cdtr>
+                <Nm>334101544100417-خشکبارفروشی نوروزیان</Nm>
+                <PstlAdr>
+                    <AdrLine>5564113331</AdrLine>
+                    <Ctry>IR</Ctry>
+                </PstlAdr>
+                <Id>
+                    <PrvtId>
+                        <OthrId>
+                            <Id>EMPTY-EMPTY</Id>
+                            <IdTp>B0000000-P12-T1</IdTp>
+                        </OthrId>
+                    </PrvtId>
+                </Id>
+            </Cdtr>
+            <CdtrAcct>
+                <Id>
+                    <IBAN>IR840150000000182300208606</IBAN>
+                </Id>
+            </CdtrAcct>
+            <RmtInf>
+                <Ustrd>DRPA-PU_839768_20230527_005308_33018347</Ustrd>
+            </RmtInf>
+        </CdtTrfTxInf>
+
+
+    </pacs.008.001.01>
+</Document>

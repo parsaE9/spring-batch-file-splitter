@@ -23,7 +23,7 @@ public class FileService implements Runnable {
     public void run() {
         try {
 
-            System.out.println(Thread.currentThread().getId() + ":" + filePath);
+//            System.out.println(Thread.currentThread().getId() + ":" + filePath);
 
             List<String> fileContent = new ArrayList<>(Files.readAllLines(Path.of(filePath), StandardCharsets.UTF_8));
 

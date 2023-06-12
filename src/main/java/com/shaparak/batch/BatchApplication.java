@@ -124,7 +124,7 @@ public class BatchApplication implements CommandLineRunner {
         }
         long end = System.currentTimeMillis();
         System.out.println("rowNumber task completion time: " + TimeService.calculateDuration(end - begin));
-        System.out.println("finished setting rowNumbers");
+        System.out.println("finished setting rowNumbers\n\n");
     }
 
 
