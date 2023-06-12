@@ -16,8 +16,6 @@ public class ItemWriteListenerImpl implements ItemWriteListener<Record> {
     public synchronized void beforeWrite(List<? extends Record> records) {
         for (Record record: records) {
             totalPspAmount += Long.parseLong(record.getAmountShaparak());
-
-
             totalCommission += Long.parseLong(record.getAcceptorCommission().substring(1));
         }
     }

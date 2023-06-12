@@ -67,7 +67,7 @@ public class SpringBatchConfig {
     @Value("${create.psp-file}")
     private boolean pspFlag;
 
-    @Value("${thread.count}")
+    @Value("${thread.count.batch.task}")
     private int threadCount;
 
 

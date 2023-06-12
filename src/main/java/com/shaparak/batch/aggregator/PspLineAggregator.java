@@ -9,7 +9,7 @@ public class PspLineAggregator implements LineAggregator<Record> {
 	@Override
 	public String aggregate(Record record) {
 		try {
-			return record.getRowNumber() + "| " + record.getPspCode() + "|" + record.getAcceptorCode() + "| " + record.getTraceCode() + "| " + record.getLocalDate() + "| " + record.getLocalTime()
+			return "| " + record.getPspCode() + "|" + record.getAcceptorCode() + "| " + record.getTraceCode() + "| " + record.getLocalDate() + "| " + record.getLocalTime()
 					+ "| " + record.getReciveDate() + "| " + record.getIban() + "| " + record.getDepositeDate() + "| " + record.getDepositeType() + "| " + record.getDepositeCircleNumber()
 					+ "| " + record.getTerminalType() + "| " + record.getProcessType() + "| " + record.getCardType() + "| " + record.getAmountShaparak() + "| " + record.getReferenceCode()
 					+ "| " + record.getDepositeFlag() + "| " + record.getAcceptorCommission() + "| " + record.getPspCommission() + "| " + record.getPspNetCommission() + "| " + record.getTerminalCode();

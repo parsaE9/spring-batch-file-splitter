@@ -1,9 +1,6 @@
 package com.shaparak.batch;
 
-import com.shaparak.batch.service.CsvService;
-import com.shaparak.batch.service.LogService;
-import com.shaparak.batch.service.TimeService;
-import com.shaparak.batch.service.ZipService;
+import com.shaparak.batch.service.*;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -18,8 +15,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -39,10 +39,13 @@ public class BatchApplication implements CommandLineRunner {
     @Autowired
     private JobLauncher jobLauncher;
 
-    private final static List<Thread> threadList = new ArrayList<>();
+    private final static List<Thread> zipThreadList = new ArrayList<>();
 
     @Value("${create.zip}")
     private Boolean zipFlag;
+
+    @Value("${thread.count.rowNumber.task}")
+    private int threadCount;
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
@@ -56,6 +59,8 @@ public class BatchApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         startBatchJob();
+
+        handleRowNumbers();
 
         logService.writeLogs();
 
@@ -88,8 +93,8 @@ public class BatchApplication implements CommandLineRunner {
     private void createZipFiles() throws Exception {
         System.out.println("started zipping task");
         long zipBegin = System.currentTimeMillis();
-        iterateDirectoryFiles(outputDirectoryPath);
-        for (Thread thread : threadList)
+        iterateDirectoryFilesForZipping(outputDirectoryPath);
+        for (Thread thread : zipThreadList)
             thread.join();
         long zipEnd = System.currentTimeMillis();
         System.out.println("zipping task completion time: " + TimeService.calculateDuration(zipEnd - zipBegin));
@@ -97,14 +102,44 @@ public class BatchApplication implements CommandLineRunner {
     }
 
 
-    private void iterateDirectoryFiles(String directoryPath) throws IOException {
-        try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath))) {
+    private void iterateDirectoryFilesForZipping(String directoryPath) throws IOException {
+        try (Stream<Path> stream = Files.walk(Paths.get(directoryPath))) {
             stream.filter(Files::isRegularFile)
                     .forEach(path -> {
                         Thread thread = new Thread(new ZipService(path + ""));
-                        threadList.add(thread);
+                        zipThreadList.add(thread);
                         thread.start();
                     });
+        }
+    }
+
+    private void handleRowNumbers() {
+        System.out.println("started setting rowNumbers");
+        long begin = System.currentTimeMillis();
+        try {
+            iterateDirectoryFilesForSettingRowNumber(outputDirectoryPath);
+        } catch (Exception e) {
+            System.out.println("row number task exception");
+            System.out.println(e.getMessage());
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("rowNumber task completion time: " + TimeService.calculateDuration(end - begin));
+        System.out.println("finished setting rowNumbers");
+    }
+
+
+    private void iterateDirectoryFilesForSettingRowNumber(String directoryPath) throws Exception {
+        try (Stream<Path> stream = Files.walk(Paths.get(directoryPath))) {
+
+            ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+            stream.filter(Files::isRegularFile)
+                    .forEach(path -> {
+                        Runnable worker = new FileService(path + "");
+                        executor.execute(worker);
+                    });
+            executor.shutdown();
+            while (!executor.isTerminated()) {}
+
         }
     }
 
