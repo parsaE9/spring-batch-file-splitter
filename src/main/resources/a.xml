@@ -20,11 +20,11 @@
 
         <CdtTrfTxInf>
             <PmtId>
-                <InstrId>EMPTY</InstrId>
-                <EndToEndId>020306121268915100013564605400</EndToEndId>
-                <TxId>BMJSSHAP1402031011101.CT00001</TxId>
+                <InstrId>EMPTY</InstrId> //
+                <EndToEndId>020306121268915100013564605400</EndToEndId> //
+                <TxId>BMJSSHAP1402031011101.CT00001</TxId> //
             </PmtId>
-            <IntrBkSttlmAmt Ccy="IRR">00000000000010000</IntrBkSttlmAmt>
+            <IntrBkSttlmAmt Ccy="IRR">00000000000010000</IntrBkSttlmAmt>  //
             <ChrgBr>SLEV</ChrgBr>
             <Dbtr>
                 <Nm>رفع مغايرت - مرکزشاپرک</Nm>
@@ -57,7 +57,7 @@
                 </FinInstnId>
             </CdtrAgt>
             <Cdtr>
-                <Nm>334101544100417-خشکبارفروشی نوروزیان</Nm>
+                <Nm>334101544100417-خشکبارفروشی نوروزیان</Nm>//
                 <PstlAdr>
                     <AdrLine>5564113331</AdrLine>
                     <Ctry>IR</Ctry>
@@ -73,11 +73,11 @@
             </Cdtr>
             <CdtrAcct>
                 <Id>
-                    <IBAN>IR840150000000182300208606</IBAN>
+                    <IBAN>IR840150000000182300208606</IBAN>//
                 </Id>
             </CdtrAcct>
             <RmtInf>
-                <Ustrd>DRPA-PU_839768_20230527_005308_33018347</Ustrd>
+                <Ustrd>DRPA-PU_839768_20230527_005308_33018347</Ustrd> //
             </RmtInf>
         </CdtTrfTxInf>
 

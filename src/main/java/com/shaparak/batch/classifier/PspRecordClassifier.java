@@ -1,43 +1,43 @@
 package com.shaparak.batch.classifier;
 
-import com.shaparak.batch.dto.Record;
+import com.shaparak.batch.dto.BatchRecord;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.classify.Classifier;
 
 @AllArgsConstructor
-public class PspRecordClassifier implements Classifier<Record, ItemWriter<? super Record>> {
+public class PspRecordClassifier implements Classifier<BatchRecord, ItemWriter<? super BatchRecord>> {
 
-    private final ItemWriter<Record> sep2SwitchItemWriter;
-    private final ItemWriter<Record> sep1SwitchItemWriter;
-    private final ItemWriter<Record> sep3SwitchItemWriter;
-    private final ItemWriter<Record> pna1SwitchItemWriter;
-    private final ItemWriter<Record> pna2SwitchItemWriter;
-    private final ItemWriter<Record> pec1SwitchItemWriter;
-    private final ItemWriter<Record> sayn1SwitchItemWriter;
-    private final ItemWriter<Record> sayn2SwitchItemWriter;
-    private final ItemWriter<Record> fanvSwitchItemWriter;
-    private final ItemWriter<Record> kicc1SwitchItemWriter;
-    private final ItemWriter<Record> kicc2SwitchItemWriter;
-    private final ItemWriter<Record> mabnSwitchItemWriter;
-    private final ItemWriter<Record> sada1SwitchItemWriter;
-    private final ItemWriter<Record> sada2SwitchItemWriter;
-    private final ItemWriter<Record> pep1SwitchItemWriter;
-    private final ItemWriter<Record> pep2SwitchItemWriter;
-    private final ItemWriter<Record> persSwitchItemWriter;
-    private final ItemWriter<Record> ecd1SwitchItemWriter;
-    private final ItemWriter<Record> ecd2SwitchItemWriter;
-    private final ItemWriter<Record> bpm1SwitchItemWriter;
-    private final ItemWriter<Record> bpm2SwitchItemWriter;
-    private final ItemWriter<Record> pec2SwitchItemWriter;
-    private final ItemWriter<Record> sshpSwitchItemWriter;
-    private final ItemWriter<Record> hubSwitchItemWriter;
+    private final ItemWriter<BatchRecord> sep2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> sep1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> sep3SwitchItemWriter;
+    private final ItemWriter<BatchRecord> pna1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> pna2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> pec1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> sayn1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> sayn2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> fanvSwitchItemWriter;
+    private final ItemWriter<BatchRecord> kicc1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> kicc2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> mabnSwitchItemWriter;
+    private final ItemWriter<BatchRecord> sada1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> sada2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> pep1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> pep2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> persSwitchItemWriter;
+    private final ItemWriter<BatchRecord> ecd1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> ecd2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> bpm1SwitchItemWriter;
+    private final ItemWriter<BatchRecord> bpm2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> pec2SwitchItemWriter;
+    private final ItemWriter<BatchRecord> sshpSwitchItemWriter;
+    private final ItemWriter<BatchRecord> hubSwitchItemWriter;
 
 
     @Override
-    public ItemWriter<? super Record> classify(Record record) {
-        int pspCodeLength = record.getPspCode().length();
-        String switchCode = record.getPspCode().substring(pspCodeLength - 3, pspCodeLength);
+    public ItemWriter<? super BatchRecord> classify(BatchRecord batchRecord) {
+        int pspCodeLength = batchRecord.getPspCode().length();
+        String switchCode = batchRecord.getPspCode().substring(pspCodeLength - 3, pspCodeLength);
         switch (switchCode) {
             case "042":
                 return sep2SwitchItemWriter;

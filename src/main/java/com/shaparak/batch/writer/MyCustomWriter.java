@@ -1,6 +1,5 @@
 package com.shaparak.batch.writer;
 
-import com.shaparak.batch.dto.Record;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package com.shaparak.batch.service;
 
-import com.shaparak.batch.dto.BankDto;
-import com.shaparak.batch.dto.SwitchDto;
+import com.shaparak.batch.dto.csv.BankDto;
+import com.shaparak.batch.dto.csv.SwitchDto;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

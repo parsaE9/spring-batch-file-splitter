@@ -1,4 +1,4 @@
-package com.shaparak.batch.dto;
+package com.shaparak.batch.dto.csv;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankDto {
+public class SwitchDto {
 
-    private String name;
+    private String fileName;
 
-    private String bankCode;
+    private String folderName;
 
-    private String bicCode;
+    private String iin;
 
 }

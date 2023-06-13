@@ -58,6 +58,8 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+
         startBatchJob();
 
         handleRowNumbers();

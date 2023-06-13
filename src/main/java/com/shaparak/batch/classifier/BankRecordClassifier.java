@@ -1,66 +1,66 @@
 package com.shaparak.batch.classifier;
 
-import com.shaparak.batch.dto.Record;
+import com.shaparak.batch.dto.BatchRecord;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.classify.Classifier;
 
 @AllArgsConstructor
-public class BankRecordClassifier implements Classifier<Record, ItemWriter<? super Record>> {
+public class BankRecordClassifier implements Classifier<BatchRecord, ItemWriter<? super BatchRecord>> {
 
-    private final ItemWriter<Record> markaziBankItemWriter;
-    private final ItemWriter<Record> sanatBankItemWriter;
-    private final ItemWriter<Record> mellatBankItemWriter;
-    private final ItemWriter<Record> refahBankItemWriter;
-    private final ItemWriter<Record> maskanBankItemWriter;
-    private final ItemWriter<Record> sepahBankItemWriter;
-    private final ItemWriter<Record> keshavarziBankItemWriter;
-    private final ItemWriter<Record> melliBankItemWriter;
-    private final ItemWriter<Record> tejaratBankItemWriter;
-    private final ItemWriter<Record> saderatBankItemWriter;
-    private final ItemWriter<Record> toseeSaderatBankItemWriter;
-    private final ItemWriter<Record> postBankItemWriter;
-    private final ItemWriter<Record> toseeTaavonItemWriter;
-    private final ItemWriter<Record> etebariToseeeBankItemWriter;
-    private final ItemWriter<Record> ghavaminBankItemWriter;
-    private final ItemWriter<Record> karafarinBankItemWriter;
-    private final ItemWriter<Record> parsianBankItemWriter;
-    private final ItemWriter<Record> eghtesadNovinBankItemWriter;
-    private final ItemWriter<Record> samanBankItemWriter;
-    private final ItemWriter<Record> pasargadBankItemWriter;
-    private final ItemWriter<Record> sarmayeBankItemWriter;
-    private final ItemWriter<Record> sinaBankItemWriter;
-    private final ItemWriter<Record> mehrBankItemWriter;
-    private final ItemWriter<Record> shahrBankItemWriter;
-    private final ItemWriter<Record> ayandeBankItemWriter;
-    private final ItemWriter<Record> ansarBankItemWriter;
-    private final ItemWriter<Record> gardeshgariBankItemWriter;
-    private final ItemWriter<Record> hekmatIranianBankItemWriter;
-    private final ItemWriter<Record> dayBankItemWriter;
-    private final ItemWriter<Record> iranZaminBankItemWriter;
-    private final ItemWriter<Record> resalatBankItemWriter;
-    private final ItemWriter<Record> kosarBankItemWriter;
-    private final ItemWriter<Record> asgariyeBankItemWriter;
-    private final ItemWriter<Record> khavarmianeBankItemWriter;
-    private final ItemWriter<Record> iranVenezuelaBankItemWriter;
-    private final ItemWriter<Record> noorBankItemWriter;
-    private final ItemWriter<Record> shaparakItemWriter;
-    private final ItemWriter<Record> mehreEghtesadBankItemWriter;
+    private final ItemWriter<BatchRecord> markaziBankItemWriter;
+    private final ItemWriter<BatchRecord> sanatBankItemWriter;
+    private final ItemWriter<BatchRecord> mellatBankItemWriter;
+    private final ItemWriter<BatchRecord> refahBankItemWriter;
+    private final ItemWriter<BatchRecord> maskanBankItemWriter;
+    private final ItemWriter<BatchRecord> sepahBankItemWriter;
+    private final ItemWriter<BatchRecord> keshavarziBankItemWriter;
+    private final ItemWriter<BatchRecord> melliBankItemWriter;
+    private final ItemWriter<BatchRecord> tejaratBankItemWriter;
+    private final ItemWriter<BatchRecord> saderatBankItemWriter;
+    private final ItemWriter<BatchRecord> toseeSaderatBankItemWriter;
+    private final ItemWriter<BatchRecord> postBankItemWriter;
+    private final ItemWriter<BatchRecord> toseeTaavonItemWriter;
+    private final ItemWriter<BatchRecord> etebariToseeeBankItemWriter;
+    private final ItemWriter<BatchRecord> ghavaminBankItemWriter;
+    private final ItemWriter<BatchRecord> karafarinBankItemWriter;
+    private final ItemWriter<BatchRecord> parsianBankItemWriter;
+    private final ItemWriter<BatchRecord> eghtesadNovinBankItemWriter;
+    private final ItemWriter<BatchRecord> samanBankItemWriter;
+    private final ItemWriter<BatchRecord> pasargadBankItemWriter;
+    private final ItemWriter<BatchRecord> sarmayeBankItemWriter;
+    private final ItemWriter<BatchRecord> sinaBankItemWriter;
+    private final ItemWriter<BatchRecord> mehrBankItemWriter;
+    private final ItemWriter<BatchRecord> shahrBankItemWriter;
+    private final ItemWriter<BatchRecord> ayandeBankItemWriter;
+    private final ItemWriter<BatchRecord> ansarBankItemWriter;
+    private final ItemWriter<BatchRecord> gardeshgariBankItemWriter;
+    private final ItemWriter<BatchRecord> hekmatIranianBankItemWriter;
+    private final ItemWriter<BatchRecord> dayBankItemWriter;
+    private final ItemWriter<BatchRecord> iranZaminBankItemWriter;
+    private final ItemWriter<BatchRecord> resalatBankItemWriter;
+    private final ItemWriter<BatchRecord> kosarBankItemWriter;
+    private final ItemWriter<BatchRecord> asgariyeBankItemWriter;
+    private final ItemWriter<BatchRecord> khavarmianeBankItemWriter;
+    private final ItemWriter<BatchRecord> iranVenezuelaBankItemWriter;
+    private final ItemWriter<BatchRecord> noorBankItemWriter;
+    private final ItemWriter<BatchRecord> shaparakItemWriter;
+    private final ItemWriter<BatchRecord> mehreEghtesadBankItemWriter;
 
-    private final ItemWriter<Record> shaparakPaymentFacilitatorBankItemWriter;
-    private final ItemWriter<Record> refahiBankItemWriter;
-    private final ItemWriter<Record> fuelBankItemWriter;
+    private final ItemWriter<BatchRecord> shaparakPaymentFacilitatorBankItemWriter;
+    private final ItemWriter<BatchRecord> refahiBankItemWriter;
+    private final ItemWriter<BatchRecord> fuelBankItemWriter;
 
 
     @Override
-    public ItemWriter<? super Record> classify(Record record) {
-        if (record.getCardNumber().startsWith("989"))
+    public ItemWriter<? super BatchRecord> classify(BatchRecord batchRecord) {
+        if (batchRecord.getCardNumber().startsWith("989"))
             return fuelBankItemWriter;
-        else if (record.getCardNumber().startsWith("9"))
+        else if (batchRecord.getCardNumber().startsWith("9"))
             return refahiBankItemWriter;
 
 
-        String bankCode = record.getIban().substring(4, 7);
+        String bankCode = batchRecord.getIban().substring(4, 7);
         switch (bankCode) {
             case "010":
                 return markaziBankItemWriter;
