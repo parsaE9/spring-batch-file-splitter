@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -32,6 +33,9 @@ public class BatchApplication implements CommandLineRunner {
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private UnzipService unzipService;
 
     @Autowired
     private Job job;
@@ -58,19 +62,27 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        // some works are being done in csvService init method
 
         startBatchJob();
 
-//        handleRowNumbers();
+        handleRowNumbers();
 //
-//        logService.writeLogs();
+        logService.writeLogs();
 //
-//        if (zipFlag)
-//            createZipFiles();
+        if (zipFlag)
+            createZipFiles();
 
         System.exit(0);
     }
+
+
+//    @Bean
+//    public String initBean() throws Exception {
+//        unzipService.clearFolders();
+//        unzipService.unzip();
+//        return "initBean";
+//    }
 
 
     private void startBatchJob() throws Exception {
@@ -136,8 +148,11 @@ public class BatchApplication implements CommandLineRunner {
             ExecutorService executor = Executors.newFixedThreadPool(threadCount);
             stream.filter(Files::isRegularFile)
                     .forEach(path -> {
-                        Runnable worker = new FileService(path + "");
-                        executor.execute(worker);
+                        if ((path + "").contains("batch")) {
+
+                            Runnable worker = new FileService(path + "");
+                            executor.execute(worker);
+                        }
                     });
             executor.shutdown();
             while (!executor.isTerminated()) {}

@@ -1,4 +1,4 @@
-package com.shaparak.batch.classifier;
+package com.shaparak.batch.classifier.batch;
 
 import com.shaparak.batch.dto.BatchRecord;
 import lombok.AllArgsConstructor;

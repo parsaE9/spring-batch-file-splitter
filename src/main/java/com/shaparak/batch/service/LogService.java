@@ -30,10 +30,37 @@ public class LogService {
             Files.createDirectories(Paths.get(logDirectoryPath));
             writeBatchLog();
             writeExecLog();
+            writeAchLog();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    private void writeAchLog() throws Exception {
+        String batchFilePath = BatchApplication.jobDetailsMap.get("inputTxtBatchFilePath");
+        String jobStartDateTime = BatchApplication.jobDetailsMap.get("jobStartDateTime");
+        String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
+        StringBuilder log = new StringBuilder();
+        log.append(String.format("Processing file [%s] started at %s\n\nBanks\n" +
+                        "-------------------------------------------------------------------------------------------------------------------------------\n" +
+                        "Index | Record Count | File Name\n",
+                batchFilePath, jobStartDateTime));
+
+        try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/PSPs"))) {
+            log.append(iterateFiles(stream, "Ach"));
+        }
+
+//        log.append(String.format("\n+ Process Time: %s", jobProcessTime));
+        log.append("\n_________________________________________________________________________________________________________________________________\n");
+
+        File batchFile = new File(logDirectoryPath + "/ach.log");
+        batchFile.createNewFile();
+        FileWriter batchFileWriter = new FileWriter(logDirectoryPath + "/ach.log", true);
+        batchFileWriter.append(log);
+        batchFileWriter.close();
+    }
+
 
 
     private void writeBatchLog() throws Exception {
@@ -47,11 +74,11 @@ public class LogService {
                 batchFilePath, jobStartDateTime));
 
         try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/Banks"))) {
-          log.append(iterateFiles(stream));
+          log.append(iterateFiles(stream, "batch"));
         }
         log.append("\nPSPs\nIndex | Record Count | File Name");
         try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/PSPs"))) {
-          log.append(iterateFiles(stream));
+          log.append(iterateFiles(stream, "batch"));
         }
 
         log.append(String.format("\n+ Total PSP Amount: %s", ItemWriteListenerImpl.totalPspAmount));
@@ -69,14 +96,16 @@ public class LogService {
 
 
 
-    private String iterateFiles(Stream<Path> stream) throws IOException {
+    private String iterateFiles(Stream<Path> stream, String jobType) throws IOException {
         StringBuilder log = new StringBuilder();
         int index = 1;
         for (Path path : stream.filter(Files::isRegularFile).collect(Collectors.toList())) {
             try (Stream<String> fileStream = Files.lines(Paths.get(path + ""))) {
-                int recordCount = (int) fileStream.count() - 1;
-                log.append("------|--------------|---------------------------------------------------------------------------------------------------------\n");
-                log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+                if ((path + "").contains(jobType)) {
+                    int recordCount = (int) fileStream.count() - 1;
+                    log.append("------|--------------|---------------------------------------------------------------------------------------------------------\n");
+                    log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+                }
             }
         }
         return String.valueOf(log);

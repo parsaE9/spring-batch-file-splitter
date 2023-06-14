@@ -5,6 +5,7 @@ import com.shaparak.batch.dto.csv.SwitchDto;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,21 @@ public class CsvService {
     @Value("${input.csv.file.path.bank}")
     private String bankCsvFilePath;
 
+    @Autowired
+    private UnzipService unzipService;
+
 
     @PostConstruct
-    private void init() throws FileNotFoundException {
+    private void init() throws Exception {
         File switchFile = new File(switchCsvFilePath);
         File bankFile = new File(bankCsvFilePath);
 
         switchMap = csvToSwitchDtoMap(new FileInputStream(switchFile));
         bankMap = csvToBankDtoMap(new FileInputStream(bankFile));
+
+
+        unzipService.clearFolders();
+        unzipService.unzip();
     }
 
 
