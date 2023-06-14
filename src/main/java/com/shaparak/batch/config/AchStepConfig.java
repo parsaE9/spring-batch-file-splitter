@@ -7,6 +7,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.ResourceAwareItemReaderItemStream;
+import org.springframework.batch.item.support.SynchronizedItemStreamReader;
 import org.springframework.batch.item.xml.builder.StaxEventItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,25 +49,40 @@ public class AchStepConfig {
                 .build();
     }
 
+    @Bean
+    public SynchronizedItemStreamReader<CdtTrfTxInfDto> synchronizedMultiResourceItemReader() {
+        String path =  unzippedInputFilePath + "/ACH";
+        File[] files = new File(path).listFiles();
+        List<Resource> resources = new ArrayList<>();
+        for (int i = 0; i < files.length; i++) {
+            resources.add(new FileSystemResource(files[i].getAbsolutePath()));
+        }
+        Resource[] resourcesArray = new Resource[resources.size()];
+        resources.toArray(resourcesArray);
+
+
+        System.out.println("In syncMultiResourceItemReader");
+        MultiResourceItemReader<CdtTrfTxInfDto> reader = new MultiResourceItemReader<>();
+        reader.setDelegate(xmlReader());
+        reader.setResources(resourcesArray);
+
+        SynchronizedItemStreamReader<CdtTrfTxInfDto> synchronizedItemStreamReader = new SynchronizedItemStreamReader<>();
+        synchronizedItemStreamReader.setDelegate(reader);
+        return synchronizedItemStreamReader;
+    }
+
 
     @Bean
     public MultiResourceItemReader<CdtTrfTxInfDto> multiResourceItemReader() {
         String path =  unzippedInputFilePath + "/ACH";
-
         File[] files = new File(path).listFiles();
-
-
         List<Resource> resources = new ArrayList<>();
-
         for (int i = 0; i < files.length; i++) {
             resources.add(new FileSystemResource(files[i].getAbsolutePath()));
         }
-
-
         Resource[] resourcesArray = new Resource[resources.size()];
-        resources.toArray(resourcesArray); // fill the array
+        resources.toArray(resourcesArray);
 
-        System.out.println("In multiResourceItemReader");
         MultiResourceItemReader<CdtTrfTxInfDto> reader = new MultiResourceItemReader<>();
         reader.setDelegate(xmlReader());
         reader.setResources(resourcesArray);
@@ -89,7 +105,7 @@ public class AchStepConfig {
     @Bean
     public Step achStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<CdtTrfTxInfDto, CdtTrfTxInfDto>chunk(1000)
-                .reader(multiResourceItemReader())
+                .reader(synchronizedMultiResourceItemReader())
                 .processor(processor())
                 .writer(writer())
 
@@ -101,7 +117,7 @@ public class AchStepConfig {
     @Bean
     public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
-        asyncTaskExecutor.setConcurrencyLimit(1);
+        asyncTaskExecutor.setConcurrencyLimit(threadCount);
         return asyncTaskExecutor;
     }
 
