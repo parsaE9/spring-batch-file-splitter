@@ -15,17 +15,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NoArgsConstructor
 @XmlRootElement(name="CdtTrfTxInf")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CdtTrfTxInf {
+public class CdtTrfTxInfDto {
 
-    private PmtIdDto PmtId;
+    private PmtIdDto PmtId = new PmtIdDto();
 
     private String IntrBkSttlmAmt;
 
-    private CdtrDto Cdtr;
-//
-    private CdtrAcctDto CdtrAcct;
-//
-    private RmtInfDto RmtInf;
+    private CdtrDto Cdtr = new CdtrDto();
+
+    private CdtrAcctDto CdtrAcct = new CdtrAcctDto();
+
+    private RmtInfDto RmtInf = new RmtInfDto();
 
 
 }

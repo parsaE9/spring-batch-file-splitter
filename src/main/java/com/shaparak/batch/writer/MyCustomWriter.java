@@ -11,7 +11,7 @@ public class MyCustomWriter<T> implements ItemWriter<T> {
 
     @Override
     public void write(List<? extends T> items) throws Exception {
-        System.out.println("custom item writer");
+//        System.out.println("custom item writer");
     }
 
 

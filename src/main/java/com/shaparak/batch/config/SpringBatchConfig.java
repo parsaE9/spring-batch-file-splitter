@@ -42,8 +42,8 @@ public class SpringBatchConfig {
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
 
-    @Autowired
-    private BatchStepConfig batchStepConfig;
+//    @Autowired
+//    private BatchStepConfig batchStepConfig;
 
     @Autowired
     private AchStepConfig achStepConfig;
@@ -52,8 +52,9 @@ public class SpringBatchConfig {
     @Bean
     public Job runJob() throws Exception {
         return jobBuilderFactory.get("ShaparakBatchJob")
-                .flow(batchStepConfig.batchStep())
-                .next(achStepConfig.achStep())
+//                .flow(batchStepConfig.batchStep())
+//                .next(achStepConfig.achStep())
+                .flow(achStepConfig.achStep())
                 .end()
                 .build();
     }
