@@ -42,7 +42,7 @@ public class LogService {
         String jobStartDateTime = BatchApplication.jobDetailsMap.get("jobStartDateTime");
         String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
         StringBuilder log = new StringBuilder();
-        log.append(String.format("Processing file [%s] started at %s\n\nBanks\n" +
+        log.append(String.format("Processing ACH files from base file [%s] started at %s\n\n" +
                         "-------------------------------------------------------------------------------------------------------------------------------\n" +
                         "Index | Record Count | File Name\n",
                 batchFilePath, jobStartDateTime));
@@ -122,7 +122,7 @@ public class LogService {
         String acceptorCommissionSum = String.valueOf(ItemWriteListenerImpl.totalCommission);
 
         String log = String.format("%s|%s|%s|%s|%s|%s|%s|%s|\n", batchFileDate, batchFileCycle,amountShaparakSum, acceptorCommissionSum,
-                jobStartDate, jobFinishDate, jobProcessTime, "BANK BATCH, PSP BATCH");
+                jobStartDate, jobFinishDate, jobProcessTime, "BANK BATCH, PSP BATCH, PSP ACH");
 
 
         File batchFile = new File(logDirectoryPath + "/exec_log.log");

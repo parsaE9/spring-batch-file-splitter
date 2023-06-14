@@ -8,6 +8,7 @@ public class BatchRecordProcessor implements ItemProcessor<BatchRecord, BatchRec
 
     @Override
     public BatchRecord process(BatchRecord batchRecord) throws Exception {
+        System.out.println("Batch");
         return batchRecord;
     }
 

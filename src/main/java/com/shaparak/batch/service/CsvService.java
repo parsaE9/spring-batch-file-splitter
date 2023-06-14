@@ -40,8 +40,8 @@ public class CsvService {
         bankMap = csvToBankDtoMap(new FileInputStream(bankFile));
 
 
-        unzipService.clearFolders();
-        unzipService.unzip();
+//        unzipService.clearFolders();
+//        unzipService.unzip();
     }
 
 

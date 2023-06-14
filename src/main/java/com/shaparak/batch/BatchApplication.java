@@ -66,12 +66,12 @@ public class BatchApplication implements CommandLineRunner {
 
         startBatchJob();
 
-        handleRowNumbers();
+//        handleRowNumbers();
 //
-        logService.writeLogs();
+//        logService.writeLogs();
 //
-        if (zipFlag)
-            createZipFiles();
+//        if (zipFlag)
+//            createZipFiles();
 
         System.exit(0);
     }
