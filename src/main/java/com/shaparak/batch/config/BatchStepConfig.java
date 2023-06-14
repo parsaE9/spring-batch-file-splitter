@@ -195,6 +195,7 @@
 //
 //
 //                .taskExecutor(taskExecutor())
+//                .throttleLimit(threadCount)
 ////                .listener(new ChunkListenerImpl())                 // test speed with and without listener
 //                .build();
 //    }
@@ -202,6 +203,7 @@
 //
 //    @Bean
 //    public TaskExecutor taskExecutor() {
+//        System.out.println(threadCount);
 //        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
 //        asyncTaskExecutor.setConcurrencyLimit(threadCount);
 //        return asyncTaskExecutor;

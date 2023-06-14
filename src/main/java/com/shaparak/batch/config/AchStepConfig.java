@@ -38,37 +38,15 @@ public class AchStepConfig {
 
     @Bean
     public ResourceAwareItemReaderItemStream<CdtTrfTxInfDto> xmlReader() {
-        Jaxb2Marshaller studentMarshaller = new Jaxb2Marshaller();
-        studentMarshaller.setClassesToBeBound(CdtTrfTxInfDto.class);
+        Jaxb2Marshaller AchMarshaller = new Jaxb2Marshaller();
+        AchMarshaller.setClassesToBeBound(CdtTrfTxInfDto.class);
 
         return new StaxEventItemReaderBuilder<CdtTrfTxInfDto>()
-                .name("studentReader")
+                .name("AchReader")
 //                .resource(new FileSystemResource(files[0].getAbsolutePath()))
                 .addFragmentRootElements("CdtTrfTxInf")
-                .unmarshaller(studentMarshaller)
+                .unmarshaller(AchMarshaller)
                 .build();
-    }
-
-    @Bean
-    public SynchronizedItemStreamReader<CdtTrfTxInfDto> synchronizedMultiResourceItemReader() {
-        String path =  unzippedInputFilePath + "/ACH";
-        File[] files = new File(path).listFiles();
-        List<Resource> resources = new ArrayList<>();
-        for (int i = 0; i < files.length; i++) {
-            resources.add(new FileSystemResource(files[i].getAbsolutePath()));
-        }
-        Resource[] resourcesArray = new Resource[resources.size()];
-        resources.toArray(resourcesArray);
-
-
-        System.out.println("In syncMultiResourceItemReader");
-        MultiResourceItemReader<CdtTrfTxInfDto> reader = new MultiResourceItemReader<>();
-        reader.setDelegate(xmlReader());
-        reader.setResources(resourcesArray);
-
-        SynchronizedItemStreamReader<CdtTrfTxInfDto> synchronizedItemStreamReader = new SynchronizedItemStreamReader<>();
-        synchronizedItemStreamReader.setDelegate(reader);
-        return synchronizedItemStreamReader;
     }
 
 
@@ -105,11 +83,11 @@ public class AchStepConfig {
     @Bean
     public Step achStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<CdtTrfTxInfDto, CdtTrfTxInfDto>chunk(1000)
-                .reader(synchronizedMultiResourceItemReader())
+                .reader(multiResourceItemReader())
                 .processor(processor())
                 .writer(writer())
 
-                .taskExecutor(taskExecutor())
+//                .taskExecutor(taskExecutor()).throttleLimit(threadCount)
                 .build();
     }
 
