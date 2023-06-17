@@ -57,7 +57,9 @@ public class BatchApplication implements CommandLineRunner {
     public static Map<String, String> jobDetailsMap = new HashMap<>();
 
 
-    public static void main(String[] args) {SpringApplication.run(BatchApplication.class, args);}
+    public static void main(String[] args) {
+        SpringApplication.run(BatchApplication.class, args);
+    }
 
 
     @Override
@@ -155,7 +157,8 @@ public class BatchApplication implements CommandLineRunner {
                         }
                     });
             executor.shutdown();
-            while (!executor.isTerminated()) {}
+            while (!executor.isTerminated()) {
+            }
 
         }
     }

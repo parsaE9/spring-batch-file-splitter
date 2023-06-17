@@ -37,7 +37,7 @@ public class UnzipService {
         System.out.println("started unzipping input zip file");
 
         long begin = System.currentTimeMillis();
-        File dir = new File(inputZipFileDirectoryPath);
+        File dir = new File(inputZipFileDirectoryPath + "/");
 //        FileFilter fileFilter = new WildcardFileFilter("Batch_Ach_Cycle_*_*.zip");
         FileFilter fileFilter = new WildcardFileFilter("*.zip");
         File[] files = dir.listFiles(fileFilter);
