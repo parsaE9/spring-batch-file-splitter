@@ -171,6 +171,7 @@ public class AchItemWriter {
         String fileName = "/PSPs/" + folderName + "/" + "Ach_Cycle_01_" + UnzipService.fileDate + "_" + iin + ".txt";
         String pspOutputPath = new File(outputDirectoryPath + fileName).getAbsolutePath();
         FlatFileItemWriter<CdtTrfTxInfDto> writer = new FlatFileItemWriter<>();
+        writer.setEncoding("UTF-8");
         writer.setHeaderCallback(new HeaderWriter(getAchHeader()));
         writer.setLineAggregator(new AchLineAggregator());
         writer.setResource(new FileSystemResource(pspOutputPath));

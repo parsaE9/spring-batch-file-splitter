@@ -49,6 +49,7 @@ public class AchStepConfig {
                 .name("AchReader")
                 .addFragmentRootElements("CdtTrfTxInf")
                 .unmarshaller(AchMarshaller)
+                .encoding("UTF-8")
                 .build();
     }
 
@@ -82,7 +83,7 @@ public class AchStepConfig {
     public Step achStep() throws Exception {
         return stepBuilderFactory.get("achStep").<CdtTrfTxInfDto, CdtTrfTxInfDto>chunk(1000)
                 .reader(achMultiResourceItemReader())
-//                .processor(achProcessor())
+                .processor(achProcessor())
                 .writer(achClassifierCompositeItemWriter())
 
                 .stream(achItemWriter.sep2SwitchAchItemWriter())

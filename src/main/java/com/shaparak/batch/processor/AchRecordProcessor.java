@@ -8,7 +8,7 @@ public class AchRecordProcessor implements ItemProcessor<CdtTrfTxInfDto, CdtTrfT
 
     @Override
     public CdtTrfTxInfDto process(CdtTrfTxInfDto cdtTrfTxInfDto) throws Exception {
-        System.out.println("ACH");
+//        System.out.println("ACH");
         return cdtTrfTxInfDto;
     }
 
