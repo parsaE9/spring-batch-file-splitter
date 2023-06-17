@@ -51,6 +51,7 @@ public class UnzipService {
         fileDate = files[0].getName().substring(19, 27);
         BatchApplication.jobDetailsMap.put("batchFileDate", fileDate);
         BatchApplication.jobDetailsMap.put("batchFileCycle", files[0].getName().substring(16, 18));
+        BatchApplication.jobDetailsMap.put("inputZipFile", files[0].getName());
         File destDir = new File(unzippedInputFileDestination);
 
         byte[] buffer = new byte[10240];

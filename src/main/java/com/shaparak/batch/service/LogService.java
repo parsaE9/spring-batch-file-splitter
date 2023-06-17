@@ -2,6 +2,7 @@ package com.shaparak.batch.service;
 
 import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.listener.ItemWriteListenerImpl;
+import com.shaparak.batch.processor.AchRecordProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class LogService {
     @Value("${log.directory.path}")
     private String logDirectoryPath;
 
+    @Value("${input.zip.file.directory.path}")
+    private String inputZipFileDirectoryPath;
 
 
     public void writeLogs() {
@@ -38,20 +41,18 @@ public class LogService {
 
 
     private void writeAchLog() throws Exception {
-        String batchFilePath = BatchApplication.jobDetailsMap.get("inputTxtBatchFilePath");
+        String inputZipFileName = BatchApplication.jobDetailsMap.get("inputZipFile");
         String jobStartDateTime = BatchApplication.jobDetailsMap.get("jobStartDateTime");
-        String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
+
         StringBuilder log = new StringBuilder();
-        log.append(String.format("Processing ACH files from base file [%s] started at %s\n\n" +
+        log.append(String.format("Processing ACH files from the base file [%s] started at %s\n\n" +
                         "-------------------------------------------------------------------------------------------------------------------------------\n" +
                         "Index | Record Count | File Name\n",
-                batchFilePath, jobStartDateTime));
+                inputZipFileDirectoryPath + "/" + inputZipFileName, jobStartDateTime));
 
         try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/PSPs"))) {
             log.append(iterateFiles(stream, "Ach"));
         }
-
-//        log.append(String.format("\n+ Process Time: %s", jobProcessTime));
         log.append("\n_________________________________________________________________________________________________________________________________\n");
 
         File batchFile = new File(logDirectoryPath + "/ach.log");
@@ -60,7 +61,6 @@ public class LogService {
         batchFileWriter.append(log);
         batchFileWriter.close();
     }
-
 
 
     private void writeBatchLog() throws Exception {
@@ -74,11 +74,11 @@ public class LogService {
                 batchFilePath, jobStartDateTime));
 
         try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/Banks"))) {
-          log.append(iterateFiles(stream, "batch"));
+            log.append(iterateFiles(stream, "batch"));
         }
         log.append("\nPSPs\nIndex | Record Count | File Name");
         try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/PSPs"))) {
-          log.append(iterateFiles(stream, "batch"));
+            log.append(iterateFiles(stream, "batch"));
         }
 
         log.append(String.format("\n+ Total PSP Amount: %s", ItemWriteListenerImpl.totalPspAmount));
@@ -95,18 +95,33 @@ public class LogService {
     }
 
 
-
     private String iterateFiles(Stream<Path> stream, String jobType) throws IOException {
+        long recordCountSum = 0L;
         StringBuilder log = new StringBuilder();
         int index = 1;
         for (Path path : stream.filter(Files::isRegularFile).collect(Collectors.toList())) {
             try (Stream<String> fileStream = Files.lines(Paths.get(path + ""))) {
                 if ((path + "").contains(jobType)) {
                     int recordCount = (int) fileStream.count() - 1;
-                    log.append("------|--------------|---------------------------------------------------------------------------------------------------------\n");
-                    log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+                    if (recordCount != 0) {
+                        log.append("------|--------------|---------------------------------------------------------------------------------------------------------\n");
+                        log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+                        recordCountSum += recordCount;
+                    }
                 }
             }
+        }
+
+        if (jobType.equals("Ach")) {
+            long totalAmount = AchRecordProcessor.totalAmount;
+            String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
+            String achFilesCount = BatchApplication.jobDetailsMap.get("inputAchFilesCount");
+            String jobFinishDateTime = BatchApplication.jobDetailsMap.get("jobFinishDateTime");
+
+            log.append("------|--------------|---------------------------------------------------------------------------------------------------------\n");
+            log.append(String.format("+ A total of [%s] ACH transaction summing to [%s] are categorized for [%s] switches\n", recordCountSum, totalAmount, index - 1));
+            log.append(String.format("\n+ Process Time: %s", jobProcessTime));
+            log.append(String.format("\n+ Processing %s ACH files is finished at %s", achFilesCount, jobFinishDateTime));
         }
         return String.valueOf(log);
     }
@@ -121,7 +136,7 @@ public class LogService {
         String amountShaparakSum = String.valueOf(ItemWriteListenerImpl.totalPspAmount);
         String acceptorCommissionSum = String.valueOf(ItemWriteListenerImpl.totalCommission);
 
-        String log = String.format("%s|%s|%s|%s|%s|%s|%s|%s|\n", batchFileDate, batchFileCycle,amountShaparakSum, acceptorCommissionSum,
+        String log = String.format("%s|%s|%s|%s|%s|%s|%s|%s|\n", batchFileDate, batchFileCycle, amountShaparakSum, acceptorCommissionSum,
                 jobStartDate, jobFinishDate, jobProcessTime, "BANK BATCH, PSP BATCH, PSP ACH");
 
 
@@ -131,7 +146,6 @@ public class LogService {
         batchFileWriter.append(log);
         batchFileWriter.close();
     }
-
 
 
 }

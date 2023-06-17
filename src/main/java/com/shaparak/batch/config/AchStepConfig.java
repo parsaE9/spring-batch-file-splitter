@@ -1,5 +1,6 @@
 package com.shaparak.batch.config;
 
+import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.ach.AchRecordClassifier;
 import com.shaparak.batch.dto.xml.CdtTrfTxInfDto;
 import com.shaparak.batch.processor.AchRecordProcessor;
@@ -63,6 +64,9 @@ public class AchStepConfig {
             if (files[i].getAbsolutePath().endsWith(".CT"))
                 resources.add(new FileSystemResource(files[i].getAbsolutePath()));
         }
+
+        BatchApplication.jobDetailsMap.put("inputAchFilesCount", resources.size() + "");
+
         Resource[] resourcesArray = new Resource[resources.size()];
         resources.toArray(resourcesArray);
 
