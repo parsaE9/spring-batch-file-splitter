@@ -21,8 +21,8 @@ public class SpringBatchConfig {
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
 
-//    @Autowired
-//    private BatchStepConfig batchStepConfig;
+    @Autowired
+    private BatchStepConfig batchStepConfig;
 
     @Autowired
     private AchStepConfig achStepConfig;
@@ -31,45 +31,49 @@ public class SpringBatchConfig {
     @Bean
     public Job runJob() throws Exception {
         return jobBuilderFactory.get("ShaparakBatchJob")
-//                .start(splitFlow())
+                .start(splitFlow())
 
 //                .flow(batchStepConfig.batchStep())
-                .flow(achStepConfig.achStep())
+//                .flow(achStepConfig.achStep())
 
                 .end()
                 .build();
     }
 
 
-//    @Bean
-//    public Flow splitFlow() throws Exception {
-//        return new FlowBuilder<SimpleFlow>("splitFlow")
-//                .split(taskExecutor5())
-//                .add(flow1(), flow2())
-//                .build();
-//    }
-//
-//    @Bean
-//    public Flow flow1() throws Exception {
-//        return new FlowBuilder<SimpleFlow>("flow1")
-//                .start(batchStepConfig.batchStep())
-//                .build();
-//
-//    }
-//
-//    @Bean
-//    public Flow flow2() throws Exception {
-//        return new FlowBuilder<SimpleFlow>("flow2")
-//                .start(achStepConfig.achStep())
-//                .build();
-//    }
+    @Bean
+    public Flow splitFlow() throws Exception {
+        return new FlowBuilder<SimpleFlow>("splitFlow")
+                .split(taskExecutor5())
+                .add(flow1(), flow2())
+                .build();
+    }
+
+    @Bean
+    public Flow flow1() throws Exception {
+        return new FlowBuilder<SimpleFlow>("flow1")
+                .start(batchStepConfig.batchStep())
+                .build();
+
+    }
+
+    @Bean
+    public Flow flow2() throws Exception {
+        return new FlowBuilder<SimpleFlow>("flow2")
+                .start(achStepConfig.achStep())
+                .build();
+    }
 
     // TODO: work on this
+    // lower number of batchstep threads
 
-//    @Bean
-//    public TaskExecutor taskExecutor5() {
-//        return new SimpleAsyncTaskExecutor("spring_batch_task_executor");
-//    }
+    @Bean
+    public TaskExecutor taskExecutor5() {
+        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
+        asyncTaskExecutor.setConcurrencyLimit(100);
+        return asyncTaskExecutor;
+    }
+
 
 
 }
