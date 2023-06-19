@@ -101,11 +101,15 @@ public class LogService {
         int index = 1;
         for (Path path : stream.filter(Files::isRegularFile).collect(Collectors.toList())) {
             try (Stream<String> fileStream = Files.lines(Paths.get(path + ""))) {
-                if ((path + "").contains(jobType)) {
+                String fileName = String.valueOf(path.getFileName());
+                if ((fileName).contains(jobType)) {
                     int recordCount = (int) fileStream.count() - 1;
                     if (recordCount != 0) {
                         log.append("------|--------------|---------------------------------------------------------------------------------------------------------\n");
-                        log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+                        if (jobType.equals("Ach"))
+                            log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, fileName));
+                        else
+                            log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
                         recordCountSum += recordCount;
                     }
                 }
@@ -133,10 +137,11 @@ public class LogService {
         String jobStartDate = BatchApplication.jobDetailsMap.get("jobStartDateTime");
         String jobFinishDate = BatchApplication.jobDetailsMap.get("jobFinishDateTime");
         String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
-        String amountShaparakSum = String.valueOf(ItemWriteListenerImpl.totalPspAmount);
-        String acceptorCommissionSum = String.valueOf(ItemWriteListenerImpl.totalCommission);
+        long pspAmountSum = ItemWriteListenerImpl.totalPspAmount;
+        long acceptorCommissionSum = ItemWriteListenerImpl.totalCommission;
+        long bankAmountSum = pspAmountSum - acceptorCommissionSum;
 
-        String log = String.format("%s|%s|%s|%s|%s|%s|%s|%s|\n", batchFileDate, batchFileCycle, amountShaparakSum, acceptorCommissionSum,
+        String log = String.format("%-10s|%-12s|%018d|%017d|%s000|%s000|%s00|%s|\n", batchFileDate, batchFileCycle, bankAmountSum, acceptorCommissionSum,
                 jobStartDate, jobFinishDate, jobProcessTime, "BANK BATCH, PSP BATCH, PSP ACH");
 
 

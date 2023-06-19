@@ -69,7 +69,7 @@ public class BatchApplication implements CommandLineRunner {
         startBatchJob();
 
         handleRowNumbers();
-
+        System.out.println("writing logs");
         logService.writeLogs();
 
         if (zipFlag)
@@ -77,14 +77,6 @@ public class BatchApplication implements CommandLineRunner {
 
         System.exit(0);
     }
-
-
-//    @Bean
-//    public String initBean() throws Exception {
-//        unzipService.clearFolders();
-//        unzipService.unzip();
-//        return "initBean";
-//    }
 
 
     private void startBatchJob() throws Exception {
@@ -157,8 +149,7 @@ public class BatchApplication implements CommandLineRunner {
                         }
                     });
             executor.shutdown();
-            while (!executor.isTerminated()) {
-            }
+            while (!executor.isTerminated()) {}
 
         }
     }

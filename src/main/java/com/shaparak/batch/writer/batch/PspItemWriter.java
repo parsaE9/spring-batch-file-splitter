@@ -178,7 +178,8 @@ public class PspItemWriter {
 
 
     private String getPspHeader() {
-        return "row_number| psp_code| acceptor_code| trace_code| local_date| local_time| recive_date| IBAN| deposite_date| deposite_type| deposite_circle_number| terminal_type| proccess_type| card_type| amount_shaparak| reference_code| deposite_flag| acceptor_Commission| PSP_Commission| PSP_NET_Commission| terminal_code";
+        return "row_number|psp_code|acceptor_code|trace_code|local_date|local_time|recive_date|IBAN|deposite_date|deposite_type|deposite_circle_number|terminal_type|proccess_type|card_type|amount_shaparak|reference_code|deposite_flag|acceptor_Commission|PSP_Commission|PSP_NET_Commission|terminal_code";
     }
+
 
 }

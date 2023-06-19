@@ -31,9 +31,10 @@ public class SpringBatchConfig {
     @Bean
     public Job runJob() throws Exception {
         return jobBuilderFactory.get("ShaparakBatchJob")
-                .start(splitFlow())
+//                .start(splitFlow())
 
-//                .flow(batchStepConfig.batchStep())
+                .flow(batchStepConfig.batchStep())
+                .next(achStepConfig.achStep())
 //                .flow(achStepConfig.achStep())
 
                 .end()
@@ -41,38 +42,38 @@ public class SpringBatchConfig {
     }
 
 
-    @Bean
-    public Flow splitFlow() throws Exception {
-        return new FlowBuilder<SimpleFlow>("splitFlow")
-                .split(taskExecutor5())
-                .add(flow1(), flow2())
-                .build();
-    }
+//    @Bean
+//    public Flow splitFlow() throws Exception {
+//        return new FlowBuilder<SimpleFlow>("splitFlow")
+//                .split(taskExecutor5())
+//                .add(flow1(), flow2())
+//                .build();
+//    }
 
-    @Bean
-    public Flow flow1() throws Exception {
-        return new FlowBuilder<SimpleFlow>("flow1")
-                .start(batchStepConfig.batchStep())
-                .build();
-
-    }
-
-    @Bean
-    public Flow flow2() throws Exception {
-        return new FlowBuilder<SimpleFlow>("flow2")
-                .start(achStepConfig.achStep())
-                .build();
-    }
+//    @Bean
+//    public Flow flow1() throws Exception {
+//        return new FlowBuilder<SimpleFlow>("flow1")
+//                .start(batchStepConfig.batchStep())
+//                .build();
+//
+//    }
+//
+//    @Bean
+//    public Flow flow2() throws Exception {
+//        return new FlowBuilder<SimpleFlow>("flow2")
+//                .start(achStepConfig.achStep())
+//                .build();
+//    }
 
     // TODO: work on this
     // lower number of batchstep threads
 
-    @Bean
-    public TaskExecutor taskExecutor5() {
-        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
-        asyncTaskExecutor.setConcurrencyLimit(500);
-        return asyncTaskExecutor;
-    }
+//    @Bean
+//    public TaskExecutor taskExecutor5() {
+//        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
+//        asyncTaskExecutor.setConcurrencyLimit(500);
+//        return asyncTaskExecutor;
+//    }
 
 
 

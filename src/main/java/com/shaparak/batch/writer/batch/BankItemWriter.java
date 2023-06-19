@@ -280,7 +280,7 @@ public class BankItemWriter {
 
 
     private String getBankHeader() {
-        return "row_number| psp_code| acceptor_code| trace_code| local_date| local_time| recive_date| IBAN| deposite_date| deposite_type| deposite_circle_number| terminal_type| proccess_type| card_type| amount_shaparak| reference_code| deposite_flag| terminal_code| orig_txn_info";
+        return "row_number|psp_code|acceptor_code|trace_code|local_date|local_time|recive_date|IBAN|deposite_date|deposite_type|deposite_circle_number|terminal_type|proccess_type|card_type|amount_shaparak|reference_code|deposite_flag|terminal_code|orig_txn_info";
     }
 
 

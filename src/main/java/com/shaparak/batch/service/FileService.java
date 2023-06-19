@@ -29,7 +29,7 @@ public class FileService implements Runnable {
 
             int fileSize = fileContent.size();
             for (int i = 1; i < fileSize; i++) {
-                fileContent.set(i, String.format("%010d", i) + fileContent.get(i));
+                fileContent.set(i, String.format("%09d", i) + fileContent.get(i));
             }
 
             Files.write(Path.of(filePath), fileContent, StandardCharsets.UTF_8);
