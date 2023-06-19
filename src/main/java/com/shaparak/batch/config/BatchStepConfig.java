@@ -86,7 +86,7 @@ public class BatchStepConfig {
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter("|");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("row_number", "psp_code", "acceptorCode", "traceCode", "localDate", "localTime", "reciveDate", "iban", "depositeDate", "depositeType", "depositeCircleNumber", "terminalType", "processType", "cardType", "amountShaparak", "referenceCode", "depositeFlag", "acceptorCommission", "pspCommission", "pspNetCommission", "shaparakCommission", "terminalCode", "cardNumber", "extraData1", "extraData2", "extraData3", "extraData4");
+        lineTokenizer.setNames("row_number", "psp_code", "acceptorCode", "traceCode", "localDate", "localTime", "reciveDate", "iban", "depositeDate", "depositeType", "depositeCircleNumber", "terminalType", "processType", "cardType", "amountShaparak", "referenceCode", "depositeFlag", "acceptorCommission", "pspCommission", "pspNetCommission", "shaparakCommission", "terminalCode", "cardNumber", "origTxnInfo", "extraData1", "extraData2", "extraData3", "extraData4");
         BeanWrapperFieldSetMapper<BatchRecord> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(BatchRecord.class);
         lineMapper.setLineTokenizer(lineTokenizer);
@@ -120,7 +120,7 @@ public class BatchStepConfig {
     public Step batchStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<BatchRecord, BatchRecord>chunk(1000)
                 .reader(reader())
-//                .processor(processor())
+                .processor(processor())
                 .writer(compositeItemWriter())
                 .listener(new ItemWriteListenerImpl())
 

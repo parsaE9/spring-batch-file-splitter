@@ -110,6 +110,7 @@ public class LogService {
                             log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, fileName));
                         else
                             log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+                        System.out.println(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
                         recordCountSum += recordCount;
                     }
                 }
