@@ -30,10 +30,17 @@ public class LogService {
 
     public void writeLogs() {
         try {
+            System.out.println("\n\nstarted writing logs");
+            long begin = System.currentTimeMillis();
+
             Files.createDirectories(Paths.get(logDirectoryPath));
             writeBatchLog();
             writeExecLog();
             writeAchLog();
+
+            long end = System.currentTimeMillis();
+            System.out.println("writing logs execution time: " + TimeService.calculateDuration(end - begin));
+            System.out.println("finished writing logs\n\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,7 +117,7 @@ public class LogService {
                             log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, fileName));
                         else
                             log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
-                        System.out.println(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
+
                         recordCountSum += recordCount;
                     }
                 }
@@ -142,8 +149,8 @@ public class LogService {
         long acceptorCommissionSum = ItemWriteListenerImpl.totalCommission;
         long bankAmountSum = pspAmountSum - acceptorCommissionSum;
 
-        String log = String.format("%-10s|%-12s|%018d|%017d|%s000|%s000|%s00|%s|\n", batchFileDate, batchFileCycle, bankAmountSum, acceptorCommissionSum,
-                jobStartDate, jobFinishDate, jobProcessTime, "BANK BATCH, PSP BATCH, PSP ACH");
+        String log = String.format("%-10s|%-12s|%018d|%017d|%s000|%s000|%s00|%s|\n", batchFileDate, batchFileCycle, bankAmountSum,
+                acceptorCommissionSum, jobStartDate, jobFinishDate, jobProcessTime, "BANK BATCH, PSP BATCH, PSP ACH");
 
 
         File batchFile = new File(logDirectoryPath + "/exec_log.log");

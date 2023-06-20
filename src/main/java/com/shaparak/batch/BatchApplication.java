@@ -67,9 +67,9 @@ public class BatchApplication implements CommandLineRunner {
         // some works are being done in csvService init method
 
         startBatchJob();
-
+//
         handleRowNumbers();
-        System.out.println("writing logs");
+//
         logService.writeLogs();
 
         if (zipFlag)

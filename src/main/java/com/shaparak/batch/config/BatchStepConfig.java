@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -62,9 +63,6 @@ public class BatchStepConfig {
 
     @Bean
     public FlatFileItemReader<BatchRecord> reader() throws Exception {
-//        unzipService.clearFolders();
-//        unzipService.unzip();
-
         FlatFileItemReader<BatchRecord> itemReader = new FlatFileItemReader<>();
         File dir = new File(unzippedInputFilePath + "/Batch_Details/");
         FileFilter fileFilter = new WildcardFileFilter("*");
@@ -120,7 +118,7 @@ public class BatchStepConfig {
     public Step batchStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<BatchRecord, BatchRecord>chunk(1000)
                 .reader(reader())
-                .processor(processor())
+//                .processor(processor())
                 .writer(compositeItemWriter())
                 .listener(new ItemWriteListenerImpl())
 
@@ -203,11 +201,20 @@ public class BatchStepConfig {
 
     @Bean
     public TaskExecutor taskExecutor() {
-        System.out.println(threadCount);
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
         asyncTaskExecutor.setConcurrencyLimit(threadCount);
         return asyncTaskExecutor;
     }
+
+//    @Bean
+//    public ThreadPoolTaskExecutor taskExecutor() {
+//        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+//        taskExecutor.setCorePoolSize(threadCount);
+//        taskExecutor.setMaxPoolSize(threadCount + 10);
+//        taskExecutor.setQueueCapacity(threadCount);
+////        taskExecutor.setDaemon(true);
+//        return taskExecutor;
+//    }
 
 
     @Bean
