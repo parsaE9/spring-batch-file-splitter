@@ -5,6 +5,7 @@ import com.shaparak.batch.classifier.batch.BankRecordClassifier;
 import com.shaparak.batch.classifier.batch.PspRecordClassifier;
 import com.shaparak.batch.dto.BatchRecord;
 import com.shaparak.batch.listener.ItemWriteListenerImpl;
+import com.shaparak.batch.listener.StepListenerImpl;
 import com.shaparak.batch.processor.BatchRecordProcessor;
 import com.shaparak.batch.service.UnzipService;
 import com.shaparak.batch.writer.batch.BankItemWriter;
@@ -122,7 +123,7 @@ public class BatchStepConfig {
     public Step batchStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<BatchRecord, BatchRecord>chunk(1000)
                 .reader(reader())
-//                .processor(processor())
+                .processor(processor())
                 .writer(compositeItemWriter())
                 .listener(new ItemWriteListenerImpl())
 
@@ -198,6 +199,8 @@ public class BatchStepConfig {
 
                 .taskExecutor(taskExecutor())
                 .throttleLimit(threadCount)
+//                .listener(new StepListenerImpl())
+
 //                .listener(new ChunkListenerImpl())                 // test speed with and without listener
                 .build();
     }

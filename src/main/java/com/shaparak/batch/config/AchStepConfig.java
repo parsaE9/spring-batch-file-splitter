@@ -3,6 +3,7 @@ package com.shaparak.batch.config;
 import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.ach.AchRecordClassifier;
 import com.shaparak.batch.dto.xml.CdtTrfTxInfDto;
+import com.shaparak.batch.listener.StepListenerImpl;
 import com.shaparak.batch.processor.AchRecordProcessor;
 import com.shaparak.batch.writer.ach.AchItemWriter;
 import org.springframework.batch.core.Step;
@@ -117,6 +118,8 @@ public class AchStepConfig {
 
 
 //                .taskExecutor(taskExecutor()).throttleLimit(threadCount)
+
+//                .listener(new StepListenerImpl())
                 .build();
     }
 
