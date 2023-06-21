@@ -1,10 +1,15 @@
-package com.shaparak.batch.service;
+package com.shaparak.batch.tasklet;
 
 import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.listener.ItemWriteListenerImpl;
 import com.shaparak.batch.processor.AchRecordProcessor;
+import com.shaparak.batch.service.FileService;
+import com.shaparak.batch.service.TimeService;
+import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,11 +17,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
-public class LogService {
+public class LogTasklet implements Tasklet {
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
@@ -28,19 +34,19 @@ public class LogService {
     private String inputZipFileDirectoryPath;
 
 
-    public void writeLogs() {
-        try {
-            System.out.println("\n\nstarted writing logs");
-            long begin = System.currentTimeMillis();
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+        writeLogs();
+        return RepeatStatus.FINISHED;
+    }
 
+
+    private void writeLogs() {
+        try {
             Files.createDirectories(Paths.get(logDirectoryPath));
             writeBatchLog();
             writeExecLog();
             writeAchLog();
-
-            long end = System.currentTimeMillis();
-            System.out.println("writing logs execution time: " + TimeService.calculateDuration(end - begin));
-            System.out.println("finished writing logs\n\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,6 +165,10 @@ public class LogService {
         batchFileWriter.append(log);
         batchFileWriter.close();
     }
+
+
+
+
 
 
 }

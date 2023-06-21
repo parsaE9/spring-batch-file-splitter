@@ -104,11 +104,11 @@ public class UnzipService {
         return destFile;
     }
 
+
     public void clearFolders() throws IOException {
-        System.out.println("\n\n\nstarted clearing folders");
         FileUtils.deleteDirectory(new File(outputDirectoryPath));
         FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
-        System.out.println("finished clearing folders\n\n\n\n");
+        System.out.println("\ncleared folders\n\n\n");
     }
 
 
