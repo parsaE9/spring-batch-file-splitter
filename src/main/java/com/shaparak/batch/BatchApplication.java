@@ -1,6 +1,7 @@
 package com.shaparak.batch;
 
 import com.shaparak.batch.service.*;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -48,11 +49,17 @@ public class BatchApplication implements CommandLineRunner {
     @Value("${create.zip}")
     private Boolean zipFlag;
 
-    @Value("${thread.count.rowNumber.task}")
-    private int threadCount;
-
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
+
+    @Value("${unzipped.input.file.destination.path}")
+    private String extractedInputDirectoryPath;
+
+    @Value("${thread.count.rowNumber.task}")
+    private int threadCountRowNumberTask;
+
+    @Value("${delete.extracted.input}")
+    private boolean deleteExtractedInput;
 
     public static Map<String, String> jobDetailsMap = new HashMap<>();
 
@@ -67,9 +74,12 @@ public class BatchApplication implements CommandLineRunner {
         // some works are being done in csvService init method
 
         startBatchJob();
-//
+
+        if (deleteExtractedInput)
+            FileUtils.deleteDirectory(new File(extractedInputDirectoryPath));
+
         handleRowNumbers();
-//
+
         logService.writeLogs();
 
         if (zipFlag)
@@ -138,12 +148,10 @@ public class BatchApplication implements CommandLineRunner {
 
     private void iterateDirectoryFilesForSettingRowNumber(String directoryPath) throws Exception {
         try (Stream<Path> stream = Files.walk(Paths.get(directoryPath))) {
-
-            ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+            ExecutorService executor = Executors.newFixedThreadPool(threadCountRowNumberTask);
             stream.filter(Files::isRegularFile)
                     .forEach(path -> {
-                        if ((path + "").contains("batch")) {
-
+                        if ((path.getFileName() + "").contains("batch")) {
                             Runnable worker = new FileService(path + "");
                             executor.execute(worker);
                         }
