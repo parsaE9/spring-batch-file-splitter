@@ -35,14 +35,9 @@ public class ZipOutputTasklet implements Tasklet {
 
 
     private void createZipFiles() throws Exception {
-        System.out.println("started zipping task");
-        long zipBegin = System.currentTimeMillis();
         iterateDirectoryFilesForZipping(outputDirectoryPath);
         for (Thread thread : zipThreadList)
             thread.join();
-        long zipEnd = System.currentTimeMillis();
-        System.out.println("zipping task completion time: " + TimeService.calculateDuration(zipEnd - zipBegin));
-        System.out.println("finished zipping task\n\n\n\n");
     }
 
 

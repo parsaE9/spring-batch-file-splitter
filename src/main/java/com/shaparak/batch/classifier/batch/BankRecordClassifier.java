@@ -46,7 +46,6 @@ public class BankRecordClassifier implements Classifier<BatchRecord, ItemWriter<
     private final ItemWriter<BatchRecord> noorBankItemWriter;
     private final ItemWriter<BatchRecord> shaparakItemWriter;
     private final ItemWriter<BatchRecord> mehreEghtesadBankItemWriter;
-
     private final ItemWriter<BatchRecord> shaparakPaymentFacilitatorBankItemWriter;
     private final ItemWriter<BatchRecord> refahiBankItemWriter;
     private final ItemWriter<BatchRecord> fuelBankItemWriter;

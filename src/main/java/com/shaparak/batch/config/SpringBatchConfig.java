@@ -30,8 +30,6 @@ public class SpringBatchConfig {
     private AchStepConfig achStepConfig;
 
 
-
-
     @Bean
     public Job runJob() throws Exception {
         return jobBuilderFactory.get("ShaparakBatchJob")
@@ -42,7 +40,7 @@ public class SpringBatchConfig {
                 .next(stepBuilderFactory.get("deleteInputStep").tasklet(deleteInputTasklet()).build())
                 .next(stepBuilderFactory.get("rowNumberStep").tasklet(rowNumberTasklet()).build())
                 .next(stepBuilderFactory.get("logStep").tasklet(logTasklet()).build())
-                .next(stepBuilderFactory.get("zipOutputStep").tasklet(logTasklet()).build())
+                .next(stepBuilderFactory.get("zipOutputStep").tasklet(zipOutputTasklet()).build())
 
                 .end()
                 .build();
@@ -101,7 +99,6 @@ public class SpringBatchConfig {
 //        asyncTaskExecutor.setConcurrencyLimit(500);
 //        return asyncTaskExecutor;
 //    }
-
 
 
 }

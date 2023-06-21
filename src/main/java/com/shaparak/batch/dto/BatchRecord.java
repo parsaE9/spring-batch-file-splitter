@@ -35,13 +35,13 @@ public class BatchRecord {
     private String terminalCode;
     private String cardNumber;
 
-    // TODO: we assign origTxnInfo = "" because in the input file, there is no origTxnInfo param.
     private String origTxnInfo;
 
-    private String extraData1;
-    private String extraData2;
-    private String extraData3;
-    private String extraData4;
+    private String acceptorNetCommission;
+    private String acceptorBankCommission;
+    private String businessCategoryCode;
+
+    private String reserve;
 
 
 }

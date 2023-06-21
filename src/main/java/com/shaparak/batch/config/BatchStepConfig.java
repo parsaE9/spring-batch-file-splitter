@@ -84,7 +84,11 @@ public class BatchStepConfig {
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter("|");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("row_number", "psp_code", "acceptorCode", "traceCode", "localDate", "localTime", "reciveDate", "iban", "depositeDate", "depositeType", "depositeCircleNumber", "terminalType", "processType", "cardType", "amountShaparak", "referenceCode", "depositeFlag", "acceptorCommission", "pspCommission", "pspNetCommission", "shaparakCommission", "terminalCode", "cardNumber", "origTxnInfo", "extraData1", "extraData2", "extraData3", "extraData4");
+        lineTokenizer.setNames("row_number", "psp_code", "acceptorCode", "traceCode", "localDate", "localTime", "reciveDate", "iban", "depositeDate",
+                "depositeType", "depositeCircleNumber", "terminalType", "processType", "cardType", "amountShaparak", "referenceCode",
+                "depositeFlag", "acceptorCommission", "pspCommission", "pspNetCommission", "shaparakCommission", "terminalCode", "cardNumber",
+                "origTxnInfo", "acceptor_Net_Commission", "acceptor_bank_Commission", "business_category_code", "reserve");
+
         BeanWrapperFieldSetMapper<BatchRecord> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(BatchRecord.class);
         lineMapper.setLineTokenizer(lineTokenizer);
