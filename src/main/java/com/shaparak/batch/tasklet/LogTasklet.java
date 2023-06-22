@@ -33,6 +33,12 @@ public class LogTasklet implements Tasklet {
     @Value("${input.zip.file.directory.path}")
     private String inputZipFileDirectoryPath;
 
+    @Value("${create.psp.batch-file}")
+    private boolean createPspBatch;
+
+    @Value("${create.bank.batch-file}")
+    private boolean createBankBatch;
+
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
@@ -44,9 +50,10 @@ public class LogTasklet implements Tasklet {
     private void writeLogs() {
         try {
             Files.createDirectories(Paths.get(logDirectoryPath));
-            writeBatchLog();
-            writeExecLog();
+            if (createBankBatch || createPspBatch)
+                writeBatchLog();
             writeAchLog();
+            writeExecLog();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,14 +93,20 @@ public class LogTasklet implements Tasklet {
                         "Index | Record Count | File Name\n",
                 batchFilePath, jobStartDateTime));
 
-        try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/Banks"))) {
-            log.append(iterateFiles(stream, "batch"));
-        }
-        log.append("\nPSPs\nIndex | Record Count | File Name");
-        try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/PSPs"))) {
-            log.append(iterateFiles(stream, "batch"));
+
+        if (Files.exists(Path.of(outputDirectoryPath + "/Banks"))) {
+            try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/Banks"))) {
+                log.append(iterateFiles(stream, "batch"));
+            }
         }
 
+        log.append("\nPSPs\nIndex | Record Count | File Name");
+
+        if (Files.exists(Path.of(outputDirectoryPath + "/PSPs"))) {
+            try (Stream<Path> stream = Files.walk(Paths.get(outputDirectoryPath + "/PSPs"))) {
+                log.append(iterateFiles(stream, "batch"));
+            }
+        }
         log.append(String.format("\n+ Total PSP Amount: %s", ItemWriteListenerImpl.totalPspAmount));
         log.append(String.format("\n+ Total Bank Amount: %s", (ItemWriteListenerImpl.totalPspAmount - ItemWriteListenerImpl.totalCommission)));
         log.append(String.format("\n+ Total Commission Amount: %s", ItemWriteListenerImpl.totalCommission));
@@ -114,6 +127,7 @@ public class LogTasklet implements Tasklet {
         int index = 1;
         for (Path path : stream.filter(Files::isRegularFile).collect(Collectors.toList())) {
             try (Stream<String> fileStream = Files.lines(Paths.get(path + ""))) {
+
                 String fileName = String.valueOf(path.getFileName());
                 if ((fileName).contains(jobType)) {
                     int recordCount = (int) fileStream.count() - 1;
@@ -125,6 +139,8 @@ public class LogTasklet implements Tasklet {
                             log.append(String.format("%6s|%14s|%30s\n", index++, recordCount, path));
 
                         recordCountSum += recordCount;
+                    } else {
+                        new File(path + "").delete();
                     }
                 }
             }

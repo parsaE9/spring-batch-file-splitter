@@ -8,8 +8,6 @@ public class BatchRecordProcessor implements ItemProcessor<BatchRecord, BatchRec
 
     @Override
     public BatchRecord process(BatchRecord batchRecord) throws Exception {
-//        if (batchRecord.getOrigTxnInfo() == null)
-//            batchRecord.setOrigTxnInfo("");
         return batchRecord;
     }
 

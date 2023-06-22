@@ -47,7 +47,7 @@ public class BatchApplication implements CommandLineRunner {
         jobDetailsMap.put("jobStartDateTime", TimeService.formatDateTime(new Date()));
         JobParameters jobParameters = new JobParametersBuilder().addString("JobId", String.valueOf(System.currentTimeMillis())).toJobParameters();
         JobExecution execution = jobLauncher.run(job, jobParameters);
-        System.out.println("STATUS :: " + execution.getStatus());
+        System.out.println("\n\nSTATUS :: " + execution.getStatus() + "\n\n");
 
         System.exit(0);
     }

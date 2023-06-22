@@ -22,6 +22,8 @@ import org.springframework.batch.item.support.ClassifierCompositeItemWriter;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -35,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@ConditionalOnExpression("${create.psp.batch-file:true} or ${create.bank.batch-file:true}")
 public class BatchStepConfig {
 
     @Autowired
@@ -46,16 +49,13 @@ public class BatchStepConfig {
     @Autowired
     private BankItemWriter bankItemWriter;
 
-    @Autowired
-    private UnzipService unzipService;
-
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFilePath;
 
-    @Value("${create.bank-file}")
+    @Value("${create.bank.batch-file}")
     private boolean bankFlag;
 
-    @Value("${create.psp-file}")
+    @Value("${create.psp.batch-file}")
     private boolean pspFlag;
 
     @Value("${thread.count.batch.task}")
@@ -85,11 +85,7 @@ public class BatchStepConfig {
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter("|");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("row_number", "psp_code", "acceptorCode", "traceCode", "localDate", "localTime", "reciveDate", "iban", "depositeDate",
-                "depositeType", "depositeCircleNumber", "terminalType", "processType", "cardType", "amountShaparak", "referenceCode",
-                "depositeFlag", "acceptorCommission", "pspCommission", "pspNetCommission", "shaparakCommission", "terminalCode", "cardNumber",
-                "origTxnInfo", "acceptor_Net_Commission", "acceptor_bank_Commission", "business_category_code", "reserve");
-
+        lineTokenizer.setNames("row_number", "psp_code", "acceptorCode", "traceCode", "localDate", "localTime", "reciveDate", "iban", "depositeDate", "depositeType", "depositeCircleNumber", "terminalType", "processType", "cardType", "amountShaparak", "referenceCode", "depositeFlag", "acceptorCommission", "pspCommission", "pspNetCommission", "shaparakCommission", "terminalCode", "cardNumber", "origTxnInfo", "acceptor_Net_Commission", "acceptor_bank_Commission", "business_category_code", "reserve");
         BeanWrapperFieldSetMapper<BatchRecord> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(BatchRecord.class);
         lineMapper.setLineTokenizer(lineTokenizer);
@@ -113,8 +109,6 @@ public class BatchStepConfig {
             itemWriter.setDelegates(List.of(bankClassifierCompositeItemWriter()));
         else if (pspFlag)
             itemWriter.setDelegates(List.of(pspClassifierCompositeItemWriter()));
-        else
-            throw new Exception("bankFlag and pspFlag can not be false at same time");
 
         return itemWriter;
     }
@@ -123,7 +117,7 @@ public class BatchStepConfig {
     public Step batchStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<BatchRecord, BatchRecord>chunk(1000)
                 .reader(reader())
-                .processor(processor())
+//                .processor(processor())
                 .writer(compositeItemWriter())
                 .listener(new ItemWriteListenerImpl())
 
@@ -200,8 +194,6 @@ public class BatchStepConfig {
                 .taskExecutor(taskExecutor())
                 .throttleLimit(threadCount)
 //                .listener(new StepListenerImpl())
-
-//                .listener(new ChunkListenerImpl())                 // test speed with and without listener
                 .build();
     }
 

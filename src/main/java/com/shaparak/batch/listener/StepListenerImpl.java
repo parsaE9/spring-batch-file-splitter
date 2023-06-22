@@ -11,25 +11,25 @@ public class StepListenerImpl implements StepExecutionListener {
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        try {
-            FileWriter batchFileWriter = new FileWriter("C:/Users/p.aliesfahani/Desktop/test" + "/log.log", true);
-            batchFileWriter.append("before step\n");
-            batchFileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileWriter batchFileWriter = new FileWriter("C:/Users/p.aliesfahani/Desktop/test" + "/log.log", true);
+//            batchFileWriter.append("before step\n");
+//            batchFileWriter.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         System.out.println("before  step");
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        try {
-            FileWriter batchFileWriter = new FileWriter("C:/Users/p.aliesfahani/Desktop/test" + "/log.log", true);
-            batchFileWriter.append("after step\n");
-            batchFileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileWriter batchFileWriter = new FileWriter("C:/Users/p.aliesfahani/Desktop/test" + "/log.log", true);
+//            batchFileWriter.append("after step\n");
+//            batchFileWriter.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         System.out.println("after  step");
         return ExitStatus.COMPLETED;
     }

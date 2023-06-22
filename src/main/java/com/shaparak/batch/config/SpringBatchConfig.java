@@ -5,11 +5,15 @@ import com.shaparak.batch.tasklet.LogTasklet;
 import com.shaparak.batch.tasklet.RowNumberTasklet;
 import com.shaparak.batch.tasklet.ZipOutputTasklet;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,28 +27,110 @@ public class SpringBatchConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    @Autowired
+    @Autowired(required = false)
     private BatchStepConfig batchStepConfig;
 
     @Autowired
     private AchStepConfig achStepConfig;
 
+    @Value("${zip.output.files}")
+    private boolean zipOutputFiles;
+
+    @Value("${delete.extracted.input}")
+    private boolean deleteExtractedInput;
+
+    @Value("${create.psp.batch-file}")
+    private boolean createPspBatch;
+
+    @Value("${create.bank.batch-file}")
+    private boolean createBankBatch;
+
 
     @Bean
     public Job runJob() throws Exception {
         return jobBuilderFactory.get("ShaparakBatchJob")
-//                .start(splitFlow())
-
-                .flow(batchStepConfig.batchStep())
-                .next(achStepConfig.achStep())
-                .next(stepBuilderFactory.get("deleteInputStep").tasklet(deleteInputTasklet()).build())
-                .next(stepBuilderFactory.get("rowNumberStep").tasklet(rowNumberTasklet()).build())
-                .next(stepBuilderFactory.get("logStep").tasklet(logTasklet()).build())
-                .next(stepBuilderFactory.get("zipOutputStep").tasklet(zipOutputTasklet()).build())
-
+                .start(getFlow())
                 .end()
                 .build();
     }
+
+
+
+    private Flow getFlow() throws Exception {
+        boolean createBatch = createBankBatch || createPspBatch;
+
+        if (zipOutputFiles && deleteExtractedInput && createBatch) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(batchStepConfig.batchStep())
+                    .next(achStepConfig.achStep())
+                    .next(deleteInputStep())
+                    .next(rowNumberStep())
+                    .next(logStep())
+                    .next(zipOutputStep())
+                    .end();
+        } else if (zipOutputFiles && createBatch) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(batchStepConfig.batchStep())
+                    .next(achStepConfig.achStep())
+                    .next(rowNumberStep())
+                    .next(logStep())
+                    .next(zipOutputStep())
+                    .end();
+        } else if (deleteExtractedInput && createBatch) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(batchStepConfig.batchStep())
+                    .next(achStepConfig.achStep())
+                    .next(deleteInputStep())
+                    .next(rowNumberStep())
+                    .next(logStep())
+                    .end();
+        } else if (zipOutputFiles && deleteExtractedInput) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(achStepConfig.achStep())
+                    .next(deleteInputStep())
+                    .next(rowNumberStep())
+                    .next(logStep())
+                    .next(zipOutputStep())
+                    .end();
+        } else {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(achStepConfig.achStep())
+                    .next(rowNumberStep())
+                    .next(logStep())
+                    .end();
+        }
+    }
+
+
+
+    @Bean
+    public Step deleteInputStep() {
+        return stepBuilderFactory.get("deleteInputStep")
+                .tasklet(deleteInputTasklet())
+                .build();
+    }
+
+    @Bean
+    public Step rowNumberStep() {
+        return stepBuilderFactory.get("rowNumberStep")
+                .tasklet(rowNumberTasklet())
+                .build();
+    }
+
+    @Bean
+    public Step logStep() {
+        return stepBuilderFactory.get("logStep")
+                .tasklet(logTasklet())
+                .build();
+    }
+
+    @Bean
+    public Step zipOutputStep() {
+        return stepBuilderFactory.get("zipOutputStep")
+                .tasklet(zipOutputTasklet())
+                .build();
+    }
+
 
     @Bean
     public Tasklet deleteInputTasklet() {
@@ -65,7 +151,6 @@ public class SpringBatchConfig {
     public Tasklet zipOutputTasklet() {
         return new ZipOutputTasklet();
     }
-
 
 //    @Bean
 //    public Flow splitFlow() throws Exception {
