@@ -1,6 +1,6 @@
 package com.shaparak.batch.classifier.batch;
 
-import com.shaparak.batch.dto.BatchRecord;
+import com.shaparak.batch.dto.batch.BatchRecord;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.classify.Classifier;

@@ -30,6 +30,9 @@ public class UnzipService {
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFileDestination;
 
+    @Value("${unzip.input.file}")
+    private boolean unzipInputFile;
+
     public static String fileDate;
 
 
@@ -106,9 +109,11 @@ public class UnzipService {
 
 
     public void clearFolders() throws IOException {
-        FileUtils.deleteDirectory(new File(outputDirectoryPath));
-        FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
         System.out.println("\ncleared folders\n\n\n");
+        FileUtils.deleteDirectory(new File(outputDirectoryPath));
+
+        if (unzipInputFile)
+            FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
     }
 
 

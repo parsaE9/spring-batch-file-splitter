@@ -28,6 +28,9 @@ public class CsvService {
     @Value("${input.csv.file.path.bank}")
     private String bankCsvFilePath;
 
+    @Value("${unzip.input.file}")
+    private boolean unzipInputFile;
+
     @Autowired
     private UnzipService unzipService;
 
@@ -42,7 +45,9 @@ public class CsvService {
 
 
         unzipService.clearFolders();
-        unzipService.unzip();
+
+        if (unzipInputFile)
+            unzipService.unzip();
     }
 
 

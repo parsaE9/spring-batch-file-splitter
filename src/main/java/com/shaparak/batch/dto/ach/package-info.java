@@ -4,7 +4,7 @@
         elementFormDefault = XmlNsForm.QUALIFIED
 )
 
-package com.shaparak.batch.dto.xml;
+package com.shaparak.batch.dto.ach;
 
 import javax.xml.bind.annotation.XmlNs;
 import javax.xml.bind.annotation.XmlNsForm;

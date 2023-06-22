@@ -1,17 +1,17 @@
 package com.shaparak.batch.processor;
 
-import com.shaparak.batch.dto.xml.CdtTrfTxInfDto;
+import com.shaparak.batch.dto.ach.AchRecord;
 import org.springframework.batch.item.ItemProcessor;
 
-public class AchRecordProcessor implements ItemProcessor<CdtTrfTxInfDto, CdtTrfTxInfDto> {
+public class AchRecordProcessor implements ItemProcessor<AchRecord, AchRecord> {
 
     public static long totalAmount = 0L;
 
 
     @Override
-    public synchronized CdtTrfTxInfDto process(CdtTrfTxInfDto cdtTrfTxInfDto) throws Exception {
-        totalAmount += Long.parseLong(cdtTrfTxInfDto.getIntrBkSttlmAmt());
-        return cdtTrfTxInfDto;
+    public synchronized AchRecord process(AchRecord achRecord) throws Exception {
+        totalAmount += Long.parseLong(achRecord.getIntrBkSttlmAmt());
+        return achRecord;
     }
 
 

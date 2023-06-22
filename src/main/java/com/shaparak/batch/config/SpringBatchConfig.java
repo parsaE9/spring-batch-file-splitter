@@ -1,9 +1,11 @@
 package com.shaparak.batch.config;
 
-import com.shaparak.batch.tasklet.DeleteInputTasklet;
-import com.shaparak.batch.tasklet.LogTasklet;
-import com.shaparak.batch.tasklet.RowNumberTasklet;
-import com.shaparak.batch.tasklet.ZipOutputTasklet;
+import com.shaparak.batch.config.step.AchStepConfig;
+import com.shaparak.batch.config.step.BatchStepConfig;
+import com.shaparak.batch.config.tasklet.DeleteInputTasklet;
+import com.shaparak.batch.config.tasklet.LogTasklet;
+import com.shaparak.batch.config.tasklet.RowNumberTasklet;
+import com.shaparak.batch.config.tasklet.ZipOutputTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;

@@ -1,4 +1,4 @@
-package com.shaparak.batch.dto;
+package com.shaparak.batch.dto.batch;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

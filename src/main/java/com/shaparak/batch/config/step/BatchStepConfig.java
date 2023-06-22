@@ -1,13 +1,11 @@
-package com.shaparak.batch.config;
+package com.shaparak.batch.config.step;
 
 import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.batch.BankRecordClassifier;
 import com.shaparak.batch.classifier.batch.PspRecordClassifier;
-import com.shaparak.batch.dto.BatchRecord;
+import com.shaparak.batch.dto.batch.BatchRecord;
 import com.shaparak.batch.listener.ItemWriteListenerImpl;
-import com.shaparak.batch.listener.StepListenerImpl;
 import com.shaparak.batch.processor.BatchRecordProcessor;
-import com.shaparak.batch.service.UnzipService;
 import com.shaparak.batch.writer.batch.BankItemWriter;
 import com.shaparak.batch.writer.batch.PspItemWriter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -23,13 +21,11 @@ import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.File;
 import java.io.FileFilter;

@@ -1,6 +1,6 @@
 package com.shaparak.batch.aggregator.batch;
 
-import com.shaparak.batch.dto.BatchRecord;
+import com.shaparak.batch.dto.batch.BatchRecord;
 import org.springframework.batch.item.file.transform.LineAggregator;
 
 public class BankLineAggregator implements LineAggregator<BatchRecord> {

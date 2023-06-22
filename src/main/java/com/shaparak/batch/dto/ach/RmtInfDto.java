@@ -1,4 +1,4 @@
-package com.shaparak.batch.dto.xml;
+package com.shaparak.batch.dto.ach;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,14 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlRootElement(name="PmtId")
+@XmlRootElement(name="RmtInf")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PmtIdDto {
+public class RmtInfDto {
 
-
-    private String InstrId;
-    private String EndToEndId;
-    private String TxId;
-
+    private String Ustrd;
 
 }

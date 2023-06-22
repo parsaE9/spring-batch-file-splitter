@@ -1,6 +1,6 @@
 package com.shaparak.batch.listener;
 
-import com.shaparak.batch.dto.BatchRecord;
+import com.shaparak.batch.dto.batch.BatchRecord;
 import org.springframework.batch.core.ItemWriteListener;
 
 import java.util.List;

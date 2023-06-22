@@ -1,4 +1,4 @@
-package com.shaparak.batch.dto.xml;
+package com.shaparak.batch.dto.ach;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlRootElement(name="CdtrAcctId")
+@XmlRootElement(name="Cdtr")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CdtrAcctIdDto {
+public class CdtrDto {
 
 
-    private String IBAN;
+    private String Nm;
 
 
 }

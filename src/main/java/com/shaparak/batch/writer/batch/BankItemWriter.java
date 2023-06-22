@@ -3,7 +3,7 @@ package com.shaparak.batch.writer.batch;
 import com.shaparak.batch.aggregator.batch.BankLineAggregator;
 import com.shaparak.batch.dto.csv.BankDto;
 import com.shaparak.batch.header.HeaderWriter;
-import com.shaparak.batch.dto.BatchRecord;
+import com.shaparak.batch.dto.batch.BatchRecord;
 import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.UnzipService;
 import org.springframework.batch.item.file.FlatFileItemWriter;

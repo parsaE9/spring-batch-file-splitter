@@ -1,9 +1,8 @@
-package com.shaparak.batch.config;
+package com.shaparak.batch.config.step;
 
 import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.ach.AchRecordClassifier;
-import com.shaparak.batch.dto.xml.CdtTrfTxInfDto;
-import com.shaparak.batch.listener.StepListenerImpl;
+import com.shaparak.batch.dto.ach.AchRecord;
 import com.shaparak.batch.processor.AchRecordProcessor;
 import com.shaparak.batch.writer.ach.AchItemWriter;
 import org.springframework.batch.core.Step;
@@ -43,11 +42,11 @@ public class AchStepConfig {
 
 
     @Bean
-    public ResourceAwareItemReaderItemStream<CdtTrfTxInfDto> achXmlReader() {
+    public ResourceAwareItemReaderItemStream<AchRecord> achXmlReader() {
         Jaxb2Marshaller AchMarshaller = new Jaxb2Marshaller();
-        AchMarshaller.setClassesToBeBound(CdtTrfTxInfDto.class);
+        AchMarshaller.setClassesToBeBound(AchRecord.class);
 
-        return new StaxEventItemReaderBuilder<CdtTrfTxInfDto>()
+        return new StaxEventItemReaderBuilder<AchRecord>()
                 .name("AchReader")
                 .addFragmentRootElements("CdtTrfTxInf")
                 .unmarshaller(AchMarshaller)
@@ -57,7 +56,7 @@ public class AchStepConfig {
 
 
     @Bean
-    public MultiResourceItemReader<CdtTrfTxInfDto> achMultiResourceItemReader() {
+    public MultiResourceItemReader<AchRecord> achMultiResourceItemReader() {
         String path = unzippedInputFilePath + "/ACH";
         File[] files = new File(path).listFiles();
         List<Resource> resources = new ArrayList<>();
@@ -71,7 +70,7 @@ public class AchStepConfig {
         Resource[] resourcesArray = new Resource[resources.size()];
         resources.toArray(resourcesArray);
 
-        MultiResourceItemReader<CdtTrfTxInfDto> reader = new MultiResourceItemReader<>();
+        MultiResourceItemReader<AchRecord> reader = new MultiResourceItemReader<>();
         reader.setDelegate(achXmlReader());
         reader.setResources(resourcesArray);
         return reader;
@@ -86,7 +85,7 @@ public class AchStepConfig {
 
     @Bean
     public Step achStep() throws Exception {
-        return stepBuilderFactory.get("achStep").<CdtTrfTxInfDto, CdtTrfTxInfDto>chunk(1000)
+        return stepBuilderFactory.get("achStep").<AchRecord, AchRecord>chunk(1000)
                 .reader(achMultiResourceItemReader())
                 .processor(achProcessor())
                 .writer(achClassifierCompositeItemWriter())
@@ -133,8 +132,8 @@ public class AchStepConfig {
 
 
     @Bean
-    public ClassifierCompositeItemWriter<CdtTrfTxInfDto> achClassifierCompositeItemWriter() throws Exception {
-        ClassifierCompositeItemWriter<CdtTrfTxInfDto> classifierCompositeItemWriter = new ClassifierCompositeItemWriter<>();
+    public ClassifierCompositeItemWriter<AchRecord> achClassifierCompositeItemWriter() throws Exception {
+        ClassifierCompositeItemWriter<AchRecord> classifierCompositeItemWriter = new ClassifierCompositeItemWriter<>();
         classifierCompositeItemWriter.setClassifier(new AchRecordClassifier(
                 achItemWriter.sep2SwitchAchItemWriter(),
                 achItemWriter.sep1SwitchAchItemWriter(),

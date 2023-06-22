@@ -1,17 +1,16 @@
 package com.shaparak.batch.aggregator.ach;
 
-import com.shaparak.batch.dto.BatchRecord;
-import com.shaparak.batch.dto.xml.CdtTrfTxInfDto;
+import com.shaparak.batch.dto.ach.AchRecord;
 import org.springframework.batch.item.file.transform.LineAggregator;
 
-public class AchLineAggregator implements LineAggregator<CdtTrfTxInfDto> {
+public class AchLineAggregator implements LineAggregator<AchRecord> {
 
 
 	@Override
-	public String aggregate(CdtTrfTxInfDto cdtTrfTxInfDto) {
+	public String aggregate(AchRecord achRecord) {
 		try {
-			return cdtTrfTxInfDto.getCdtr().getNm() + "%" + cdtTrfTxInfDto.getCdtrAcct().getId().getIBAN() + "%" + cdtTrfTxInfDto.getPmtId().getInstrId() + "%" +
-					cdtTrfTxInfDto.getIntrBkSttlmAmt() + "%" + cdtTrfTxInfDto.getPmtId().getEndToEndId() + "%" + cdtTrfTxInfDto.getPmtId().getTxId();
+			return achRecord.getCdtr().getNm() + "%" + achRecord.getCdtrAcct().getId().getIBAN() + "%" + achRecord.getPmtId().getInstrId() + "%" +
+					achRecord.getIntrBkSttlmAmt() + "%" + achRecord.getPmtId().getEndToEndId() + "%" + achRecord.getPmtId().getTxId();
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to serialize Record", e);
 		}

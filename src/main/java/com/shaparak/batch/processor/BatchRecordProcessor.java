@@ -1,6 +1,6 @@
 package com.shaparak.batch.processor;
 
-import com.shaparak.batch.dto.BatchRecord;
+import com.shaparak.batch.dto.batch.BatchRecord;
 import org.springframework.batch.item.ItemProcessor;
 
 public class BatchRecordProcessor implements ItemProcessor<BatchRecord, BatchRecord> {
