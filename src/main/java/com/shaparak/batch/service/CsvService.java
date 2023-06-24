@@ -62,6 +62,7 @@ public class CsvService {
                 bankDto.setName(csvRecord.get(1));
                 bankDto.setBankCode(csvRecord.get(0));
                 bankDto.setBicCode(csvRecord.get(2));
+                bankDto.setActive(Boolean.parseBoolean(csvRecord.get(3)));
                 bankMap.put(bankDto.getBankCode(), bankDto);
             }
 
@@ -83,6 +84,7 @@ public class CsvService {
                 switchDto.setFileName(csvRecord.get(0));
                 switchDto.setFolderName(csvRecord.get(1));
                 switchDto.setIin(csvRecord.get(2));
+                switchDto.setActive(Boolean.parseBoolean(csvRecord.get(3)));
                 switchMap.put(switchDto.getIin(), switchDto);
             }
 

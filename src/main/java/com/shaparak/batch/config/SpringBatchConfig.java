@@ -65,8 +65,8 @@ public class SpringBatchConfig {
                     .next(deleteInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
+                    .next(deleteExtraOutputStep())
                     .next(zipOutputStep())
-                    .next(deleteEmptyDirsStep())
                     .end();
         } else if (zipOutputFiles && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
@@ -74,8 +74,8 @@ public class SpringBatchConfig {
                     .next(achStepConfig.achStep())
                     .next(rowNumberStep())
                     .next(logStep())
+                    .next(deleteExtraOutputStep())
                     .next(zipOutputStep())
-                    .next(deleteEmptyDirsStep())
                     .end();
         } else if (deleteExtractedInput && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
@@ -84,7 +84,7 @@ public class SpringBatchConfig {
                     .next(deleteInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
-                    .next(deleteEmptyDirsStep())
+                    .next(deleteExtraOutputStep())
                     .end();
         } else if (zipOutputFiles && deleteExtractedInput) {
             return new FlowBuilder<Flow>("JobFlow")
@@ -92,15 +92,15 @@ public class SpringBatchConfig {
                     .next(deleteInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
+                    .next(deleteExtraOutputStep())
                     .next(zipOutputStep())
-                    .next(deleteEmptyDirsStep())
                     .end();
         } else {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(achStepConfig.achStep())
                     .next(rowNumberStep())
                     .next(logStep())
-                    .next(deleteEmptyDirsStep())
+                    .next(deleteExtraOutputStep())
                     .end();
         }
     }
@@ -136,9 +136,9 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Step deleteEmptyDirsStep() {
-        return stepBuilderFactory.get("deleteEmptyDirsStep")
-                .tasklet(deleteEmptyDirsTasklet())
+    public Step deleteExtraOutputStep() {
+        return stepBuilderFactory.get("deleteExtraOutputStep")
+                .tasklet(deleteExtraOutputTasklet())
                 .build();
     }
 
@@ -165,7 +165,7 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Tasklet deleteEmptyDirsTasklet() { return new DeleteEmptyDirsTasklet(); }
+    public Tasklet deleteExtraOutputTasklet() { return new DeleteExtraOutputTasklet(); }
 
 
 //    @Bean

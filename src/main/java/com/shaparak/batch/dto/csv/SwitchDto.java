@@ -17,4 +17,8 @@ public class SwitchDto {
 
     private String iin;
 
+    private boolean active;
+
+    private String filePath;
+
 }

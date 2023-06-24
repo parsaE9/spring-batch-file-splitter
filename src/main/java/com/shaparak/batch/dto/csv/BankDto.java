@@ -17,4 +17,8 @@ public class BankDto {
 
     private String bicCode;
 
+    private boolean active;
+
+    private String filePath;
+
 }
