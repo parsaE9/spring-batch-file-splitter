@@ -1,4 +1,4 @@
-package com.shaparak.batch.config.tasklet;
+package com.shaparak.batch.tasklet;
 
 import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.listener.ItemWriteListenerImpl;
