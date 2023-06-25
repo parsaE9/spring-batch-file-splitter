@@ -60,7 +60,7 @@ public class SpringBatchConfig {
         if (zipOutputFiles && deleteExtractedInput && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(batchStepConfig.batchStep())
-                    .next(achStepConfig.achStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
@@ -70,7 +70,7 @@ public class SpringBatchConfig {
         } else if (zipOutputFiles && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(batchStepConfig.batchStep())
-                    .next(achStepConfig.achStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(rowNumberStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
@@ -79,7 +79,7 @@ public class SpringBatchConfig {
         } else if (deleteExtractedInput && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(batchStepConfig.batchStep())
-                    .next(achStepConfig.achStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
@@ -87,7 +87,7 @@ public class SpringBatchConfig {
                     .end();
         } else if (zipOutputFiles && deleteExtractedInput) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achStep())
+                    .from(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
@@ -96,28 +96,28 @@ public class SpringBatchConfig {
         } else if (createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(batchStepConfig.batchStep())
-                    .next(achStepConfig.achStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(rowNumberStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .end();
         } else if (deleteExtractedInput) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achStep())
+                    .from(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .end();
         } else if (zipOutputFiles) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achStep())
+                    .from(achStepConfig.achMasterStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .next(zipOutputStep())
                     .end();
         } else {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achStep())
+                    .from(achStepConfig.achMasterStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .end();
