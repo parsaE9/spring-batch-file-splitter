@@ -54,7 +54,6 @@ public class SpringBatchConfig {
     }
 
 
-
     private Flow getFlow() throws Exception {
         boolean createBatch = createBankBatch || createPspBatch;
 
@@ -62,7 +61,7 @@ public class SpringBatchConfig {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(batchStepConfig.batchStep())
                     .next(achStepConfig.achStep())
-                    .next(deleteInputStep())
+                    .next(deleteExtractedInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
@@ -81,7 +80,7 @@ public class SpringBatchConfig {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(batchStepConfig.batchStep())
                     .next(achStepConfig.achStep())
-                    .next(deleteInputStep())
+                    .next(deleteExtractedInputStep())
                     .next(rowNumberStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
@@ -89,8 +88,29 @@ public class SpringBatchConfig {
         } else if (zipOutputFiles && deleteExtractedInput) {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(achStepConfig.achStep())
-                    .next(deleteInputStep())
+                    .next(deleteExtractedInputStep())
+                    .next(logStep())
+                    .next(deleteExtraOutputStep())
+                    .next(zipOutputStep())
+                    .end();
+        } else if (createBatch) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(batchStepConfig.batchStep())
+                    .next(achStepConfig.achStep())
                     .next(rowNumberStep())
+                    .next(logStep())
+                    .next(deleteExtraOutputStep())
+                    .end();
+        } else if (deleteExtractedInput) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(achStepConfig.achStep())
+                    .next(deleteExtractedInputStep())
+                    .next(logStep())
+                    .next(deleteExtraOutputStep())
+                    .end();
+        } else if (zipOutputFiles) {
+            return new FlowBuilder<Flow>("JobFlow")
+                    .from(achStepConfig.achStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .next(zipOutputStep())
@@ -98,7 +118,6 @@ public class SpringBatchConfig {
         } else {
             return new FlowBuilder<Flow>("JobFlow")
                     .from(achStepConfig.achStep())
-                    .next(rowNumberStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .end();
@@ -106,11 +125,10 @@ public class SpringBatchConfig {
     }
 
 
-
     @Bean
-    public Step deleteInputStep() {
+    public Step deleteExtractedInputStep() {
         return stepBuilderFactory.get("deleteInputStep")
-                .tasklet(deleteInputTasklet())
+                .tasklet(deleteExtractedInputTasklet())
                 .build();
     }
 
@@ -143,10 +161,9 @@ public class SpringBatchConfig {
     }
 
 
-
     @Bean
-    public Tasklet deleteInputTasklet() {
-        return new DeleteInputTasklet();
+    public Tasklet deleteExtractedInputTasklet() {
+        return new DeleteExtractedInputTasklet();
     }
 
     @Bean
@@ -165,41 +182,9 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Tasklet deleteExtraOutputTasklet() { return new DeleteExtraOutputTasklet(); }
-
-
-//    @Bean
-//    public Flow splitFlow() throws Exception {
-//        return new FlowBuilder<SimpleFlow>("splitFlow")
-//                .split(taskExecutor5())
-//                .add(flow1(), flow2())
-//                .build();
-//    }
-//
-//    @Bean
-//    public Flow flow1() throws Exception {
-//        return new FlowBuilder<SimpleFlow>("flow1")
-//                .start(batchStepConfig.batchStep())
-//                .build();
-//
-//    }
-//
-//    @Bean
-//    public Flow flow2() throws Exception {
-//        return new FlowBuilder<SimpleFlow>("flow2")
-//                .start(achStepConfig.achStep())
-//                .build();
-//    }
-//
-//    // TODO: work on this
-//    // lower number of batchstep threads
-//
-//    @Bean
-//    public TaskExecutor taskExecutor5() {
-//        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
-//        asyncTaskExecutor.setConcurrencyLimit(500);
-//        return asyncTaskExecutor;
-//    }
+    public Tasklet deleteExtraOutputTasklet() {
+        return new DeleteExtraOutputTasklet();
+    }
 
 
 }

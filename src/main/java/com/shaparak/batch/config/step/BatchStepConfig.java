@@ -109,6 +109,7 @@ public class BatchStepConfig {
         return itemWriter;
     }
 
+
     @Bean
     public Step batchStep() throws Exception {
         return stepBuilderFactory.get("batchStep").<BatchRecord, BatchRecord>chunk(1000)
@@ -189,7 +190,6 @@ public class BatchStepConfig {
 
                 .taskExecutor(taskExecutor())
                 .throttleLimit(threadCount)
-//                .listener(new StepListenerImpl())
                 .build();
     }
 

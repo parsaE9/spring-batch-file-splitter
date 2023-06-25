@@ -1,22 +1,19 @@
 package com.shaparak.batch.tasklet;
 
 import com.shaparak.batch.BatchApplication;
-import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.TimeService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Date;
 
 
-public class DeleteInputTasklet implements Tasklet {
+public class DeleteExtractedInputTasklet implements Tasklet {
 
     @Value("${unzipped.input.file.destination.path}")
     private String extractedInputDirectoryPath;
