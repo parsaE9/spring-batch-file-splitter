@@ -59,10 +59,11 @@ public class CsvService {
 
             for (CSVRecord csvRecord : csvRecords) {
                 BankDto bankDto = new BankDto();
-                bankDto.setName(csvRecord.get(1));
                 bankDto.setBankCode(csvRecord.get(0));
+                bankDto.setName(csvRecord.get(1));
                 bankDto.setBicCode(csvRecord.get(2));
                 bankDto.setActive(Boolean.parseBoolean(csvRecord.get(3)));
+                bankDto.setAddPan(Boolean.parseBoolean(csvRecord.get(4)));
                 bankMap.put(bankDto.getBankCode(), bankDto);
             }
 

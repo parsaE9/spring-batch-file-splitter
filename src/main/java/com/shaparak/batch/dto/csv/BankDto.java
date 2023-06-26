@@ -19,6 +19,9 @@ public class BankDto {
 
     private boolean active;
 
+    private boolean addPan;
+
     private String filePath;
+
 
 }

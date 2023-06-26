@@ -1,6 +1,7 @@
 package com.shaparak.batch.writer.batch;
 
 import com.shaparak.batch.aggregator.batch.BankLineAggregator;
+import com.shaparak.batch.aggregator.batch.BankPanLineAggregator;
 import com.shaparak.batch.dto.csv.BankDto;
 import com.shaparak.batch.header.HeaderWriter;
 import com.shaparak.batch.dto.batch.BatchRecord;
@@ -272,8 +273,13 @@ public class BankItemWriter {
         String bankOutputPath = new File(outputDirectoryPath + "/Banks/" + bankDto.getName() + "/batch_" + UnzipService.fileDate + "_cycle_01_details.shap_" + bankDto.getBicCode() + "_" + bankDto.getBankCode() + ".txt").getAbsolutePath();
         bankDto.setFilePath(bankOutputPath);
         FlatFileItemWriter<BatchRecord> writer = new FlatFileItemWriter<>();
-        writer.setHeaderCallback(new HeaderWriter(getBankHeader()));
-        writer.setLineAggregator(new BankLineAggregator());
+        if (bankDto.isAddPan()) {
+            writer.setHeaderCallback(new HeaderWriter(getBankPanHeader()));
+            writer.setLineAggregator(new BankPanLineAggregator());
+        } else {
+            writer.setHeaderCallback(new HeaderWriter(getBankHeader()));
+            writer.setLineAggregator(new BankLineAggregator());
+        }
         writer.setResource(new FileSystemResource(bankOutputPath));
         writer.afterPropertiesSet();
         return writer;
@@ -282,6 +288,10 @@ public class BankItemWriter {
 
     private String getBankHeader() {
         return "row_number|psp_code|acceptor_code|trace_code|local_date|local_time|recive_date|IBAN|deposite_date|deposite_type|deposite_circle_number|terminal_type|proccess_type|card_type|amount_shaparak|reference_code|deposite_flag|terminal_code|orig_txn_info";
+    }
+
+    private String getBankPanHeader() {
+        return "row_number|psp_code|acceptor_code|trace_code|local_date|local_time|recive_date|IBAN|deposite_date|deposite_type|deposite_circle_number|terminal_type|proccess_type|card_type|amount_shaparak|reference_code|deposite_flag|terminal_code|orig_txn_info|card_number";
     }
 
 
