@@ -4,6 +4,7 @@ import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.ach.AchRecordClassifier;
 import com.shaparak.batch.dto.ach.AchRecord;
 import com.shaparak.batch.dto.csv.SwitchDto;
+import com.shaparak.batch.listener.AchItemWriterListener;
 import com.shaparak.batch.processor.AchRecordProcessor;
 import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.UnzipService;
@@ -103,6 +104,7 @@ public class AchStepConfig {
                 .reader(achReader(null))
                 .processor(achProcessor())
                 .writer(achClassifierCompositeItemWriter())
+                .listener(new AchItemWriterListener())
 
                 .stream(achItemWriter.sep2SwitchAchItemWriter())
                 .stream(achItemWriter.sep1SwitchAchItemWriter())
@@ -129,8 +131,6 @@ public class AchStepConfig {
                 .stream(achItemWriter.sshpSwitchAchItemWriter())
                 .stream(achItemWriter.hubSwitchAchItemWriter())
 
-//                .taskExecutor().throttleLimit()
-
                 .build();
     }
 
@@ -148,7 +148,7 @@ public class AchStepConfig {
     @Bean
     public TaskExecutor achTaskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
-        asyncTaskExecutor.setConcurrencyLimit(30);
+        asyncTaskExecutor.setConcurrencyLimit(50);
         return asyncTaskExecutor;
     }
 

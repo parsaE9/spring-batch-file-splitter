@@ -5,7 +5,7 @@ import org.springframework.batch.core.ItemWriteListener;
 
 import java.util.List;
 
-public class ItemWriteListenerImpl implements ItemWriteListener<BatchRecord> {
+public class BatchItemWriterListener implements ItemWriteListener<BatchRecord> {
 
     public static long totalPspAmount = 0L;
     public static long totalCommission = 0L;

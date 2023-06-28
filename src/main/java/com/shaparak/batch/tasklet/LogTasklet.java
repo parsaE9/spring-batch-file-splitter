@@ -1,10 +1,9 @@
 package com.shaparak.batch.tasklet;
 
 import com.shaparak.batch.BatchApplication;
-import com.shaparak.batch.listener.ItemWriteListenerImpl;
+import com.shaparak.batch.listener.AchItemWriterListener;
+import com.shaparak.batch.listener.BatchItemWriterListener;
 import com.shaparak.batch.processor.AchRecordProcessor;
-import com.shaparak.batch.service.FileService;
-import com.shaparak.batch.service.TimeService;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -17,8 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,9 +104,9 @@ public class LogTasklet implements Tasklet {
                 log.append(iterateFiles(stream, "batch"));
             }
         }
-        log.append(String.format("\n+ Total PSP Amount: %s", ItemWriteListenerImpl.totalPspAmount));
-        log.append(String.format("\n+ Total Bank Amount: %s", (ItemWriteListenerImpl.totalPspAmount - ItemWriteListenerImpl.totalCommission)));
-        log.append(String.format("\n+ Total Commission Amount: %s", ItemWriteListenerImpl.totalCommission));
+        log.append(String.format("\n+ Total PSP Amount: %s", BatchItemWriterListener.totalPspAmount));
+        log.append(String.format("\n+ Total Bank Amount: %s", (BatchItemWriterListener.totalPspAmount - BatchItemWriterListener.totalCommission)));
+        log.append(String.format("\n+ Total Commission Amount: %s", BatchItemWriterListener.totalCommission));
         log.append(String.format("\n+ Process Time: %s", jobProcessTime));
         log.append("\n_________________________________________________________________________________________________________________________________\n");
 
@@ -147,7 +144,7 @@ public class LogTasklet implements Tasklet {
         }
 
         if (jobType.equals("Ach")) {
-            long totalAmount = AchRecordProcessor.totalAmount;
+            long totalAmount = AchItemWriterListener.totalAmount;
             String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
             String achFilesCount = BatchApplication.jobDetailsMap.get("inputAchFilesCount");
             String jobFinishDateTime = BatchApplication.jobDetailsMap.get("jobFinishDateTime");
@@ -167,8 +164,8 @@ public class LogTasklet implements Tasklet {
         String jobStartDate = BatchApplication.jobDetailsMap.get("jobStartDateTime");
         String jobFinishDate = BatchApplication.jobDetailsMap.get("jobFinishDateTime");
         String jobProcessTime = BatchApplication.jobDetailsMap.get("jobProcessTime");
-        long pspAmountSum = ItemWriteListenerImpl.totalPspAmount;
-        long acceptorCommissionSum = ItemWriteListenerImpl.totalCommission;
+        long pspAmountSum = BatchItemWriterListener.totalPspAmount;
+        long acceptorCommissionSum = BatchItemWriterListener.totalCommission;
         long bankAmountSum = pspAmountSum - acceptorCommissionSum;
 
         String log = String.format("%-10s|%-12s|%018d|%017d|%s000|%s000|%s00|%s|\n", batchFileDate, batchFileCycle, bankAmountSum,

@@ -4,7 +4,7 @@ import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.classifier.batch.BankRecordClassifier;
 import com.shaparak.batch.classifier.batch.PspRecordClassifier;
 import com.shaparak.batch.dto.batch.BatchRecord;
-import com.shaparak.batch.listener.ItemWriteListenerImpl;
+import com.shaparak.batch.listener.BatchItemWriterListener;
 import com.shaparak.batch.processor.BatchRecordProcessor;
 import com.shaparak.batch.config.writer.batch.BankBatchItemWriter;
 import com.shaparak.batch.config.writer.batch.PspBatchItemWriter;
@@ -116,7 +116,7 @@ public class BatchStepConfig {
                 .reader(reader())
 //                .processor(processor())
                 .writer(compositeItemWriter())
-                .listener(new ItemWriteListenerImpl())
+                .listener(new BatchItemWriterListener())
 
 
                 .stream(pspBatchItemWriter.sep2SwitchItemWriter())
@@ -200,16 +200,6 @@ public class BatchStepConfig {
         asyncTaskExecutor.setConcurrencyLimit(threadCount);
         return asyncTaskExecutor;
     }
-
-//    @Bean
-//    public ThreadPoolTaskExecutor taskExecutor() {
-//        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-//        taskExecutor.setCorePoolSize(threadCount);
-//        taskExecutor.setMaxPoolSize(threadCount + 10);
-//        taskExecutor.setQueueCapacity(threadCount);
-////        taskExecutor.setDaemon(true);
-//        return taskExecutor;
-//    }
 
 
     @Bean
