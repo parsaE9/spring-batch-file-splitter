@@ -1,4 +1,4 @@
-package com.shaparak.batch.writer.batch;
+package com.shaparak.batch.config.writer.batch;
 
 import com.shaparak.batch.aggregator.batch.PspLineAggregator;
 import com.shaparak.batch.dto.csv.SwitchDto;
@@ -15,7 +15,7 @@ import org.springframework.core.io.FileSystemResource;
 import java.io.File;
 
 @Configuration
-public class PspItemWriter {
+public class PspBatchItemWriter {
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;

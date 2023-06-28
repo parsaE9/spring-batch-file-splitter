@@ -24,8 +24,6 @@ public class ZipService implements Runnable {
     @Override
     public void run() {
         try {
-            Stream<String> fileStream = Files.lines(Paths.get(filePath));
-
             FileOutputStream fos = new FileOutputStream(filePath.replace("txt", "zip"));
             ZipOutputStream zipOut = new ZipOutputStream(fos);
             File fileToZip = new File(filePath);

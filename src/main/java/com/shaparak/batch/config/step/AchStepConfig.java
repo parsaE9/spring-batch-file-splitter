@@ -7,7 +7,7 @@ import com.shaparak.batch.dto.csv.SwitchDto;
 import com.shaparak.batch.processor.AchRecordProcessor;
 import com.shaparak.batch.service.CsvService;
 import com.shaparak.batch.service.UnzipService;
-import com.shaparak.batch.writer.ach.AchItemWriter;
+import com.shaparak.batch.config.writer.ach.AchItemWriter;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;

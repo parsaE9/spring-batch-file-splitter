@@ -22,36 +22,17 @@ public class CsvService {
 
     public static Map<String, SwitchDto> switchMap;
 
-    @Value("${input.csv.file.path.switch}")
-    private String switchCsvFilePath;
 
-    @Value("${input.csv.file.path.bank}")
-    private String bankCsvFilePath;
-
-    @Value("${unzip.input.file}")
-    private boolean unzipInputFile;
-
-    @Autowired
-    private UnzipService unzipService;
-
-
-    @PostConstruct
-    private void init() throws Exception {
+    public static void readCsvInputFiles(String switchCsvFilePath, String bankCsvFilePath) throws Exception {
         File switchFile = new File(switchCsvFilePath);
         File bankFile = new File(bankCsvFilePath);
 
         switchMap = csvToSwitchDtoMap(new FileInputStream(switchFile));
         bankMap = csvToBankDtoMap(new FileInputStream(bankFile));
-
-
-        unzipService.clearFolders();
-
-        if (unzipInputFile)
-            unzipService.unzip();
     }
 
 
-    private Map<String, BankDto> csvToBankDtoMap(InputStream is) {
+    private static Map<String, BankDto> csvToBankDtoMap(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
             Map<String, BankDto> bankMap = new HashMap<>();
@@ -69,13 +50,13 @@ public class CsvService {
 
             return bankMap;
         } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+            throw new RuntimeException("failed to parse CSV file: " + e.getMessage());
         }
     }
 
 
-    private Map<String, SwitchDto> csvToSwitchDtoMap(InputStream is) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+    private static Map<String, SwitchDto> csvToSwitchDtoMap(InputStream is) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
             Map<String, SwitchDto> switchMap = new HashMap<>();
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
@@ -91,7 +72,7 @@ public class CsvService {
 
             return switchMap;
         } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+            throw new RuntimeException("failed to parse CSV file: " + e.getMessage());
         }
     }
 

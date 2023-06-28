@@ -18,26 +18,17 @@ import java.util.zip.ZipInputStream;
 @NoArgsConstructor
 public class UnzipService {
 
-    @Value("${output.directory.path}")
-    private String outputDirectoryPath;
-
-    @Value("${log.directory.path}")
-    private String logDirectoryPath;
-
     @Value("${input.zip.file.directory.path}")
     private String inputZipFileDirectoryPath;
 
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFileDestination;
 
-    @Value("${unzip.input.file}")
-    private boolean unzipInputFile;
-
     public static String fileDate;
 
 
-    public void unzip() throws Exception {
-        System.out.println("started unzipping input zip file");
+    public void unzipInput() throws Exception {
+        System.out.println("\n\nstarted unzipping input zip file");
 
         long begin = System.currentTimeMillis();
         File dir = new File(inputZipFileDirectoryPath + "/");
@@ -107,14 +98,6 @@ public class UnzipService {
         return destFile;
     }
 
-
-    public void clearFolders() throws IOException {
-        System.out.println("\ncleared folders\n\n\n");
-        FileUtils.deleteDirectory(new File(outputDirectoryPath));
-
-        if (unzipInputFile)
-            FileUtils.deleteDirectory(new File(unzippedInputFileDestination));
-    }
 
 
 }

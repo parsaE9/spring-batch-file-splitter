@@ -6,8 +6,8 @@ import com.shaparak.batch.classifier.batch.PspRecordClassifier;
 import com.shaparak.batch.dto.batch.BatchRecord;
 import com.shaparak.batch.listener.ItemWriteListenerImpl;
 import com.shaparak.batch.processor.BatchRecordProcessor;
-import com.shaparak.batch.writer.batch.BankItemWriter;
-import com.shaparak.batch.writer.batch.PspItemWriter;
+import com.shaparak.batch.config.writer.batch.BankBatchItemWriter;
+import com.shaparak.batch.config.writer.batch.PspBatchItemWriter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -40,10 +40,10 @@ public class BatchStepConfig {
     private StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    private PspItemWriter pspItemWriter;
+    private PspBatchItemWriter pspBatchItemWriter;
 
     @Autowired
-    private BankItemWriter bankItemWriter;
+    private BankBatchItemWriter bankBatchItemWriter;
 
     @Value("${unzipped.input.file.destination.path}")
     private String unzippedInputFilePath;
@@ -119,73 +119,73 @@ public class BatchStepConfig {
                 .listener(new ItemWriteListenerImpl())
 
 
-                .stream(pspItemWriter.sep2SwitchItemWriter())
-                .stream(pspItemWriter.sep1SwitchItemWriter())
-                .stream(pspItemWriter.sep3SwitchItemWriter())
-                .stream(pspItemWriter.pna1SwitchItemWriter())
-                .stream(pspItemWriter.pna2SwitchItemWriter())
-                .stream(pspItemWriter.pec1SwitchItemWriter())
-                .stream(pspItemWriter.sayn1SwitchItemWriter())
-                .stream(pspItemWriter.sayn2SwitchItemWriter())
-                .stream(pspItemWriter.fanvSwitchItemWriter())
-                .stream(pspItemWriter.kicc1SwitchItemWriter())
-                .stream(pspItemWriter.kicc2SwitchItemWriter())
-                .stream(pspItemWriter.mabnSwitchItemWriter())
-                .stream(pspItemWriter.sada1SwitchItemWriter())
-                .stream(pspItemWriter.sada2SwitchItemWriter())
-                .stream(pspItemWriter.pep1SwitchItemWriter())
-                .stream(pspItemWriter.pep2SwitchItemWriter())
-                .stream(pspItemWriter.persSwitchItemWriter())
-                .stream(pspItemWriter.ecd1SwitchItemWriter())
-                .stream(pspItemWriter.ecd2SwitchItemWriter())
-                .stream(pspItemWriter.bpm1SwitchItemWriter())
-                .stream(pspItemWriter.bpm2SwitchItemWriter())
-                .stream(pspItemWriter.pec2SwitchItemWriter())
-                .stream(pspItemWriter.sshpSwitchItemWriter())
-                .stream(pspItemWriter.hubSwitchItemWriter())
+                .stream(pspBatchItemWriter.sep2SwitchItemWriter())
+                .stream(pspBatchItemWriter.sep1SwitchItemWriter())
+                .stream(pspBatchItemWriter.sep3SwitchItemWriter())
+                .stream(pspBatchItemWriter.pna1SwitchItemWriter())
+                .stream(pspBatchItemWriter.pna2SwitchItemWriter())
+                .stream(pspBatchItemWriter.pec1SwitchItemWriter())
+                .stream(pspBatchItemWriter.sayn1SwitchItemWriter())
+                .stream(pspBatchItemWriter.sayn2SwitchItemWriter())
+                .stream(pspBatchItemWriter.fanvSwitchItemWriter())
+                .stream(pspBatchItemWriter.kicc1SwitchItemWriter())
+                .stream(pspBatchItemWriter.kicc2SwitchItemWriter())
+                .stream(pspBatchItemWriter.mabnSwitchItemWriter())
+                .stream(pspBatchItemWriter.sada1SwitchItemWriter())
+                .stream(pspBatchItemWriter.sada2SwitchItemWriter())
+                .stream(pspBatchItemWriter.pep1SwitchItemWriter())
+                .stream(pspBatchItemWriter.pep2SwitchItemWriter())
+                .stream(pspBatchItemWriter.persSwitchItemWriter())
+                .stream(pspBatchItemWriter.ecd1SwitchItemWriter())
+                .stream(pspBatchItemWriter.ecd2SwitchItemWriter())
+                .stream(pspBatchItemWriter.bpm1SwitchItemWriter())
+                .stream(pspBatchItemWriter.bpm2SwitchItemWriter())
+                .stream(pspBatchItemWriter.pec2SwitchItemWriter())
+                .stream(pspBatchItemWriter.sshpSwitchItemWriter())
+                .stream(pspBatchItemWriter.hubSwitchItemWriter())
 
 
-                .stream(bankItemWriter.markaziBankItemWriter())
-                .stream(bankItemWriter.sanatBankItemWriter())
-                .stream(bankItemWriter.mellatBankItemWriter())
-                .stream(bankItemWriter.refahBankItemWriter())
-                .stream(bankItemWriter.maskanBankItemWriter())
-                .stream(bankItemWriter.sepahBankItemWriter())
-                .stream(bankItemWriter.keshavarziBankItemWriter())
-                .stream(bankItemWriter.melliBankItemWriter())
-                .stream(bankItemWriter.tejaratBankItemWriter())
-                .stream(bankItemWriter.saderatBankItemWriter())
-                .stream(bankItemWriter.toseeSaderatBankItemWriter())
-                .stream(bankItemWriter.postBankItemWriter())
-                .stream(bankItemWriter.toseeTaavonItemWriter())
-                .stream(bankItemWriter.etebariToseeeBankItemWriter())
-                .stream(bankItemWriter.ghavaminBankItemWriter())
-                .stream(bankItemWriter.karafarinBankItemWriter())
-                .stream(bankItemWriter.parsianBankItemWriter())
-                .stream(bankItemWriter.eghtesadNovinBankItemWriter())
-                .stream(bankItemWriter.samanBankItemWriter())
-                .stream(bankItemWriter.pasargadBankItemWriter())
-                .stream(bankItemWriter.sarmayeBankItemWriter())
-                .stream(bankItemWriter.sinaBankItemWriter())
-                .stream(bankItemWriter.mehrBankItemWriter())
-                .stream(bankItemWriter.shahrBankItemWriter())
-                .stream(bankItemWriter.ayandeBankItemWriter())
-                .stream(bankItemWriter.ansarBankItemWriter())
-                .stream(bankItemWriter.gardeshgariBankItemWriter())
-                .stream(bankItemWriter.hekmatIranianBankItemWriter())
-                .stream(bankItemWriter.dayBankItemWriter())
-                .stream(bankItemWriter.iranZaminBankItemWriter())
-                .stream(bankItemWriter.resalatBankItemWriter())
-                .stream(bankItemWriter.kosarBankItemWriter())
-                .stream(bankItemWriter.asgariyeBankItemWriter())
-                .stream(bankItemWriter.khavarmianeBankItemWriter())
-                .stream(bankItemWriter.iranVenezuelaBankItemWriter())
-                .stream(bankItemWriter.noorBankItemWriter())
-                .stream(bankItemWriter.shaparakItemWriter())
-                .stream(bankItemWriter.mehreEghtesadBankItemWriter())
-                .stream(bankItemWriter.shaparakPaymentFacilitatorBankItemWriter())
-                .stream(bankItemWriter.refahiBankItemWriter())
-                .stream(bankItemWriter.fuelBankItemWriter())
+                .stream(bankBatchItemWriter.markaziBankItemWriter())
+                .stream(bankBatchItemWriter.sanatBankItemWriter())
+                .stream(bankBatchItemWriter.mellatBankItemWriter())
+                .stream(bankBatchItemWriter.refahBankItemWriter())
+                .stream(bankBatchItemWriter.maskanBankItemWriter())
+                .stream(bankBatchItemWriter.sepahBankItemWriter())
+                .stream(bankBatchItemWriter.keshavarziBankItemWriter())
+                .stream(bankBatchItemWriter.melliBankItemWriter())
+                .stream(bankBatchItemWriter.tejaratBankItemWriter())
+                .stream(bankBatchItemWriter.saderatBankItemWriter())
+                .stream(bankBatchItemWriter.toseeSaderatBankItemWriter())
+                .stream(bankBatchItemWriter.postBankItemWriter())
+                .stream(bankBatchItemWriter.toseeTaavonItemWriter())
+                .stream(bankBatchItemWriter.etebariToseeeBankItemWriter())
+                .stream(bankBatchItemWriter.ghavaminBankItemWriter())
+                .stream(bankBatchItemWriter.karafarinBankItemWriter())
+                .stream(bankBatchItemWriter.parsianBankItemWriter())
+                .stream(bankBatchItemWriter.eghtesadNovinBankItemWriter())
+                .stream(bankBatchItemWriter.samanBankItemWriter())
+                .stream(bankBatchItemWriter.pasargadBankItemWriter())
+                .stream(bankBatchItemWriter.sarmayeBankItemWriter())
+                .stream(bankBatchItemWriter.sinaBankItemWriter())
+                .stream(bankBatchItemWriter.mehrBankItemWriter())
+                .stream(bankBatchItemWriter.shahrBankItemWriter())
+                .stream(bankBatchItemWriter.ayandeBankItemWriter())
+                .stream(bankBatchItemWriter.ansarBankItemWriter())
+                .stream(bankBatchItemWriter.gardeshgariBankItemWriter())
+                .stream(bankBatchItemWriter.hekmatIranianBankItemWriter())
+                .stream(bankBatchItemWriter.dayBankItemWriter())
+                .stream(bankBatchItemWriter.iranZaminBankItemWriter())
+                .stream(bankBatchItemWriter.resalatBankItemWriter())
+                .stream(bankBatchItemWriter.kosarBankItemWriter())
+                .stream(bankBatchItemWriter.asgariyeBankItemWriter())
+                .stream(bankBatchItemWriter.khavarmianeBankItemWriter())
+                .stream(bankBatchItemWriter.iranVenezuelaBankItemWriter())
+                .stream(bankBatchItemWriter.noorBankItemWriter())
+                .stream(bankBatchItemWriter.shaparakItemWriter())
+                .stream(bankBatchItemWriter.mehreEghtesadBankItemWriter())
+                .stream(bankBatchItemWriter.shaparakPaymentFacilitatorBankItemWriter())
+                .stream(bankBatchItemWriter.refahiBankItemWriter())
+                .stream(bankBatchItemWriter.fuelBankItemWriter())
 
 
                 .taskExecutor(taskExecutor())
@@ -216,30 +216,30 @@ public class BatchStepConfig {
     public ClassifierCompositeItemWriter<BatchRecord> pspClassifierCompositeItemWriter() throws Exception {
         ClassifierCompositeItemWriter<BatchRecord> compositeItemWriter = new ClassifierCompositeItemWriter<>();
         compositeItemWriter.setClassifier(new PspRecordClassifier(
-                pspItemWriter.sep2SwitchItemWriter(),
-                pspItemWriter.sep1SwitchItemWriter(),
-                pspItemWriter.sep3SwitchItemWriter(),
-                pspItemWriter.pna1SwitchItemWriter(),
-                pspItemWriter.pna2SwitchItemWriter(),
-                pspItemWriter.pec1SwitchItemWriter(),
-                pspItemWriter.sayn1SwitchItemWriter(),
-                pspItemWriter.sayn2SwitchItemWriter(),
-                pspItemWriter.fanvSwitchItemWriter(),
-                pspItemWriter.kicc1SwitchItemWriter(),
-                pspItemWriter.kicc2SwitchItemWriter(),
-                pspItemWriter.mabnSwitchItemWriter(),
-                pspItemWriter.sada1SwitchItemWriter(),
-                pspItemWriter.sada2SwitchItemWriter(),
-                pspItemWriter.pep1SwitchItemWriter(),
-                pspItemWriter.pep2SwitchItemWriter(),
-                pspItemWriter.persSwitchItemWriter(),
-                pspItemWriter.ecd1SwitchItemWriter(),
-                pspItemWriter.ecd2SwitchItemWriter(),
-                pspItemWriter.bpm1SwitchItemWriter(),
-                pspItemWriter.bpm2SwitchItemWriter(),
-                pspItemWriter.pec2SwitchItemWriter(),
-                pspItemWriter.sshpSwitchItemWriter(),
-                pspItemWriter.hubSwitchItemWriter()
+                pspBatchItemWriter.sep2SwitchItemWriter(),
+                pspBatchItemWriter.sep1SwitchItemWriter(),
+                pspBatchItemWriter.sep3SwitchItemWriter(),
+                pspBatchItemWriter.pna1SwitchItemWriter(),
+                pspBatchItemWriter.pna2SwitchItemWriter(),
+                pspBatchItemWriter.pec1SwitchItemWriter(),
+                pspBatchItemWriter.sayn1SwitchItemWriter(),
+                pspBatchItemWriter.sayn2SwitchItemWriter(),
+                pspBatchItemWriter.fanvSwitchItemWriter(),
+                pspBatchItemWriter.kicc1SwitchItemWriter(),
+                pspBatchItemWriter.kicc2SwitchItemWriter(),
+                pspBatchItemWriter.mabnSwitchItemWriter(),
+                pspBatchItemWriter.sada1SwitchItemWriter(),
+                pspBatchItemWriter.sada2SwitchItemWriter(),
+                pspBatchItemWriter.pep1SwitchItemWriter(),
+                pspBatchItemWriter.pep2SwitchItemWriter(),
+                pspBatchItemWriter.persSwitchItemWriter(),
+                pspBatchItemWriter.ecd1SwitchItemWriter(),
+                pspBatchItemWriter.ecd2SwitchItemWriter(),
+                pspBatchItemWriter.bpm1SwitchItemWriter(),
+                pspBatchItemWriter.bpm2SwitchItemWriter(),
+                pspBatchItemWriter.pec2SwitchItemWriter(),
+                pspBatchItemWriter.sshpSwitchItemWriter(),
+                pspBatchItemWriter.hubSwitchItemWriter()
         ));
         return compositeItemWriter;
     }
@@ -248,47 +248,47 @@ public class BatchStepConfig {
     public ClassifierCompositeItemWriter<BatchRecord> bankClassifierCompositeItemWriter() throws Exception {
         ClassifierCompositeItemWriter<BatchRecord> compositeItemWriter = new ClassifierCompositeItemWriter<>();
         compositeItemWriter.setClassifier(new BankRecordClassifier(
-                bankItemWriter.markaziBankItemWriter(),
-                bankItemWriter.sanatBankItemWriter(),
-                bankItemWriter.mellatBankItemWriter(),
-                bankItemWriter.refahBankItemWriter(),
-                bankItemWriter.maskanBankItemWriter(),
-                bankItemWriter.sepahBankItemWriter(),
-                bankItemWriter.keshavarziBankItemWriter(),
-                bankItemWriter.melliBankItemWriter(),
-                bankItemWriter.tejaratBankItemWriter(),
-                bankItemWriter.saderatBankItemWriter(),
-                bankItemWriter.toseeSaderatBankItemWriter(),
-                bankItemWriter.postBankItemWriter(),
-                bankItemWriter.toseeTaavonItemWriter(),
-                bankItemWriter.etebariToseeeBankItemWriter(),
-                bankItemWriter.ghavaminBankItemWriter(),
-                bankItemWriter.karafarinBankItemWriter(),
-                bankItemWriter.parsianBankItemWriter(),
-                bankItemWriter.eghtesadNovinBankItemWriter(),
-                bankItemWriter.samanBankItemWriter(),
-                bankItemWriter.pasargadBankItemWriter(),
-                bankItemWriter.sarmayeBankItemWriter(),
-                bankItemWriter.sinaBankItemWriter(),
-                bankItemWriter.mehrBankItemWriter(),
-                bankItemWriter.shahrBankItemWriter(),
-                bankItemWriter.ayandeBankItemWriter(),
-                bankItemWriter.ansarBankItemWriter(),
-                bankItemWriter.gardeshgariBankItemWriter(),
-                bankItemWriter.hekmatIranianBankItemWriter(),
-                bankItemWriter.dayBankItemWriter(),
-                bankItemWriter.iranZaminBankItemWriter(),
-                bankItemWriter.resalatBankItemWriter(),
-                bankItemWriter.kosarBankItemWriter(),
-                bankItemWriter.asgariyeBankItemWriter(),
-                bankItemWriter.khavarmianeBankItemWriter(),
-                bankItemWriter.iranVenezuelaBankItemWriter(),
-                bankItemWriter.noorBankItemWriter(),
-                bankItemWriter.shaparakItemWriter(),
-                bankItemWriter.mehreEghtesadBankItemWriter(),
-                bankItemWriter.shaparakPaymentFacilitatorBankItemWriter(),
-                bankItemWriter.refahiBankItemWriter(),
-                bankItemWriter.fuelBankItemWriter()
+                bankBatchItemWriter.markaziBankItemWriter(),
+                bankBatchItemWriter.sanatBankItemWriter(),
+                bankBatchItemWriter.mellatBankItemWriter(),
+                bankBatchItemWriter.refahBankItemWriter(),
+                bankBatchItemWriter.maskanBankItemWriter(),
+                bankBatchItemWriter.sepahBankItemWriter(),
+                bankBatchItemWriter.keshavarziBankItemWriter(),
+                bankBatchItemWriter.melliBankItemWriter(),
+                bankBatchItemWriter.tejaratBankItemWriter(),
+                bankBatchItemWriter.saderatBankItemWriter(),
+                bankBatchItemWriter.toseeSaderatBankItemWriter(),
+                bankBatchItemWriter.postBankItemWriter(),
+                bankBatchItemWriter.toseeTaavonItemWriter(),
+                bankBatchItemWriter.etebariToseeeBankItemWriter(),
+                bankBatchItemWriter.ghavaminBankItemWriter(),
+                bankBatchItemWriter.karafarinBankItemWriter(),
+                bankBatchItemWriter.parsianBankItemWriter(),
+                bankBatchItemWriter.eghtesadNovinBankItemWriter(),
+                bankBatchItemWriter.samanBankItemWriter(),
+                bankBatchItemWriter.pasargadBankItemWriter(),
+                bankBatchItemWriter.sarmayeBankItemWriter(),
+                bankBatchItemWriter.sinaBankItemWriter(),
+                bankBatchItemWriter.mehrBankItemWriter(),
+                bankBatchItemWriter.shahrBankItemWriter(),
+                bankBatchItemWriter.ayandeBankItemWriter(),
+                bankBatchItemWriter.ansarBankItemWriter(),
+                bankBatchItemWriter.gardeshgariBankItemWriter(),
+                bankBatchItemWriter.hekmatIranianBankItemWriter(),
+                bankBatchItemWriter.dayBankItemWriter(),
+                bankBatchItemWriter.iranZaminBankItemWriter(),
+                bankBatchItemWriter.resalatBankItemWriter(),
+                bankBatchItemWriter.kosarBankItemWriter(),
+                bankBatchItemWriter.asgariyeBankItemWriter(),
+                bankBatchItemWriter.khavarmianeBankItemWriter(),
+                bankBatchItemWriter.iranVenezuelaBankItemWriter(),
+                bankBatchItemWriter.noorBankItemWriter(),
+                bankBatchItemWriter.shaparakItemWriter(),
+                bankBatchItemWriter.mehreEghtesadBankItemWriter(),
+                bankBatchItemWriter.shaparakPaymentFacilitatorBankItemWriter(),
+                bankBatchItemWriter.refahiBankItemWriter(),
+                bankBatchItemWriter.fuelBankItemWriter()
         ));
         return compositeItemWriter;
     }

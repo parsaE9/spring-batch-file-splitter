@@ -59,7 +59,8 @@ public class SpringBatchConfig {
 
         if (zipOutputFiles && deleteExtractedInput && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(batchStepConfig.batchStep())
+                    .from(initStep())
+                    .next(batchStepConfig.batchStep())
                     .next(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(rowNumberStep())
@@ -69,7 +70,8 @@ public class SpringBatchConfig {
                     .end();
         } else if (zipOutputFiles && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(batchStepConfig.batchStep())
+                    .from(initStep())
+                    .next(batchStepConfig.batchStep())
                     .next(achStepConfig.achMasterStep())
                     .next(rowNumberStep())
                     .next(logStep())
@@ -78,7 +80,8 @@ public class SpringBatchConfig {
                     .end();
         } else if (deleteExtractedInput && createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(batchStepConfig.batchStep())
+                    .from(initStep())
+                    .next(batchStepConfig.batchStep())
                     .next(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(rowNumberStep())
@@ -87,7 +90,8 @@ public class SpringBatchConfig {
                     .end();
         } else if (zipOutputFiles && deleteExtractedInput) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achMasterStep())
+                    .from(initStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
@@ -95,7 +99,8 @@ public class SpringBatchConfig {
                     .end();
         } else if (createBatch) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(batchStepConfig.batchStep())
+                    .from(initStep())
+                    .next(batchStepConfig.batchStep())
                     .next(achStepConfig.achMasterStep())
                     .next(rowNumberStep())
                     .next(logStep())
@@ -103,21 +108,24 @@ public class SpringBatchConfig {
                     .end();
         } else if (deleteExtractedInput) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achMasterStep())
+                    .from(initStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(deleteExtractedInputStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .end();
         } else if (zipOutputFiles) {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achMasterStep())
+                    .from(initStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .next(zipOutputStep())
                     .end();
         } else {
             return new FlowBuilder<Flow>("JobFlow")
-                    .from(achStepConfig.achMasterStep())
+                    .from(initStep())
+                    .next(achStepConfig.achMasterStep())
                     .next(logStep())
                     .next(deleteExtraOutputStep())
                     .end();
@@ -160,6 +168,13 @@ public class SpringBatchConfig {
                 .build();
     }
 
+    @Bean
+    public Step initStep() {
+        return stepBuilderFactory.get("initStep")
+                .tasklet(initTasklet())
+                .build();
+    }
+
 
     @Bean
     public Tasklet deleteExtractedInputTasklet() {
@@ -177,13 +192,16 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Tasklet zipOutputTasklet() {
-        return new ZipOutputTasklet();
-    }
+    public Tasklet zipOutputTasklet() { return new ZipOutputTasklet(); }
 
     @Bean
     public Tasklet deleteExtraOutputTasklet() {
         return new DeleteExtraOutputTasklet();
+    }
+
+    @Bean
+    public Tasklet initTasklet() {
+        return new InitTasklet();
     }
 
 

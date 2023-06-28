@@ -17,11 +17,11 @@ public class BankDto {
 
     private String bicCode;
 
+    private String filePath;
+
     private boolean active;
 
     private boolean addPan;
-
-    private String filePath;
 
 
 }

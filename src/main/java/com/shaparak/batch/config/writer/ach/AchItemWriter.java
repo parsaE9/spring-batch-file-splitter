@@ -1,4 +1,4 @@
-package com.shaparak.batch.writer.ach;
+package com.shaparak.batch.config.writer.ach;
 
 import com.shaparak.batch.aggregator.ach.AchLineAggregator;
 import com.shaparak.batch.dto.csv.SwitchDto;

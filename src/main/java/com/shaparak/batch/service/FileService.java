@@ -1,6 +1,7 @@
 package com.shaparak.batch.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -45,6 +46,15 @@ public class FileService implements Runnable {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+
+
+
+    public static void clearFolders(String outputDirectoryPath, String extractedInputFilePath, boolean unzipInputFile) throws IOException {
+        FileUtils.deleteDirectory(new File(outputDirectoryPath));
+        if (unzipInputFile)
+            FileUtils.deleteDirectory(new File(extractedInputFilePath));
     }
 
 

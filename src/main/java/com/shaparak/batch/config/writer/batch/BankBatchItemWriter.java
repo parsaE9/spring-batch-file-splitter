@@ -1,4 +1,4 @@
-package com.shaparak.batch.writer.batch;
+package com.shaparak.batch.config.writer.batch;
 
 import com.shaparak.batch.aggregator.batch.BankLineAggregator;
 import com.shaparak.batch.aggregator.batch.BankPanLineAggregator;
@@ -16,7 +16,7 @@ import org.springframework.core.io.FileSystemResource;
 import java.io.File;
 
 @Configuration
-public class BankItemWriter {
+public class BankBatchItemWriter {
 
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
