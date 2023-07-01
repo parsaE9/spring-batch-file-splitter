@@ -102,7 +102,7 @@ public class AchStepConfig {
     public Step achSlaveStep() throws Exception {
         return stepBuilderFactory.get("achSlaveStep").<AchRecord, AchRecord>chunk(1000)
                 .reader(achReader(null))
-                .processor(achProcessor())
+//                .processor(achProcessor())
                 .writer(achClassifierCompositeItemWriter())
                 .listener(new AchItemWriterListener())
 

@@ -7,7 +7,7 @@ public class AchRecordProcessor implements ItemProcessor<AchRecord, AchRecord> {
 
 
     @Override
-    public synchronized AchRecord process(AchRecord achRecord) throws Exception {
+    public AchRecord process(AchRecord achRecord) throws Exception {
         return achRecord;
     }
 

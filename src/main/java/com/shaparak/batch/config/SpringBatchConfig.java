@@ -177,9 +177,7 @@ public class SpringBatchConfig {
 
 
     @Bean
-    public Tasklet deleteExtractedInputTasklet() {
-        return new DeleteExtractedInputTasklet();
-    }
+    public Tasklet deleteExtractedInputTasklet() {return new DeleteExtractedInputTasklet();}
 
     @Bean
     public Tasklet rowNumberTasklet() {
