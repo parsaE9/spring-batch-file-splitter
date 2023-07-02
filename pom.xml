@@ -84,6 +84,17 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-oracle</artifactId>
+            <version>1.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.jdbc.debug</groupId>
+            <artifactId>ojdbc8-debug</artifactId>
+            <version>21.1.0.0</version>
+            <type>pom</type>
+        </dependency>
 
 
     </dependencies>

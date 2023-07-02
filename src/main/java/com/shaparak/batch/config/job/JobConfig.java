@@ -1,4 +1,4 @@
-package com.shaparak.batch.config;
+package com.shaparak.batch.config.job;
 
 import com.shaparak.batch.config.step.AchStepConfig;
 import com.shaparak.batch.config.step.BatchStepConfig;
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableBatchProcessing
-public class SpringBatchConfig {
+public class JobConfig {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
