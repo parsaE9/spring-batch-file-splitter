@@ -45,7 +45,7 @@ public class BatchStepConfig {
     @Autowired
     private BankBatchItemWriter bankBatchItemWriter;
 
-    @Value("${unzipped.input.file.destination.path}")
+    @Value("${extracted.input.file.destination.path}")
     private String unzippedInputFilePath;
 
     @Value("${create.bank.batch-file}")

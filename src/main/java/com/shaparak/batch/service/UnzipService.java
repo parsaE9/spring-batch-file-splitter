@@ -21,7 +21,7 @@ public class UnzipService {
     @Value("${input.zip.file.directory.path}")
     private String inputZipFileDirectoryPath;
 
-    @Value("${unzipped.input.file.destination.path}")
+    @Value("${extracted.input.file.destination.path}")
     private String unzippedInputFileDestination;
 
     public static String fileDate;

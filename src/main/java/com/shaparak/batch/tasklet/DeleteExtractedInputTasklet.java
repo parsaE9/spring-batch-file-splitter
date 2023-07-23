@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class DeleteExtractedInputTasklet implements Tasklet {
 
-    @Value("${unzipped.input.file.destination.path}")
+    @Value("${extracted.input.file.destination.path}")
     private String extractedInputDirectoryPath;
 
     @Value("${delete.extracted.input}")

@@ -47,7 +47,7 @@ public class AchStepConfig {
     @Value("${thread.count.batch.task}")
     private int threadCount;
 
-    @Value("${unzipped.input.file.destination.path}")
+    @Value("${extracted.input.file.destination.path}")
     private String unzippedInputFilePath;
 
     @Value("${output.directory.path}")

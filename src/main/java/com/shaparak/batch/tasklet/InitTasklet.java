@@ -29,7 +29,7 @@ public class InitTasklet implements Tasklet {
     @Value("${output.directory.path}")
     private String outputDirectoryPath;
 
-    @Value("${unzipped.input.file.destination.path}")
+    @Value("${extracted.input.file.destination.path}")
     private String extractedInputFilePath;
 
 
