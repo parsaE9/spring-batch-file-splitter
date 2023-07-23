@@ -34,8 +34,6 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        jobDetailsMap.put("jobStartMillis", String.valueOf(System.currentTimeMillis()));
-        jobDetailsMap.put("jobStartDateTime", TimeService.formatDateTime(new Date()));
         JobParameters jobParameters = new JobParametersBuilder().addString("JobId", String.valueOf(System.currentTimeMillis())).toJobParameters();
         JobExecution execution = jobLauncher.run(job, jobParameters);
         System.out.println("\n\nSTATUS :: " + execution.getStatus() + "\n\n");

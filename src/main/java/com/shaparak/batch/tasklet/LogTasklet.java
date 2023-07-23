@@ -4,6 +4,7 @@ import com.shaparak.batch.BatchApplication;
 import com.shaparak.batch.listener.AchItemWriterListener;
 import com.shaparak.batch.listener.BatchItemWriterListener;
 import com.shaparak.batch.processor.AchRecordProcessor;
+import com.shaparak.batch.service.TimeService;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,6 +48,13 @@ public class LogTasklet implements Tasklet {
 
     private void writeLogs() {
         try {
+            long begin = Long.parseLong(BatchApplication.jobDetailsMap.get("jobStartMillis"));
+            long end = System.currentTimeMillis();
+            String jobProcessDuration = TimeService.calculateDuration(end - begin);
+            BatchApplication.jobDetailsMap.put("jobProcessTime", jobProcessDuration);
+            BatchApplication.jobDetailsMap.put("jobFinishDateTime", TimeService.formatDateTime(new Date()));
+
+
             Files.createDirectories(Paths.get(logDirectoryPath));
             if (createBankBatch || createPspBatch)
                 writeBatchLog();
