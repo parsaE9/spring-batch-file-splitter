@@ -1,6 +1,9 @@
 package com.shaparak.batch;
 
+import com.shaparak.batch.listener.BatchItemWriterListener;
 import com.shaparak.batch.service.TimeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -18,6 +21,8 @@ import java.util.Map;
 @SpringBootApplication
 public class BatchApplication implements CommandLineRunner {
 
+    Logger logger = LoggerFactory.getLogger(BatchApplication.class);
+
     @Autowired
     private Job job;
 
@@ -34,6 +39,7 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        logger.warn("sample log for test");
         JobParameters jobParameters = new JobParametersBuilder().addString("JobId", String.valueOf(System.currentTimeMillis())).toJobParameters();
         JobExecution execution = jobLauncher.run(job, jobParameters);
         System.out.println("\n\nSTATUS :: " + execution.getStatus() + "\n\n");

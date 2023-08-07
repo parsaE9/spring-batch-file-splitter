@@ -44,4 +44,37 @@ public class BatchRecord {
     private String reserve;
 
 
+    @Override
+    public String toString() {
+        return "BatchRecord{" +
+                "rowNumber='" + rowNumber + '\'' +
+                ", pspCode='" + pspCode + '\'' +
+                ", acceptorCode='" + acceptorCode + '\'' +
+                ", traceCode='" + traceCode + '\'' +
+                ", localDate='" + localDate + '\'' +
+                ", localTime='" + localTime + '\'' +
+                ", reciveDate='" + reciveDate + '\'' +
+                ", iban='" + iban + '\'' +
+                ", depositeDate='" + depositeDate + '\'' +
+                ", depositeType='" + depositeType + '\'' +
+                ", depositeCircleNumber='" + depositeCircleNumber + '\'' +
+                ", terminalType='" + terminalType + '\'' +
+                ", processType='" + processType + '\'' +
+                ", cardType='" + cardType + '\'' +
+                ", amountShaparak='" + amountShaparak + '\'' +
+                ", referenceCode='" + referenceCode + '\'' +
+                ", depositeFlag='" + depositeFlag + '\'' +
+                ", acceptorCommission='" + acceptorCommission + '\'' +
+                ", pspCommission='" + pspCommission + '\'' +
+                ", pspNetCommission='" + pspNetCommission + '\'' +
+                ", shaparakCommission='" + shaparakCommission + '\'' +
+                ", terminalCode='" + terminalCode + '\'' +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", origTxnInfo='" + origTxnInfo + '\'' +
+                ", acceptorNetCommission='" + acceptorNetCommission + '\'' +
+                ", acceptorBankCommission='" + acceptorBankCommission + '\'' +
+                ", businessCategoryCode='" + businessCategoryCode + '\'' +
+                ", reserve='" + reserve + '\'' +
+                '}';
+    }
 }
