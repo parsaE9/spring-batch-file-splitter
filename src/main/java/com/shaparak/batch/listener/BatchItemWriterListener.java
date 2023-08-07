@@ -26,11 +26,12 @@ public class BatchItemWriterListener implements ItemWriteListener<BatchRecord> {
                 System.out.println(e.getMessage());
                 System.out.println("amountShaparak: " + batchRecord.getAmountShaparak());
                 System.out.println("acceptorCommission: " + batchRecord.getAcceptorCommission());
-                batchRecord.toString();
+                System.out.println("Batch Record: " + batchRecord.toString());
                 logger.error("error in BatchItemWriterListener end");
             }
         }
     }
+
 
 
     @Override

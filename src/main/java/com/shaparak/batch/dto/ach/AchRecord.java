@@ -28,4 +28,15 @@ public class AchRecord {
     private RmtInfDto RmtInf = new RmtInfDto();
 
 
+    @Override
+    public String toString() {
+        return "AchRecord{" +
+                "PmtId=" + PmtId +
+                ", IntrBkSttlmAmt='" + IntrBkSttlmAmt + '\'' +
+                ", Cdtr=" + Cdtr +
+                ", CdtrAcct=" + CdtrAcct +
+                ", RmtInf=" + RmtInf +
+                '}';
+    }
+
 }

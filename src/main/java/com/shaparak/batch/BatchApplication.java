@@ -1,7 +1,5 @@
 package com.shaparak.batch;
 
-import com.shaparak.batch.listener.BatchItemWriterListener;
-import com.shaparak.batch.service.TimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -14,7 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
